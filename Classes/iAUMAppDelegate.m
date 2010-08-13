@@ -40,15 +40,17 @@
 	self.tabBar = [[UITabBarController alloc] init];
 	SettingsViewController* svc = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	self.charmsViewController = [[CharmsViewController alloc] init];
+	UINavigationController* proute = [[UINavigationController alloc] initWithRootViewController:self.charmsViewController];
 	
-	NSArray *vc = [[NSArray alloc] initWithObjects:svc,self.charmsViewController, nil];
+	NSArray *vc = [[NSArray alloc] initWithObjects:svc, proute, nil];
 	
-	[self.tabBar setViewControllers:vc animated:YES];	
+	[self.tabBar setViewControllers:vc animated:YES];
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[window addSubview:[self.tabBar view]];
     [window makeKeyAndVisible];	
 	[vc release];
 	[svc release];
+	[proute release];
 	return YES;
 }
 

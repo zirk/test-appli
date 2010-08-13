@@ -10,11 +10,15 @@
 
 @interface CharmsViewController : UITableViewController {
 	NSArray* list;
+	UIActivityIndicatorView* loadingIndicator;
+	BOOL isLoading;
 }
 
 -(void) refreshList:(NSArray*) list;
 -(void) asynchronouslyLoadCharms;
 
 @property (nonatomic, retain) NSArray* list;
+@property (nonatomic, retain) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, assign) BOOL isLoading;
 
 @end

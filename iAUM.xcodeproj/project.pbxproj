@@ -12,6 +12,8 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA39C12140BA0004AC2E4 /* ProfileViewController.m */; };
+		439AA3A4121413A7004AC2E4 /* AUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* AUMCache.m */; };
 		43CA4472120F1E370008B320 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 43CA4471120F1E370008B320 /* HttpRequest.m */; };
 		43CA44AB120F2BC40008B320 /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CA44AA120F2BC40008B320 /* libSystem.dylib */; };
 		43CA44B1120F30620008B320 /* AumTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 43CA44B0120F30620008B320 /* AumTools.m */; };
@@ -39,6 +41,10 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* iAUM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUM_Prefix.pch; sourceTree = "<group>"; };
+		439AA39B12140BA0004AC2E4 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		439AA39C12140BA0004AC2E4 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		439AA3A2121413A7004AC2E4 /* AUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUMCache.h; sourceTree = "<group>"; };
+		439AA3A3121413A7004AC2E4 /* AUMCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUMCache.m; sourceTree = "<group>"; };
 		43CA4470120F1E370008B320 /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
 		43CA4471120F1E370008B320 /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
 		43CA44AA120F2BC40008B320 /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
@@ -168,6 +174,8 @@
 			children = (
 				43CA44AF120F30620008B320 /* AumTools.h */,
 				43CA44B0120F30620008B320 /* AumTools.m */,
+				439AA3A2121413A7004AC2E4 /* AUMCache.h */,
+				439AA3A3121413A7004AC2E4 /* AUMCache.m */,
 			);
 			name = library;
 			sourceTree = "<group>";
@@ -201,6 +209,8 @@
 				43CA49C01212D24F0008B320 /* CharmsViewController.m */,
 				43CA4A921212E5BA0008B320 /* MiniProfileCell.h */,
 				43CA4A931212E5BA0008B320 /* MiniProfileCell.m */,
+				439AA39B12140BA0004AC2E4 /* ProfileViewController.h */,
+				439AA39C12140BA0004AC2E4 /* ProfileViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -274,6 +284,8 @@
 				43CA49C11212D24F0008B320 /* CharmsViewController.m in Sources */,
 				43CA4A381212DA040008B320 /* AUMSettings.m in Sources */,
 				43CA4A941212E5BA0008B320 /* MiniProfileCell.m in Sources */,
+				439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */,
+				439AA3A4121413A7004AC2E4 /* AUMCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

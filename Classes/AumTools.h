@@ -15,5 +15,7 @@
 
 +(NSMutableArray*) getSortedKeysWithDictionary:(NSDictionary*) dico;
 +(NSString*) serializeDictionary:(NSDictionary *)dico withKeys:(NSArray *)keys;
++(NSString*) hashMD5:(NSString *)data;
++(void)queueOperation:(SEL)selector withTarget:(id)target withObject:(id)object;
 
 @end

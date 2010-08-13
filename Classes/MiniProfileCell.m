@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "AUMCache.h"
 #import "MiniProfileCell.h"
 
 
@@ -45,29 +46,9 @@
 {
     self.nameLabel.text = [dico objectForKey:@"name"];
 	self.ageLabel.text = [dico objectForKey:@"age"];
-	
-	if(self.pictureView.image == nil){
-		NSURL *url = [NSURL URLWithString:[dico objectForKey:@"pictureUrl"]];
-		NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadImage:) object:url];
-		NSOperationQueue* queue = [NSOperationQueue new];
-	
-		[queue addOperation:op];
-		[op release];
-	}
-}
-
-
--(void) loadImage:(id) url
-{
-	NSLog(@"loading image @ %@", url);
-	UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-	[self performSelectorOnMainThread:@selector(displayImage:) withObject:image waitUntilDone:NO];
-}
-
--(void) displayImage:(id) image
-{
-	NSLog(@"finished loading!");
-	self.pictureView.image = image;
+	AUMCache* cache = [[AUMCache alloc] init];
+	[cache loadImage:[dico objectForKey:@"pictureUrl"] forImageView:self.pictureView];
+	[cache release];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

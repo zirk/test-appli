@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import <CommonCrypto/CommonDigest.h>
 #import "AumTools.h"
 
 @implementation AumTools
@@ -31,7 +32,39 @@
 	for (NSString* key in (keys == nil ? [dico allKeys] : keys)) {
 		[paramString appendFormat:@"&%@=%@", key, [dico valueForKey:key]];
 	}
-	return paramString;
+	NSString* result = [NSString stringWithString:paramString];
+	[paramString release];
+	return result;
+}
+
+
++(NSString*) hashMD5:(NSString*)data
+{
+	unsigned char digest[CC_MD5_DIGEST_LENGTH] = {0};
+
+	CC_MD5([data UTF8String], [data length], digest);
+	NSMutableString* tmp = [[NSMutableString alloc] init];
+
+	for (int i = 0; i < CC_MD5_DIGEST_LENGTH; ++i) {
+		[tmp appendFormat:@"%02x", digest[i]];
+	}
+
+	NSString* hash = [NSString stringWithString:tmp];
+	[tmp release];
+	return hash;
+}
+
++(void)queueOperation:(SEL)selector withTarget:(id)target withObject:(id)object
+{
+	NSLog(@"queuing operation");
+	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget:target selector:selector object:object];
+	NSLog(@"1");
+	NSOperationQueue* queue = [[[NSOperationQueue alloc] init] autorelease];
+	NSLog(@"2");
+	[queue addOperation:op];
+	NSLog(@"3");
+	[op release];
+	NSLog(@"operation queued");
 }
 
 @end

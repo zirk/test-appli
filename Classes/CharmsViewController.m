@@ -9,12 +9,14 @@
 #import "iAUMConstants.h"
 #import "CharmsViewController.h"
 #import "MiniProfileCell.h"
+#import "ProfileViewController.h"
 #import "HttpRequest.h"
 #import "AUMSettings.h"
+#import "AumTools.h"
 
 @implementation CharmsViewController
 
-@synthesize list;
+@synthesize list, loadingIndicator, isLoading;
 
 #pragma mark -
 #pragma mark Initialization
@@ -23,33 +25,38 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
+		self.isLoading = NO;
 		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Charmes" image:[UIImage imageNamed:@"charm.png"] tag:0];
 		self.tabBarItem = barItem;
 		[barItem release];
+		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+		self.loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+		self.loadingIndicator.hidesWhenStopped = YES;
+		[self.view addSubview:self.loadingIndicator];
+		self.tableView.rowHeight = 50.0;
     }
     return self;
 }
 
 - (void) loadCharms
 {
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/list-new"];
-	httpRequest.login = [AUMSettings get:kAppSettingsLogin];
-	httpRequest.password = [AUMSettings get:kAppSettingsPassword];
-	httpRequest.method = @"POST";
-	[httpRequest addParam:@"format" value:@"json"];
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/list"];
 	
-	NSLog(@"%@", [httpRequest sign]);
 	if ([httpRequest send] == YES)
 	{
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"visitors"] waitUntilDone:NO];
 	}
 	[httpRequest release];
 }
 
 -(void) refreshList:(NSArray*) someList
 {
+	[self.loadingIndicator stopAnimating];
 	self.list = someList;
 	[self.tableView reloadData];
+	if ([self.list count])
+		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", [self.list count]];
+	self.isLoading = NO;
 }
 
 
@@ -68,13 +75,11 @@
 
 - (void) asynchronouslyLoadCharms
 {
-	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadCharms) object:nil];
-	NSOperationQueue* queue = [[NSOperationQueue alloc] init];
-	[queue addOperation:op];
-	[op release];
-	
-	self.list = [[NSArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:@"loading", @"name", nil], nil];
-	
+	if (self.isLoading == YES)
+		return ;
+	self.isLoading = YES;
+	[self.loadingIndicator startAnimating];	
+	[AumTools queueOperation:@selector(loadCharms) withTarget:self withObject:nil];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -132,7 +137,6 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     static NSString *CellIdentifier = @"Cell";
     
     MiniProfileCell *cell = (MiniProfileCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -189,13 +193,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+	
+	ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithUserId:[((NSDictionary*)[self.list objectAtIndex:self.list.count - indexPath.row - 1]) valueForKey:@"aumId"]];
      // ...
      // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+	[self.navigationController pushViewController:profileViewController animated:YES];
+	[profileViewController release];
 }
 
 
