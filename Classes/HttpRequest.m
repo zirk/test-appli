@@ -100,13 +100,15 @@
 		else {
 			self.response = [self.response objectForKey:@"response"];
 			NSLog(@"SOME RESPONSE FROM JSON %@", self.response);
-		}		
+		}	
+		[error release];
 		return YES;
 	}
 	else {
 		NSLog(@"FUCKING ERROR: %@", result);
 		self.response = nil;
 	}
+	[error release];
 	return NO;
 }
 

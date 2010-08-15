@@ -62,8 +62,8 @@
 
 - (void)dealloc
 {
-	[super dealloc];
 	[self.cellView release];
+	[super dealloc];
 }
 
 - (void)setFrame:(CGRect)f

@@ -57,4 +57,11 @@
 	[self.object performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
 }
 
+- (void) dealloc
+{
+	[self.object release];
+	[self.memCache release];
+	[super dealloc];
+}
+
 @end
