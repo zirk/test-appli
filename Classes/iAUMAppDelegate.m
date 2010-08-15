@@ -2,17 +2,19 @@
 //  iAUMAppDelegate.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 8/08/10.
+//  Created by dirk on 8/08/10.
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
 #import "iAUMAppDelegate.h"
 #import "HttpRequest.h"
 #import "SettingsViewController.h"
+#import "VisitsViewController.h"
+#import "BasketViewController.h"
 
 @implementation iAUMAppDelegate
 
-@synthesize window, tabBar, charmsViewController;
+@synthesize window, tabBar;//, charmsViewController;
 
 
 #pragma mark -
@@ -21,36 +23,32 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-	
-	/*
-	
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/list"];
-	httpRequest.login = @"whoredu75@hotmail.fr";
-	httpRequest.password = @"holyjesus";
-	httpRequest.method = @"POST";
-	[httpRequest addParam:@"format" value:@"json"];
-	
-	NSLog(@"%@", [httpRequest sign]);
-	[httpRequest send];
-	
-	[httpRequest release];
-	*/
-	
-
 	self.tabBar = [[UITabBarController alloc] init];
-	SettingsViewController* svc = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	self.charmsViewController = [[CharmsViewController alloc] init];
-	UINavigationController* proute = [[UINavigationController alloc] initWithRootViewController:self.charmsViewController];
+	SettingsViewController* settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	
-	NSArray *vc = [[NSArray alloc] initWithObjects:svc, proute, nil];
+	CharmsViewController* charmsVC = [[CharmsViewController alloc] init];
+	UINavigationController* charmsNC = [[UINavigationController alloc] initWithRootViewController:charmsVC];
+
+	VisitsViewController* visitsVC = [[VisitsViewController alloc] init];
+	UINavigationController* visitsNC = [[UINavigationController alloc] initWithRootViewController:visitsVC];
 	
-	[self.tabBar setViewControllers:vc animated:YES];
+	BasketViewController* basketsVC = [[BasketViewController alloc] init];
+	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
+	
+	NSArray *viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
+
+	[self.tabBar setViewControllers:viewControllers animated:YES];
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[window addSubview:[self.tabBar view]];
     [window makeKeyAndVisible];	
-	[vc release];
-	[svc release];
-	[proute release];
+	[viewControllers release];
+	[settingsVC release];
+	[charmsVC release];
+	[charmsNC release];
+	[visitsVC release];
+	[visitsNC release];
+	[basketsVC release];
+	[basketsNC release];
 	return YES;
 }
 

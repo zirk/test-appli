@@ -2,14 +2,14 @@
 //  AUMSettings.h
 //  iAUM
 //
-//  Created by Dirk Amadori on 11/08/10.
+//  Created by dirk on 11/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 
-@interface AUMSettings : NSObject {
+@interface iAUMSettings : NSObject {
 
 }
 

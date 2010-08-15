@@ -2,7 +2,7 @@
 //  SettingsViewController.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 10/08/10.
+//  Created by dirk on 10/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 #import "SettingsViewController.h"
 #import "SettingsDetailCell.h"
 #import "iAUMAppDelegate.h"
-#import "AUMSettings.h"
+#import "iAUMSettings.h"
 
 @implementation SettingsViewController
 @synthesize cells;
@@ -33,12 +33,12 @@
 {
 	SettingsDetailCell* loginCell = [[SettingsDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
 	loginCell.textField.placeholder = kAppSettingsLogin;
-	loginCell.textField.text = [AUMSettings get:kAppSettingsLogin];
+	loginCell.textField.text = [iAUMSettings get:kAppSettingsLogin];
 	loginCell.textField.delegate = self;
 	SettingsDetailCell* passwordCell = [[SettingsDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
 	passwordCell.textField.placeholder = kAppSettingsPassword;
 	passwordCell.textField.secureTextEntry = YES;
-	passwordCell.textField.text = [AUMSettings get:kAppSettingsPassword];
+	passwordCell.textField.text = [iAUMSettings get:kAppSettingsPassword];
 	passwordCell.textField.returnKeyType = UIReturnKeyDone;
 	passwordCell.textField.delegate = self;
 	self.cells = [[NSArray alloc] initWithObjects:loginCell, passwordCell, nil];
@@ -203,7 +203,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	
-	[AUMSettings set:textField.placeholder withValue:textField.text];
+	[iAUMSettings set:textField.placeholder withValue:textField.text];
 }
 
 //  UITextField sends this message to its delegate when the return key

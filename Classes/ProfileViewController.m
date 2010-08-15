@@ -2,33 +2,42 @@
 //  ProfileViewController.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 12/08/10.
+//  Created by dirk on 12/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import "ProfileViewController.h"
 #import "iAUMConstants.h"
-#import "AUMSettings.h"
-#import "AumTools.h"
+#import "iAUMSettings.h"
+#import "iAUMTools.h"
 
 @implementation ProfileViewController
 
-@synthesize buttonAccept, buttonRefuse, userId;
+@synthesize buttonAccept, buttonRefuse, userId, profile, nameLabel, ageLabel, aboutLabel, popularityLabel, pictureView, kicked;
 
 - (id) initWithUserId:(NSString*) someUserId
 {
 	if(self = [super init])
 	{
+		self.kicked = NO;
 		self.userId = someUserId;
 		NSLog(@"userid: %@", self.userId);
-		[self initButtons];
 	}
 	return self;
 }
 
-- (void) initButtons
+- (void) initLabels
 {
-	
+	UILabel* nameL = [[UILabel alloc] init];
+	self.nameLabel = nameL;
+	self.nameLabel.frame = CGRectMake(110.0, 10.0, 100.0, 50.0);
+	self.nameLabel.textColor = [UIColor redColor];
+	[self.view addSubview:self.nameLabel];
+	[nameL release];
+}
+
+- (void) initButtons
+{	
 	self.buttonAccept = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	self.buttonAccept.frame = CGRectMake(10.0, 10.0, 100.0, 50.0);
 	[self.buttonAccept setTitle:@"gedin" forState:UIControlStateNormal];
@@ -37,20 +46,45 @@
 	self.buttonRefuse = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	self.buttonRefuse.frame = CGRectMake(10.0, 100.0, 100.0, 50.0);
 	[self.buttonRefuse setTitle:@"gedaoude" forState:UIControlStateNormal];
-	[self.buttonRefuse addTarget:self action:@selector(refuse) forControlEvents:UIControlEventTouchUpInside];
+	[self.buttonRefuse addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
 	
 	[self.view addSubview:self.buttonAccept];
 	[self.view addSubview:self.buttonRefuse];
 	[self.view setBackgroundColor:[UIColor greenColor]];
 }
 
+- (void) refreshView
+{
+	NSLog(@"Name : %@", [self.profile objectForKey:@"name"]);
+	self.nameLabel.text = [self.profile objectForKey:@"name"];
+}
+
+- (void) asynchronouslyLoadProfile
+{
+	NSLog(@"downloading profile");
+	//////////////////////////////////////////////////////////////
+	//self.userId = @"22793764";
+	//////////////////////////////////////////////////////////////
+	[iAUMTools queueOperation:@selector(loadProfile) withTarget:self withObject:nil];
+}
+
 - (IBAction) asynchronouslyAccept
 {
 	NSLog(@"gedin %@", self.userId);
-
-	[AumTools queueOperation:@selector(accept) withTarget:self withObject:nil];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
 	NSLog(@"queue gedin operation");
 }
+
+
+- (IBAction) asynchronouslyRefuse
+{
+	NSLog(@"gedaoue %@", self.userId);
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
+	NSLog(@"queue gedaoude operation");
+}
+
 
 -(void) accept
 {
@@ -60,8 +94,10 @@
 	
 	if ([httpRequest send] == YES)
 	{
-		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+		//[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(setNetworkActivityIndicatorVisible) withObject:NO waitUntilDone:NO];
 		NSLog(@"successfuly accepted %@", self.userId);
+		self.kicked = YES;
 	}
 	else {
 		NSLog(@"Failed at accepting %@ ", self.userId);
@@ -72,6 +108,41 @@
 - (IBAction) refuse
 {
 	NSLog(@"gedaoude %@", self.userId);
+	NSLog(@"in accept");
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
+	[httpRequest addParam:@"aumId" value:self.userId];
+	
+	if ([httpRequest send] == YES)
+	{
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
+		NSLog(@"successfuly kicked %@", self.userId);
+		self.kicked = YES;
+	}
+	else {
+		NSLog(@"Failed at kicking %@ ", self.userId);
+	}
+	[httpRequest release];
+}
+
+- (void) loadProfile
+{
+	NSLog(@"in loadProfile");
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/profiles/visit"];
+	[httpRequest addParam:@"aumId" value:self.userId];
+	
+	if ([httpRequest send] == YES)
+	{
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
+		self.profile = [httpRequest.response objectForKey:@"data"];
+		[self performSelectorOnMainThread:@selector(refreshView) withObject:nil waitUntilDone:NO];
+		NSLog(@"successfuly loaded %@", self.userId);
+	}
+	else {
+		NSLog(@"Failed at loading %@ ", self.userId);
+	}
+	[httpRequest release];
 }
 
 /*
@@ -87,15 +158,19 @@
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
+
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self initButtons];
+	[self initLabels];
+	[self asynchronouslyLoadProfile];
 }
-*/
+
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -123,7 +198,6 @@
     [super dealloc];
 	[self.buttonAccept release];
 	[self.buttonRefuse release];
-	
 }
 
 

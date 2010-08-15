@@ -2,7 +2,7 @@
 //  main.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 8/08/10.
+//  Created by dirk on 8/08/10.
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 

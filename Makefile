@@ -1,10 +1,10 @@
 # Makefile for iPhone Application for Xcode gcc compiler (SDK Headers)
 
-PROJECTNAME=iOctocat
+PROJECTNAME=iAUM
 APPFOLDER=$(PROJECTNAME).app
 INSTALLFOLDER=$(PROJECTNAME).app
 
-IPHONE_IP=192.168.0.12
+IPHONE_IP=192.168.2.101
 SDKVER=4.0
 SDKMINVER=3.1
 DARWINVER=10
@@ -28,7 +28,7 @@ LDFLAGS += -framework QuartzCore
 #LDFLAGS += -framework CoreSurface
 #LDFLAGS += -framework CoreAudio
 #LDFLAGS += -framework Celestial
-LDFLAGS += -framework AudioToolbox
+#LDFLAGS += -framework AudioToolbox
 #LDFLAGS += -framework WebCore
 #LDFLAGS += -framework WebKit
 LDFLAGS += -framework SystemConfiguration
@@ -39,6 +39,7 @@ LDFLAGS += -framework CFNetwork
 LDFLAGS += -framework MobileCoreServices
 
 LDFLAGS += -lz
+LDFLAGS += -lSystem
 
 LDFLAGS += -L"$(SDK)/usr/lib"
 LDFLAGS += -F"$(SDK)/System/Library/Frameworks"
@@ -46,10 +47,7 @@ LDFLAGS += -F"$(SDK)/System/Library/PrivateFrameworks"
 
 CFLAGS += -I"."
 CFLAGS += -I"Classes"
-CFLAGS += -I"Classes/External/"
-CFLAGS += -I"Classes/External/ASI/"
-CFLAGS += -I"Classes/External/JSON/"
-CFLAGS += -I"Classes/Extensions/"
+CFLAGS += -I"Classes/JSON/"
 CFLAGS += -I"$(HARDWARE_PLATFORM)/usr/lib/gcc/arm-apple-darwin$(DARWINVER)/$(GCCVER)/include/"
 CFLAGS += -I"$(SDK)/usr/include"
 CFLAGS += -I"$(HARDWARE_PLATFORM)/usr/include/"
@@ -60,26 +58,22 @@ CFLAGS += -DTARGET_OS_IPHONE
 CFLAGS += -Diphoneos_version_min=$(SDKMINVER)
 CFLAGS += -F"$(SDK)/System/Library/Frameworks"
 CFLAGS += -F"$(SDK)/System/Library/PrivateFrameworks"
-
+CFLAGS += -O3
 CPPFLAGS=$CFLAGS
 
 BUILDDIR=./build/$(SDKVER)
 SRCDIR=.
-RESOURCES=IBFiles/*.nib Images/*.png Images/Buttons/*.png Images/Icons/*.png Images/Tabbar/*.png Images/Toolbar/*.png Info.plist Entitlements.plist MIT-LICENSE README.textile format.html
+RESOURCES= *.png
 RESDIR=./Resources
 OBJS=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/*.m))
 OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/*.m))
-OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/External/*.m))
-OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/External/ASI/*.m))
-OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/External/JSON/*.m))
-OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/External/Reachability/*.m))
-OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/Extensions/*.m))
+OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/JSON/*.m))
 OBJS+=$(patsubst %.c,%.o,$(wildcard $(SRCDIR)/*.c))
 OBJS+=$(patsubst %.cpp,%.o,$(wildcard $(SRCDIR)/*.cpp))
 OBJS+=$(patsubst %.m,%.o,$(wildcard *.m))
 PCH=$(wildcard *.pch)
 #RESOURCES=$(wildcard $(RESDIR)/*)
-NIBS=$(patsubst %.xib,%.nib,$(wildcard IBFiles/*.xib))
+#NIBS=$(patsubst %.xib,%.nib,$(wildcard IBFiles/*.xib))
 
 all:	$(PROJECTNAME)
 
@@ -104,7 +98,7 @@ ipa: dist
 	cp -r $(BUILDDIR)/$(APPFOLDER) $(BUILDDIR)/ipa/Payload/
 	cd $(BUILDDIR)/ipa && zip -r ../$(PROJECTNAME).ipa *
 
-dist:	$(PROJECTNAME) $(NIBS)
+dist:	$(PROJECTNAME)
 	rm -rf $(BUILDDIR)
 	mkdir -p $(BUILDDIR)/$(APPFOLDER)
 	cp -r $(RESOURCES) $(BUILDDIR)/$(APPFOLDER)
@@ -114,10 +108,10 @@ dist:	$(PROJECTNAME) $(NIBS)
 #	export CODESIGN_ALLOCATE=$(HARDWARE_PLATFORM)/usr/bin/codesign_allocate; ./ldid_intel -S $(PROJECTNAME)
 	mv $(PROJECTNAME) $(BUILDDIR)/$(APPFOLDER)
 
-install: dist
-	scp -r $(BUILDDIR)/$(APPFOLDER) root@$(IPHONE_IP):/Applications/$(INSTALLFOLDER)
+install: ipa
+	scp -r $(BUILDDIR)/$(PROJECTNAME).ipa root@$(IPHONE_IP):/private/var/mobile/Documents/Installous/Downloads
 	@echo "Application $(INSTALLFOLDER) installed, please respring iPhone"
-	ssh root@$(IPHONE_IP) 'respring'
+	#ssh root@$(IPHONE_IP) 'respring'
 
 uninstall:
 	ssh root@$(IPHONE_IP) 'rm -fr /Applications/$(INSTALLFOLDER); respring'

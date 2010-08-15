@@ -2,21 +2,14 @@
 //  CharmsViewController.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 11/08/10.
+//  Created by dirk on 11/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "iAUMConstants.h"
-#import "CharmsViewController.h"
 #import "MiniProfileCell.h"
-#import "ProfileViewController.h"
-#import "HttpRequest.h"
-#import "AUMSettings.h"
-#import "AumTools.h"
+#import "CharmsViewController.h"
 
 @implementation CharmsViewController
-
-@synthesize list, loadingIndicator, isLoading;
 
 #pragma mark -
 #pragma mark Initialization
@@ -25,203 +18,99 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
-		self.isLoading = NO;
+		self.listApiUrl = @"/charms/list-new";
 		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Charmes" image:[UIImage imageNamed:@"charm.png"] tag:0];
 		self.tabBarItem = barItem;
 		[barItem release];
-		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-		self.loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-		self.loadingIndicator.hidesWhenStopped = YES;
-		[self.view addSubview:self.loadingIndicator];
-		self.tableView.rowHeight = 50.0;
     }
     return self;
 }
 
-- (void) loadCharms
-{
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/list"];
+
+
+
+- (void) initButtons
+{	
+	UIButton* buttonAccept = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	buttonAccept.frame = CGRectMake(10.0, 10.0, 100.0, 50.0);
+	[buttonAccept setTitle:@"gedin" forState:UIControlStateNormal];
+	[buttonAccept addTarget:self action:@selector(asynchronouslyAccept) forControlEvents:UIControlEventTouchUpInside];
 	
-	if ([httpRequest send] == YES)
+	UIButton* buttonRefuse = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	buttonRefuse.frame = CGRectMake(110.0, 10.0, 100.0, 50.0);
+	[buttonRefuse setTitle:@"gedaoude" forState:UIControlStateNormal];
+	[buttonRefuse addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
+	
+	[self.actionView addSubview:buttonAccept];
+	[self.actionView addSubview:buttonRefuse];
+}
+
+- (IBAction) asynchronouslyAccept
+{
+	if(self.swappedViewCell != -1)
 	{
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"visitors"] waitUntilDone:NO];
-	}
-	[httpRequest release];
-}
-
--(void) refreshList:(NSArray*) someList
-{
-	[self.loadingIndicator stopAnimating];
-	self.list = someList;
-	[self.tableView reloadData];
-	if ([self.list count])
-		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", [self.list count]];
-	self.isLoading = NO;
-}
-
-
-
-#pragma mark -
-#pragma mark View lifecycle
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	[self asynchronouslyLoadCharms];
-	
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void) asynchronouslyLoadCharms
-{
-	if (self.isLoading == YES)
-		return ;
-	self.isLoading = YES;
-	[self.loadingIndicator startAnimating];	
-	[AumTools queueOperation:@selector(loadCharms) withTarget:self withObject:nil];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-	NSLog(@"vertical offset: %f", scrollView.contentOffset.y);
-	if(scrollView.contentOffset.y < -50.0f){
-		[self asynchronouslyLoadCharms];
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+		[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
+		NSLog(@"queue gedin operation");
 	}
 }
 
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-
-#pragma mark -
-#pragma mark Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
+- (IBAction) asynchronouslyRefuse
+{
+//	NSLog(@"gedaoue %@", self.userId);
+	if(self.swappedViewCell != -1)
+	{
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+		[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
+		NSLog(@"queue gedaoude operation");
+	}
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [self.list count];
+-(void) accept
+{
+	if(self.swappedViewCell != -1)
+	{
+		NSString* userId = [[self.list objectAtIndex:self.list.count - self.swappedViewCell - 1] objectForKey:@"aumId"];
+		NSLog(@"in accept");
+		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
+		[httpRequest addParam:@"aumId" value:userId];
+		
+		if ([httpRequest send] == YES)
+		{
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
+			NSLog(@"successfuly accepted %@", userId);
+		}
+		else {
+			NSLog(@"Failed at accepting %@ ", userId);
+		}
+		[httpRequest release];
+	}
 }
 
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    
-    MiniProfileCell *cell = (MiniProfileCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[MiniProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-	[cell loadFromDictionary:(NSDictionary*)[self.list objectAtIndex:self.list.count - indexPath.row - 1]];
-    return cell;
+- (IBAction) refuse
+{
+	if(self.swappedViewCell != -1)
+	{
+		NSString* userId = [[self.list objectAtIndex:self.list.count - self.swappedViewCell - 1] objectForKey:@"aumId"];
+		NSLog(@"gedaoude %@", userId);
+		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
+		[httpRequest addParam:@"aumId" value:userId];
+		
+		if ([httpRequest send] == YES)
+		{
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
+			NSLog(@"successfuly kicked %@", userId);
+		}
+		else {
+			NSLog(@"Failed at kicking %@ ", userId);
+		}
+		[httpRequest release];
+	}
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	
-	ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithUserId:[((NSDictionary*)[self.list objectAtIndex:self.list.count - indexPath.row - 1]) valueForKey:@"aumId"]];
-     // ...
-     // Pass the selected object to the new view controller.
-	[self.navigationController pushViewController:profileViewController animated:YES];
-	[profileViewController release];
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end
 

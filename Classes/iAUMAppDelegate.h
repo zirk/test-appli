@@ -2,7 +2,7 @@
 //  iAUMAppDelegate.h
 //  iAUM
 //
-//  Created by Dirk Amadori on 8/08/10.
+//  Created by dirk on 8/08/10.
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
@@ -12,12 +12,12 @@
 @interface iAUMAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 	UITabBarController* tabBar;
-	CharmsViewController *charmsViewController;
+//	CharmsViewController *charmsViewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UITabBarController *tabBar;
-@property (nonatomic, retain) CharmsViewController *charmsViewController;
+//@property (nonatomic, retain) CharmsViewController *charmsViewController;
 
 @end
 

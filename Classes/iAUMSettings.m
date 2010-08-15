@@ -2,14 +2,14 @@
 //  AUMSettings.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 11/08/10.
+//  Created by dirk on 11/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "AUMSettings.h"
+#import "iAUMSettings.h"
 
 
-@implementation AUMSettings
+@implementation iAUMSettings
 
 + (void) set:(NSString*)key withValue:(NSString*)value
 {

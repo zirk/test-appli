@@ -2,14 +2,16 @@
 //  NSSortableDictionary.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 8/08/10.
+//  Created by dirk on 8/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import <CommonCrypto/CommonDigest.h>
-#import "AumTools.h"
+#import <CommonCrypto/CommonHMAC.h>
+#import "iAUMTools.h"
+#import "iAUMConstants.h"
 
-@implementation AumTools
+@implementation iAUMTools
 
 +(NSMutableArray*) getSortedKeysWithDictionary:(NSDictionary *)originalDico
 {
@@ -49,6 +51,24 @@
 		[tmp appendFormat:@"%02x", digest[i]];
 	}
 
+	NSString* hash = [NSString stringWithString:tmp];
+	[tmp release];
+	return hash;
+}
+
++(NSString*) hashSHA1:(NSString*)data
+{
+	unsigned char digest[CC_SHA1_DIGEST_LENGTH] = {0};
+
+	CCHmacContext hctx;
+	CCHmacInit(&hctx, kCCHmacAlgSHA1, kApiPrivateKey, strlen(kApiPrivateKey));
+	CCHmacUpdate(&hctx, [data UTF8String], [data length]);
+	CCHmacFinal(&hctx, digest);
+	NSMutableString* tmp = [[NSMutableString alloc] init];
+	
+	for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; ++i) {
+		[tmp appendFormat:@"%02x", digest[i]];
+	}
 	NSString* hash = [NSString stringWithString:tmp];
 	[tmp release];
 	return hash;

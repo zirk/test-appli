@@ -13,10 +13,7 @@
 #define API_URL     @"http://localhost:8888/public/"
 
 @interface HttpRequest : NSObject {
-//	NSString* login;
-//	NSString* password;
 	NSMutableDictionary* params;
-	NSMutableDictionary* paramsTest;
 	NSString* method;
 	NSString* url;
 	NSMutableArray* paramKeys;
@@ -28,15 +25,11 @@
 -(id) initWithUrl:(NSString*) URL;
 -(void) addParam:(NSString*) name value:(NSString*) value;
 -(void) resetParams;
--(void) release;
 -(BOOL) send;
 
-@property (nonatomic, retain) NSString* login;
-//@property (nonatomic, retain) NSString* password;
 @property (nonatomic, assign) NSString* method;
 @property (nonatomic, assign) NSString* url;
 @property (nonatomic, retain) NSMutableDictionary* params;
-@property (nonatomic, retain) NSMutableDictionary* paramsTest;
 @property (nonatomic, retain) NSDictionary* response;
 
 

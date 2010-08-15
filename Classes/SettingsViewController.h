@@ -2,7 +2,7 @@
 //  SettingsViewController.h
 //  iAUM
 //
-//  Created by Dirk Amadori on 10/08/10.
+//  Created by dirk on 10/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
