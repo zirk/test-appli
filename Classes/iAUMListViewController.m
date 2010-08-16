@@ -145,8 +145,9 @@
 		[self initActionViewWithFrame:cell.contentView.frame];
 		cell.actionView = self.actionView;
     }
-	NSLog(@"FFFFUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU... %@", indexPath);
 	[cell loadFromDictionary:(NSDictionary*)[self.list objectAtIndex:self.list.count - indexPath.row - 1]];
+	
+	// hide the potentially visible actionView of a reused cell
 	if(indexPath.row != self.swappedViewCell){
 		[cell displayProfileViewWithTransition:NO];
 	}
@@ -213,6 +214,7 @@
 		NSUInteger indexes[] = {0, self.swappedViewCell};
 		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+		[self refreshTableView];
 	}
 	self.swappedViewCell = -1;
 	/*
@@ -247,13 +249,23 @@
 	
 	
 	// used to refresh the old swapped cell without scrolling;
-	if(self.swappedViewCell != -1 && self.swappedViewCell != indexPath.row){
+	if(self.swappedViewCell != -1){
 		[((MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) displayProfileViewWithTransition:YES];
 		NSLog(@"refreshed old cell %@", [((MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) name]);
+		//self.swappedViewCell = -1;
 	}
 	
-	self.swappedViewCell = indexPath.row;
-	[cell displayActionViewWithTransition:YES];
+	// display action view if not already shown
+	if(self.swappedViewCell != indexPath.row)
+	{
+		self.swappedViewCell = indexPath.row;
+		[cell displayActionViewWithTransition:YES];
+	}
+	else 
+	{
+		self.swappedViewCell = -1;
+	}
+
 	
     // Navigation logic may go here. Create and push another view controller.
 	/*

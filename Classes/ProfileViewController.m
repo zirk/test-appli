@@ -55,7 +55,7 @@
 
 - (void) refreshView
 {
-	NSLog(@"Name : %@", [self.profile objectForKey:@"name"]);
+	NSLog(@"refreshing view Name : %@", [self.profile objectForKey:@"name"]);
 	self.nameLabel.text = [self.profile objectForKey:@"name"];
 }
 
@@ -68,66 +68,9 @@
 	[iAUMTools queueOperation:@selector(loadProfile) withTarget:self withObject:nil];
 }
 
-- (IBAction) asynchronouslyAccept
-{
-	NSLog(@"gedin %@", self.userId);
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
-	NSLog(@"queue gedin operation");
-}
-
-
-- (IBAction) asynchronouslyRefuse
-{
-	NSLog(@"gedaoue %@", self.userId);
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
-	NSLog(@"queue gedaoude operation");
-}
-
-
--(void) accept
-{
-	NSLog(@"in accept");
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
-	[httpRequest addParam:@"aumId" value:self.userId];
-	
-	if ([httpRequest send] == YES)
-	{
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		//[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(setNetworkActivityIndicatorVisible) withObject:NO waitUntilDone:NO];
-		NSLog(@"successfuly accepted %@", self.userId);
-		self.kicked = YES;
-	}
-	else {
-		NSLog(@"Failed at accepting %@ ", self.userId);
-	}
-	[httpRequest release];
-}
-
-- (IBAction) refuse
-{
-	NSLog(@"gedaoude %@", self.userId);
-	NSLog(@"in accept");
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
-	[httpRequest addParam:@"aumId" value:self.userId];
-	
-	if ([httpRequest send] == YES)
-	{
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
-		NSLog(@"successfuly kicked %@", self.userId);
-		self.kicked = YES;
-	}
-	else {
-		NSLog(@"Failed at kicking %@ ", self.userId);
-	}
-	[httpRequest release];
-}
-
 - (void) loadProfile
 {
-	NSLog(@"in loadProfile");
+	NSLog(@"in loadProfile for %@", self.userId);
 	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/profiles/visit"];
 	[httpRequest addParam:@"aumId" value:self.userId];
 	

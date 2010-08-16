@@ -12,6 +12,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewProfile.png */; };
 		439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA39C12140BA0004AC2E4 /* ProfileViewController.m */; };
 		439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* iAUMCache.m */; };
 		439AA5A91214E92E004AC2E4 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 439AA5A81214E92E004AC2E4 /* Makefile */; };
@@ -56,6 +57,7 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* iAUM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUM_Prefix.pch; sourceTree = "<group>"; };
+		435E82331219872D001F6FE9 /* actionViewProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = actionViewProfile.png; path = charm/actionViewProfile.png; sourceTree = "<group>"; };
 		439AA39B12140BA0004AC2E4 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		439AA39C12140BA0004AC2E4 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		439AA3A2121413A7004AC2E4 /* iAUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMCache.h; sourceTree = "<group>"; };
@@ -195,6 +197,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		435E823512198749001F6FE9 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				435E82331219872D001F6FE9 /* actionViewProfile.png */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
 		439AA7A51216BC76004AC2E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +314,7 @@
 		7FE4B5A212195D5900B2FFA1 /* actionView */ = {
 			isa = PBXGroup;
 			children = (
+				435E823512198749001F6FE9 /* common */,
 				7FE4B5A312195D5900B2FFA1 /* charm */,
 			);
 			path = actionView;
@@ -372,6 +383,7 @@
 				7FE4B5B212195D5900B2FFA1 /* ItunesArtwork.png in Resources */,
 				7FE4B5B312195D5900B2FFA1 /* charmActionViewBG.png in Resources */,
 				7FE4B5F012196B8E00B2FFA1 /* actionViewCharmBgPattern.png in Resources */,
+				435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

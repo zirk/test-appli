@@ -31,6 +31,8 @@
 {	
 	[((MiniProfileCellActionViewCharms*)self.actionView).acceptButton addTarget:self action:@selector(asynchronouslyAccept) forControlEvents:UIControlEventTouchUpInside];
 	[((MiniProfileCellActionViewCharms*)self.actionView).refuseButton addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
+	[((MiniProfileCellActionViewCharms*)self.actionView).viewProfileButton addTarget:self action:@selector(displayProfile) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 - (IBAction) asynchronouslyAccept
@@ -102,6 +104,15 @@
 		[httpRequest release];
 	}
 	[((MiniProfileCellActionViewCharms*)self.actionView) enableButtons];
+}
+
+-(void) displayProfile
+{
+	if(self.swappedViewCell != -1)
+	{
+		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:swappedViewCell] objectForKey:@"aumId"]];
+		[self.navigationController pushViewController:pvc animated:YES];
+	}
 }
 
 @end

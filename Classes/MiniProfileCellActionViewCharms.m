@@ -11,7 +11,7 @@
 
 @implementation MiniProfileCellActionViewCharms
 
-@synthesize acceptButton, refuseButton;
+@synthesize acceptButton, refuseButton, viewProfileButton;
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
@@ -42,7 +42,7 @@
 - (void)build
 {
 	// background image
-	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"actionViewCharmBgPattern.png"]];
+	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"charmActionViewBG.png"]];
 
 	//accept charm
 	self.acceptButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -54,15 +54,22 @@
 
 	//refuse charm
 	self.refuseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	self.refuseButton.frame = CGRectMake(130.0, 10.0, 100.0, 50.0);
+	self.refuseButton.frame = CGRectMake(50.0, 10.0, 100.0, 50.0);
 	[self.refuseButton setTitle:@"refuser" forState:UIControlStateNormal];
 
 	//view profile
-	
+	self.viewProfileButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.viewProfileButton.frame = CGRectMake(170.0, 10.0, 50.0, 50.0);
+	[self.viewProfileButton setImage:[UIImage imageNamed:@"actionViewProfile.png"] forState:UIControlStateNormal];
+	[self.viewProfileButton setTitle:@"voir profil" forState:UIControlStateNormal];
+
 	//write message
 	
 	[self addSubview:self.acceptButton];
 	[self addSubview:self.refuseButton];
+	[self addSubview:self.viewProfileButton];
+	
+	
 }
 
 - (void)disableButtons

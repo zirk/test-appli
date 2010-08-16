@@ -12,12 +12,14 @@
 @interface MiniProfileCellActionViewCharms : UIView {
 	UIButton* acceptButton;
 	UIButton* refuseButton;
+	UIButton* viewProfileButton;
 }
 
 @property (nonatomic, retain) UIButton* acceptButton;
 @property (nonatomic, retain) UIButton* refuseButton;
+@property (nonatomic, retain) UIButton* viewProfileButton;
 
-- (void)initButtons;
+- (void)build;
 - (void)enableButtons;
 - (void)disableButtons;
 

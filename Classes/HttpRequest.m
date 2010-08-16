@@ -91,12 +91,9 @@
 	
 	if ([urlResponse statusCode] >= 200 && [urlResponse statusCode] < 300) {
 		NSLog(@"Response: %@", result);
-		
 		self.response = [result JSONValue];
-		NSLog(@"in send response: %d" , [response retainCount]);
 		if([self.response isKindOfClass:[NSDictionary class]] == NO){
 			self.response = nil;
-			NSLog(@"rdgsdgdfsgfdc response: %d" , [response retainCount]);
 			NSLog(@"rsponse was not a dictionary");
 		}
 		else {
