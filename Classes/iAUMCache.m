@@ -16,7 +16,8 @@
 -(id)init {
 	if (self = [super init]) {
 		self.object = nil;
-		self.memCache = [[[NSMutableDictionary alloc] init] autorelease];
+		self.memCache = [[NSMutableDictionary alloc] init];
+		[self.memCache release];
 	}
 	return self;
 }

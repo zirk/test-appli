@@ -6,8 +6,10 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "iAUMConstants.h"
 #import "MiniProfileCellActionViewCharms.h"
 #import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 @implementation MiniProfileCellActionViewCharms
 
@@ -15,35 +17,45 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
-		self.clipsToBounds = NO;
 		[self build];
     }
     return self;
 }
 
-/*
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
 	[super drawRect: rect];
-	CGFloat red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+	// gorgeous inner glow
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
-	CGContextSetStrokeColor(currentContext, red);
-	CGContextSetShadowWithColor(currentContext, CGSizeMake(5.0, 0.0), 20.0, [UIColor whiteColor].CGColor);
-    CGContextBeginPath(currentContext);
-    CGContextMoveToPoint(currentContext, 5.0f, 5.0f);
-    CGContextAddLineToPoint(currentContext, 50.0f, 50.0f);
-	CGContextStrokePath(currentContext);
+	size_t shadowGradientNumLocations = 3;
+	CGFloat shadowGradientLocations[3] = {0.0, 0.5, 1.0};
+	CGFloat shadowGradientComponents[12] = {
+		0.0, 0.0, 0.0, 0.9, // Start color
+		0.0, 0.0, 0.0, 0.5,
+		0.0, 0.0, 0.0, 0.9}; // End color
+	CGPoint shadowGradientStartPoint, shadowGradientEndPoint;
+	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+	CGGradientRef shadowGradient = CGGradientCreateWithColorComponents(colorspace, shadowGradientComponents, shadowGradientLocations, shadowGradientNumLocations);
+
+	shadowGradientStartPoint.x = 0.0;
+	shadowGradientStartPoint.y = 0.0;
+	shadowGradientEndPoint.x = 0.0;
+	shadowGradientEndPoint.y = kAppListCellHeight;
+	CGContextDrawLinearGradient(currentContext, shadowGradient, shadowGradientStartPoint, shadowGradientEndPoint, 0);
+	CGGradientRelease(shadowGradient);
+	CGColorSpaceRelease(colorspace);
 	CGContextRestoreGState(currentContext);
 }
-*/
+
 
 - (void)build
 {
 	// background image
-	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"charmActionViewBG.png"]];
-
+	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"actionViewCharmBgPattern.png"]];
+		
 	//accept charm
 	self.acceptButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	self.acceptButton.frame = CGRectMake(10.0, 10.0, 30.0, 30.0);
