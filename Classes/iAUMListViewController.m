@@ -68,6 +68,13 @@
 	[self refreshTableView];
 }
 
+
+// implemented by subclass
+-(void) initButtons
+{
+	
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -246,7 +253,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MiniProfileCell *cell = (MiniProfileCell*)[tableView cellForRowAtIndexPath:indexPath];
 	NSLog(@"cell %@", cell.name);
-	
+	NSLog(@"userId: %@", [[self.list objectAtIndex:self.list.count - indexPath.row - 1] objectForKey:@"aumId"]);
 	
 	// used to refresh the old swapped cell without scrolling;
 	if(self.swappedViewCell != -1){

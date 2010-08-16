@@ -65,7 +65,6 @@
 	if(self.swappedViewCell != -1)
 	{
 		NSString* userId = [[self.list objectAtIndex:self.list.count - self.swappedViewCell - 1] objectForKey:@"aumId"];
-		NSLog(@"in accept");
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
 		[httpRequest addParam:@"aumId" value:userId];
 		
@@ -88,7 +87,6 @@
 	if(self.swappedViewCell != -1)
 	{
 		NSString* userId = [[self.list objectAtIndex:self.list.count - self.swappedViewCell - 1] objectForKey:@"aumId"];
-		NSLog(@"gedaoude %@", userId);
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
 		[httpRequest addParam:@"aumId" value:userId];
 		
@@ -110,7 +108,7 @@
 {
 	if(self.swappedViewCell != -1)
 	{
-		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:swappedViewCell] objectForKey:@"aumId"]];
+		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.list.count - self.swappedViewCell - 1] objectForKey:@"aumId"]];
 		[self.navigationController pushViewController:pvc animated:YES];
 	}
 }

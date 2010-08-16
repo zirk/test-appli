@@ -192,7 +192,6 @@
 //
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    NSLog(@"should begin editing");
     return YES;
 }
 

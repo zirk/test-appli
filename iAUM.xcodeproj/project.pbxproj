@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewProfile.png */; };
+		435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83381219A6EA001F6FE9 /* iAUMLabel.m */; };
+		435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */; };
 		439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA39C12140BA0004AC2E4 /* ProfileViewController.m */; };
 		439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* iAUMCache.m */; };
 		439AA5A91214E92E004AC2E4 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 439AA5A81214E92E004AC2E4 /* Makefile */; };
@@ -58,6 +60,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* iAUM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUM_Prefix.pch; sourceTree = "<group>"; };
 		435E82331219872D001F6FE9 /* actionViewProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = actionViewProfile.png; path = charm/actionViewProfile.png; sourceTree = "<group>"; };
+		435E83371219A6EA001F6FE9 /* iAUMLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMLabel.h; sourceTree = "<group>"; };
+		435E83381219A6EA001F6FE9 /* iAUMLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMLabel.m; sourceTree = "<group>"; };
+		435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMImageViewer.h; sourceTree = "<group>"; };
+		435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMImageViewer.m; sourceTree = "<group>"; };
 		439AA39B12140BA0004AC2E4 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		439AA39C12140BA0004AC2E4 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		439AA3A2121413A7004AC2E4 /* iAUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMCache.h; sourceTree = "<group>"; };
@@ -216,6 +222,8 @@
 				43CA4A931212E5BA0008B320 /* MiniProfileCell.m */,
 				7FC62DC51218BE750047B588 /* MiniProfileCellActionViewCharms.h */,
 				7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */,
+				435E83371219A6EA001F6FE9 /* iAUMLabel.h */,
+				435E83381219A6EA001F6FE9 /* iAUMLabel.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -275,6 +283,8 @@
 				439AA61C121611D5004AC2E4 /* VisitsViewController.m */,
 				439AA6B112161DDD004AC2E4 /* BasketViewController.h */,
 				439AA6B212161DDD004AC2E4 /* BasketViewController.m */,
+				435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */,
+				435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -416,6 +426,8 @@
 				439AA6B312161DDD004AC2E4 /* BasketViewController.m in Sources */,
 				43AF7BE312180B8900AFE61E /* ABTableViewCell.m in Sources */,
 				7FC62DC71218BE750047B588 /* MiniProfileCellActionViewCharms.m in Sources */,
+				435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */,
+				435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

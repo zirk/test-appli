@@ -11,38 +11,36 @@
 
 @implementation iAUMCache
 
-@synthesize object, memCache;
+@synthesize object;
 
 -(id)init {
 	if (self = [super init]) {
 		self.object = nil;
-		self.memCache = [[NSMutableDictionary alloc] init];
-		[self.memCache release];
 	}
 	return self;
 }
 
 - (void) loadImage:(NSString*)urlString forObject:(id)someObject
 {
-	UIImage* image = [UIImage imageWithData:[self.memCache objectForKey:[iAUMTools hashMD5:urlString]]];
 	self.object = someObject;
-	if (image == nil) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [paths objectAtIndex:0];
-		NSString *imageFile = [documentsDirectory stringByAppendingPathComponent:[iAUMTools hashMD5:urlString]];
-		image = [UIImage imageWithContentsOfFile:imageFile];
-	}
+	
+	UIImage* image = nil;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *imageFile = [documentsDirectory stringByAppendingPathComponent:[iAUMTools hashMD5:urlString]];
+	image = [UIImage imageWithContentsOfFile:imageFile];
+
 	if (image == nil){
-		[iAUMTools queueOperation:@selector(imageDownloaded:) withTarget:self withObject:urlString];
+		//NSLog(@"image [%@] not in disk cache, downloading", urlString);
+		[iAUMTools queueOperation:@selector(downloadImage:) withTarget:self withObject:urlString];
 	}
 	else{
 		[self.object setImage:image];
-		[self.memCache setObject:image forKey:[iAUMTools hashMD5:urlString]];
 	}
 }
 
 
--(void) imageDownloaded:(NSString*)urlString
+-(void) downloadImage:(NSString*)urlString
 {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -54,14 +52,12 @@
 	NSString *imageFile = [documentsDirectory stringByAppendingPathComponent:[iAUMTools hashMD5:urlString]];
 	
 	[imageData writeToFile:imageFile atomically:YES];
-	[self.memCache setObject:image forKey:[iAUMTools hashMD5:urlString]];	
 	[self.object performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
 }
 
 - (void) dealloc
 {
 	[self.object release];
-	[self.memCache release];
 	[super dealloc];
 }
 

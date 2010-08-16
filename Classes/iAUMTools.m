@@ -76,15 +76,10 @@
 
 +(void)queueOperation:(SEL)selector withTarget:(id)target withObject:(id)object
 {
-	NSLog(@"queuing operation");
 	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget:target selector:selector object:object];
-	NSLog(@"1");
 	NSOperationQueue* queue = [[[NSOperationQueue alloc] init] autorelease];
-	NSLog(@"2");
 	[queue addOperation:op];
-	NSLog(@"3");
 	[op release];
-	NSLog(@"operation queued");
 }
 
 @end
