@@ -8,7 +8,7 @@
  */
 
 // some keys
-#define kApiHost @"http://83.101.32.38:8888/public/"
+#define kApiHost @"http://aum.showire.eu/"
 #define kApiPrivateKey "h0ly_d1ck"
 #define kApiLogin @"email"
 #define kApiPassword @"password"
@@ -22,4 +22,4 @@
 #define kAppSettingsPassword @"password"
 
 
-#define kAppListCellHeight 35.0
+#define kAppListCellHeight 75.0

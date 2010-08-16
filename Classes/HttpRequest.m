@@ -55,7 +55,9 @@
 }
 
 -(BOOL) send
-{	
+{
+	if (![iAUMSettings get:kAppSettingsLogin])
+		return NO;
 	[self addParam:@"email" value:[iAUMSettings get:kAppSettingsLogin]];
 	[self addParam:@"password" value:[iAUMSettings get:kAppSettingsPassword]];
 	[self addParam:@"format" value:@"json"];
@@ -63,7 +65,7 @@
 	NSString* signature = [self sign];
 	
 	//prepar request
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kApiHost, self.url]]];
 	[request setHTTPMethod:self.method];
 	
@@ -82,8 +84,8 @@
 	//get response
 	NSHTTPURLResponse* urlResponse = nil;  
 	NSError *error = [[NSError alloc] init];  
-	NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];  
-	NSString *result = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
+	NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+	NSString *result = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	[self resetParams];
 	NSLog(@"Response Code: %d => %@", [urlResponse statusCode], self.url);
 	
@@ -100,7 +102,9 @@
 		else {
 			self.response = [self.response objectForKey:@"response"];
 			NSLog(@"SOME RESPONSE FROM JSON %@", self.response);
-		}	
+		}
+		[request release];
+		[result release];
 		[error release];
 		return YES;
 	}
@@ -108,7 +112,9 @@
 		NSLog(@"FUCKING ERROR: %@", result);
 		self.response = nil;
 	}
+	[request release];
 	[error release];
+	[result release];
 	return NO;
 }
 

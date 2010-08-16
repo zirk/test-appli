@@ -50,7 +50,7 @@
 {
     if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
 	{
-		self.cellView = [[ABTableViewCellView alloc] initWithFrame:CGRectZero];
+		self.cellView = [[ABTableViewCellView alloc] initWithFrame:self.contentView.frame];
 		self.cellView.opaque = YES;
 		//contentView.tag = 1337;
 		[self addSubview:self.cellView];

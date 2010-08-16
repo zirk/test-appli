@@ -48,7 +48,7 @@
 
 -(void) initTabBar
 {
-	UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Préférences" image:[UIImage imageNamed:@"settings.png"] tag:0];
+	UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Préférences" image:[UIImage imageNamed:@"tabBarSettings.png"] tag:0];
 	self.tabBarItem = barItem;
 	[barItem release];
 }

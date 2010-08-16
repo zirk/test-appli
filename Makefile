@@ -4,7 +4,7 @@ PROJECTNAME=iAUM
 APPFOLDER=$(PROJECTNAME).app
 INSTALLFOLDER=$(PROJECTNAME).app
 
-IPHONE_IP=192.168.2.101
+IPHONE_IP=192.168.0.12
 SDKVER=4.0
 SDKMINVER=3.1
 DARWINVER=10
@@ -63,7 +63,7 @@ CPPFLAGS=$CFLAGS
 
 BUILDDIR=./build/$(SDKVER)
 SRCDIR=.
-RESOURCES= *.png
+RESOURCES= *.png icons/*.png
 RESDIR=./Resources
 OBJS=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/*.m))
 OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/*.m))

@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "MiniProfileCellActionViewCharms.h"
 #import "iAUMListViewController.h"
 
 @implementation iAUMListViewController
@@ -29,7 +30,9 @@
 
 - (void) initActionViewWithFrame:(CGRect)r
 {
-	self.actionView = [[[UIView alloc] initWithFrame:r] autorelease];
+	// WTF ? without this shit, uses the default cell height
+	r.size.height = kAppListCellHeight;
+	self.actionView = [[[MiniProfileCellActionViewCharms alloc] initWithFrame:r] autorelease];
 	self.actionView.tag = MiniProfileViewTypeAction;
 	[self initButtons];
 }
@@ -205,8 +208,12 @@
 
 - (void) kickFromListWithId:(NSString*)aumId
 {
-	if(self.swappedViewCell > -1)
+	if(self.swappedViewCell > -1) {
 		[self.list removeObjectAtIndex:self.swappedViewCell];
+		NSUInteger indexes[] = {0, self.swappedViewCell};
+		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+	}
 	self.swappedViewCell = -1;
 	/*
 	for (NSDictionary* miniProfile in self.list) {

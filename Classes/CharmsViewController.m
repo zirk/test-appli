@@ -7,6 +7,7 @@
 //
 
 #import "MiniProfileCell.h"
+#import "MiniProfileCellActionViewCharms.h"
 #import "CharmsViewController.h"
 
 @implementation CharmsViewController
@@ -19,36 +20,24 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		self.listApiUrl = @"/charms/list-new";
-		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Charmes" image:[UIImage imageNamed:@"charm.png"] tag:0];
+		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Charmes" image:[UIImage imageNamed:@"tabBarCharms.png"] tag:0];
 		self.tabBarItem = barItem;
 		[barItem release];
     }
     return self;
 }
 
-
-
-
 - (void) initButtons
 {	
-	UIButton* buttonAccept = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	buttonAccept.frame = CGRectMake(10.0, 10.0, 100.0, 50.0);
-	[buttonAccept setTitle:@"gedin" forState:UIControlStateNormal];
-	[buttonAccept addTarget:self action:@selector(asynchronouslyAccept) forControlEvents:UIControlEventTouchUpInside];
-	
-	UIButton* buttonRefuse = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	buttonRefuse.frame = CGRectMake(110.0, 10.0, 100.0, 50.0);
-	[buttonRefuse setTitle:@"gedaoude" forState:UIControlStateNormal];
-	[buttonRefuse addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
-	
-	[self.actionView addSubview:buttonAccept];
-	[self.actionView addSubview:buttonRefuse];
+	[((MiniProfileCellActionViewCharms*)self.actionView).acceptButton addTarget:self action:@selector(asynchronouslyAccept) forControlEvents:UIControlEventTouchUpInside];
+	[((MiniProfileCellActionViewCharms*)self.actionView).refuseButton addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction) asynchronouslyAccept
 {
 	if(self.swappedViewCell != -1)
 	{
+		[((MiniProfileCellActionViewCharms*)self.actionView) disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 		[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
 		NSLog(@"queue gedin operation");
@@ -61,6 +50,7 @@
 //	NSLog(@"gedaoue %@", self.userId);
 	if(self.swappedViewCell != -1)
 	{
+		[((MiniProfileCellActionViewCharms*)self.actionView) disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 		[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
 		NSLog(@"queue gedaoude operation");
@@ -88,6 +78,7 @@
 		}
 		[httpRequest release];
 	}
+	[((MiniProfileCellActionViewCharms*)self.actionView) enableButtons];
 }
 
 - (IBAction) refuse
@@ -110,6 +101,7 @@
 		}
 		[httpRequest release];
 	}
+	[((MiniProfileCellActionViewCharms*)self.actionView) enableButtons];
 }
 
 @end

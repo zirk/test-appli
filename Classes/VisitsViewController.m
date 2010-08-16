@@ -17,7 +17,7 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		self.listApiUrl = @"/visits/list";
-		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Visites" image:[UIImage imageNamed:@"charm.png"] tag:0];
+		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Visites" image:[UIImage imageNamed:@"tabBarVisits.png"] tag:0];
 		self.tabBarItem = barItem;
 		[barItem release];
     }
