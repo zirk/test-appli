@@ -63,7 +63,7 @@ CPPFLAGS=$CFLAGS
 
 BUILDDIR=./build/$(SDKVER)
 SRCDIR=.
-RESOURCES= *.png icons/*.png
+RESOURCES= images/*.png images/icons/tabBar/*.png images/icons/actionView/*/*.png
 RESDIR=./Resources
 OBJS=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/*.m))
 OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/*.m))
@@ -94,7 +94,7 @@ $(PROJECTNAME):	$(OBJS)
 
 ipa: dist
 	mkdir -p $(BUILDDIR)/ipa/Payload
-	cp ItunesArtwork.png $(BUILDDIR)/ipa/ItunesArtwork
+	cp images/ItunesArtwork.png $(BUILDDIR)/ipa/ItunesArtwork
 	cp -r $(BUILDDIR)/$(APPFOLDER) $(BUILDDIR)/ipa/Payload/
 	cd $(BUILDDIR)/ipa && zip -r ../$(PROJECTNAME).ipa *
 
