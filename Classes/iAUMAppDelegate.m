@@ -14,28 +14,31 @@
 
 @implementation iAUMAppDelegate
 
-@synthesize window, tabBar;//, charmsViewController;
+@synthesize window, tabBar;
 
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     // Override point for customization after application launch.
 	self.tabBar = [[UITabBarController alloc] init];
 	SettingsViewController* settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	
+
 	CharmsViewController* charmsVC = [[CharmsViewController alloc] init];
 	UINavigationController* charmsNC = [[UINavigationController alloc] initWithRootViewController:charmsVC];
+	charmsNC.navigationBar.tintColor = [UIColor darkGrayColor];
 
 	VisitsViewController* visitsVC = [[VisitsViewController alloc] init];
 	UINavigationController* visitsNC = [[UINavigationController alloc] initWithRootViewController:visitsVC];
-	
+	visitsNC.navigationBar.tintColor = [UIColor darkGrayColor];
+
 	BasketViewController* basketsVC = [[BasketViewController alloc] init];
 	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
-	
-	NSArray *viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
+	basketsNC.navigationBar.tintColor = [UIColor darkGrayColor];
+
+	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
 
 	[self.tabBar setViewControllers:viewControllers animated:YES];
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -102,7 +105,8 @@
 
 
 - (void)dealloc {
-    [window release];
+    [self.window release];
+	[self.tabBar release];
     [super dealloc];
 }
 

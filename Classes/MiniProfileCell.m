@@ -9,6 +9,7 @@
 #import "iAUMCache.h"
 #import "iAUMConstants.h"
 #import "MiniProfileCell.h"
+#import "iAUMCGEffects.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MiniProfileCell
@@ -31,7 +32,7 @@
 		if(animate)
 		{
 			CATransition *applicationLoadViewIn = [CATransition animation];
-			[applicationLoadViewIn setDuration:0.4];
+			[applicationLoadViewIn setDuration:0.3];
 			[applicationLoadViewIn setType:kCATransitionPush];
 			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
@@ -48,7 +49,7 @@
 		if(animate)
 		{
 			CATransition *applicationLoadViewIn = [CATransition animation];
-			[applicationLoadViewIn setDuration:0.4];
+			[applicationLoadViewIn setDuration:0.3];
 			[applicationLoadViewIn setType:kCATransitionPush];
 			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
@@ -72,6 +73,7 @@
 	tmp = [dico objectForKey:@"city"];
 	if ([tmp isKindOfClass:[NSNull class]] == NO)
 		self.city = tmp;
+	self.online = [[dico objectForKey:@"online"] boolValue];
 	iAUMCache* cache = [[iAUMCache alloc] init];
 	[cache loadImage:[dico objectForKey:@"pictureUrl"] forObject:self];
 	[cache release];
@@ -93,30 +95,32 @@
 
 - (void)drawContentView:(CGRect)r
 {
-	if (self.currentView == MiniProfileViewTypeAction)
+	if (self.currentView != MiniProfileViewTypeProfile)
 		return ;
 	CGContextRef context = UIGraphicsGetCurrentContext();
-	UIColor *backgroundColor = [UIColor whiteColor];
-	UIColor *textColor = [UIColor blackColor];
-
-	[backgroundColor set];
+	[[UIColor colorWithPatternImage:[UIImage imageNamed:@"MiniProfileCellBgPattern.png"]] set];
 	CGContextFillRect(context, r);
-	
-	CGPoint p;
-	p.x = 0;
-	p.y = 0;
-	[self.picture drawInRect:CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight)];
-	
-	[textColor set];
+	[iAUMCGEffects drawWithShadow:@selector(drawCellContent) onTarget:self inContext:context];
+}
 
-	p.x += kAppListCellHeight + 6; // space between words
+- (void)drawCellContent
+{
+	CGRect imageFrame = CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight);
+	[[iAUMCGEffects roundCornersOfImage:self.picture withRadius:8.0] drawInRect:imageFrame];
+	[[UIImage imageNamed:@"MiniProfileCellPictureGlare.png"] drawInRect:imageFrame];
+	imageFrame = CGRectMake(295.0, 5.0, 21.0, 21.0);
+	if (self.online == YES)
+		[[UIImage imageNamed:@"MiniProfileCellStatusOnline.png"] drawInRect:imageFrame];
+	else
+		[[UIImage imageNamed:@"MiniProfileCellStatusOffline.png"] drawInRect:imageFrame];
+	CGPoint p = CGPointMake(kAppListCellHeight + 10.0, 4.0);
+	[[UIColor whiteColor] set];
 	[self.name drawAtPoint:p withFont:[UIFont boldSystemFontOfSize:20]];
 	p.y += 25;
+	[[UIColor lightGrayColor] set];
 	[self.age drawAtPoint:p withFont:[UIFont systemFontOfSize:15]];
 	p.y += 20;
 	[self.city drawAtPoint:p withFont:[UIFont systemFontOfSize:15]];
-
-	//‰CGContextRelease(context);
 }
 
 - (void)dealloc {
@@ -127,6 +131,5 @@
 	[self.actionView release];
     [super dealloc];
 }
-
 
 @end

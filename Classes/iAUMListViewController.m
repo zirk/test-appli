@@ -24,10 +24,12 @@
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(50, 50, 40.0, 40.0)];
 		self.loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
 		self.loadingIndicator.hidesWhenStopped = YES;
+		self.tableView.separatorColor = [UIColor blackColor];
+		self.tableView.backgroundColor = [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
 		self.swappedViewCell = -1;
 		self.actionView = nil;
 		[self initActionView];
-    }
+	}
     return self;
 }
 
@@ -49,6 +51,7 @@
 	if (self.isLoading == YES)
 		return ;
 	self.isLoading = YES;
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[self.loadingIndicator startAnimating];	
 	[iAUMTools queueOperation:@selector(loadList) withTarget:self withObject:nil];
 }
@@ -66,10 +69,12 @@
 
 -(void) refreshList:(NSArray*) someList
 {
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	[self.loadingIndicator stopAnimating];
 	self.list = [NSMutableArray arrayWithArray:someList];
 	self.isLoading = NO;
-	[self refreshTableView];
+	[self refreshTabBarItem];
+	[self.tableView reloadData];
 }
 
 
@@ -205,13 +210,12 @@
  }
  */
 
-- (void) refreshTableView
+- (void) refreshTabBarItem
 {
 	if ([self.list count])
 		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", [self.list count]];
 	else
 		self.tabBarItem.badgeValue = nil;
-	[self.tableView reloadData];
 }
 
 - (void) kickFromListWithId:(NSString*)aumId
@@ -221,7 +225,7 @@
 		NSUInteger indexes[] = {0, self.swappedViewCell};
 		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-		[self refreshTableView];
+		[self refreshTabBarItem];
 	}
 	self.swappedViewCell = -1;
 	/*

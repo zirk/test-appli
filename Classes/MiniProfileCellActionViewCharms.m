@@ -33,8 +33,8 @@
 	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"actionViewCharmBgPattern.png"]];
 
 	//accept charm
-	[self addButton:@"CharmAccept" withTitle:@"accepter"];
-	[self addButton:@"CharmRefuse" withTitle:@"refuser"];
+	[self addButton:@"CharmAccept" withTitle:@"Accepter le charme"];
+	[self addButton:@"CharmRefuse" withTitle:@"Refuser le charme"];
 	[self placeButtons];
 
 }
