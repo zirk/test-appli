@@ -47,7 +47,7 @@
 {
 	if(self.swappedViewCell != -1)
 	{
-		[((MiniProfileCellActionViewCharms*)self.actionView) disableButtons];
+		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 		[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
 		NSLog(@"queue gedin operation");
@@ -60,7 +60,7 @@
 //	NSLog(@"gedaoue %@", self.userId);
 	if(self.swappedViewCell != -1)
 	{
-		[((MiniProfileCellActionViewCharms*)self.actionView) disableButtons];
+		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 		[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
 		NSLog(@"queue gedaoude operation");
@@ -78,7 +78,6 @@
 		
 		if ([httpRequest send] == YES)
 		{
-			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
 			NSLog(@"successfuly accepted %@", userId);
 		}
@@ -87,7 +86,8 @@
 		}
 		[httpRequest release];
 	}
-	[((MiniProfileCellActionViewCharms*)self.actionView) enableButtons];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[self.actionView enableButtons];
 }
 
 - (IBAction) refuse
@@ -100,7 +100,6 @@
 		
 		if ([httpRequest send] == YES)
 		{
-			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
 			NSLog(@"successfuly kicked %@", userId);
 		}
@@ -109,7 +108,8 @@
 		}
 		[httpRequest release];
 	}
-	[((MiniProfileCellActionViewCharms*)self.actionView) enableButtons];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[self.actionView enableButtons];
 }
 
 @end

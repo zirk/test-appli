@@ -24,7 +24,7 @@
 }
 
 -(void) refreshList:(NSArray*) list;
--(void) refreshTableView;
+-(void) refreshTabBarItem;
 -(void) loadList;
 -(void) asynchronouslyLoadList;
 -(void) initButtons;

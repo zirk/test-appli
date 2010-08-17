@@ -8,6 +8,8 @@
 
 #import "MiniProfileCellActionView.h"
 #import "iAUMConstants.h"
+#import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 @implementation MiniProfileCellActionView
 
@@ -32,21 +34,16 @@
 	// gorgeous inner glow
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
-	size_t shadowGradientNumLocations = 3;
-	CGFloat shadowGradientLocations[3] = {0.0, 0.5, 1.0};
-	CGFloat shadowGradientComponents[12] = {
-	0.0, 0.0, 0.0, 0.7, // Start color
+	size_t shadowGradientNumLocations = 4;
+	CGFloat shadowGradientLocations[4] = {0.0, 0.25, 0.75, 1.0};
+	CGFloat shadowGradientComponents[16] = {
+	0.0, 0.0, 0.0, 0.8, // Start color
 	0.0, 0.0, 0.0, 0.5,
-	0.0, 0.0, 0.0, 0.7}; // End color
-	CGPoint shadowGradientStartPoint, shadowGradientEndPoint;
+	0.0, 0.0, 0.0, 0.5,
+	0.0, 0.0, 0.0, 0.8}; // End color
 	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
 	CGGradientRef shadowGradient = CGGradientCreateWithColorComponents(colorspace, shadowGradientComponents, shadowGradientLocations, shadowGradientNumLocations);
-
-	shadowGradientStartPoint.x = 0.0;
-	shadowGradientStartPoint.y = 0.0;
-	shadowGradientEndPoint.x = 0.0;
-	shadowGradientEndPoint.y = kAppListCellHeight;
-	CGContextDrawLinearGradient(currentContext, shadowGradient, shadowGradientStartPoint, shadowGradientEndPoint, 0);
+	CGContextDrawLinearGradient(currentContext, shadowGradient, CGPointZero, CGPointMake(0.0, kAppListCellHeight), 0);
 	CGGradientRelease(shadowGradient);
 	CGColorSpaceRelease(colorspace);
 	CGContextRestoreGState(currentContext);
@@ -55,23 +52,26 @@
 - (void)build
 {
 	self.backgroundColor = [UIColor grayColor];
-	[self addButton:@"ViewProfile" withTitle:@"voir profil"];
+	[self addButton:@"ViewProfile" withTitle:@"Voir son profil"];
 
-	self.buttonTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 40.0, [UIScreen mainScreen].bounds.size.width, 30.0)];
+	self.buttonTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, -4.0, [UIScreen mainScreen].bounds.size.width, 30.0)];
 	[self.buttonTitleLabel release];
 	self.buttonTitleLabel.textColor = [UIColor whiteColor];
+	self.buttonTitleLabel.shadowColor = [UIColor blackColor];
+	self.buttonTitleLabel.shadowOffset = CGSizeMake(2, 2);
+	self.buttonTitleLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	self.buttonTitleLabel.backgroundColor = [UIColor clearColor];
 	self.buttonTitleLabel.textAlignment = UITextAlignmentCenter;
+	self.buttonTitleLabel.alpha = 0.0;
 	[self addSubview:self.buttonTitleLabel];
 }
 
 - (void)addButton:(NSString *)name withTitle:(NSString*)title
 {
-	NSLog(@"adding button %@", name);
 	UIButton* someButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Normal.png", name]] forState:UIControlStateNormal];
-	[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Highlighted.png", name]] forState:UIControlStateHighlighted];
-	[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Selected.png", name]] forState:UIControlStateSelected];
+	//[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Highlighted.png", name]] forState:UIControlStateHighlighted];
+	//[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Selected.png", name]] forState:UIControlStateSelected];
 	[someButton setTitle:title forState:UIControlStateNormal];
 	[someButton addTarget:self action:@selector(setLabelText:) forControlEvents:UIControlEventTouchDown];
 	[someButton addTarget:self action:@selector(clearLabelText) forControlEvents:UIControlEventTouchUpInside];
@@ -95,8 +95,7 @@
 			x_offset = ([UIScreen mainScreen].bounds.size.width - x_offset) / 2.0;
 		}
 		actionButton.frame = CGRectMake(x_offset, y_offset, imageSize.width, imageSize.height);
-		x_offset += imageSize.width * 2.0;
-		NSLog(@"showing button %@", buttonName);
+		x_offset += imageSize.width * 2.0;;
 		[self addSubview:actionButton];
 	}
 }
@@ -130,11 +129,19 @@
 - (void)setLabelText:(UIButton*)sender
 {
 	self.buttonTitleLabel.text = sender.titleLabel.text;
+	[UIView beginAnimations:@"brol" context:nil];
+	[UIView setAnimationDuration: 0.3];
+	self.buttonTitleLabel.alpha = 1.0;
+	[UIView commitAnimations];
 }
 
 - (void)clearLabelText
 {
-	self.buttonTitleLabel.text = nil;
+	[UIView beginAnimations:@"brol" context:nil];
+	[UIView setAnimationDuration: 0.3];
+	self.buttonTitleLabel.alpha = 0.0;
+	[UIView commitAnimations];
+	//self.buttonTitleLabel.text = nil;
 }
 
 - (void) disableButtons

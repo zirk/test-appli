@@ -12,12 +12,10 @@
 @interface iAUMAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 	UITabBarController* tabBar;
-//	CharmsViewController *charmsViewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UITabBarController *tabBar;
-//@property (nonatomic, retain) CharmsViewController *charmsViewController;
 
 @end
 
