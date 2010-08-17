@@ -15,6 +15,8 @@
 		435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewProfile.png */; };
 		435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83381219A6EA001F6FE9 /* iAUMLabel.m */; };
 		435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */; };
+		435E83F21219CDFC001F6FE9 /* _ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */; };
+		435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E845B1219E592001F6FE9 /* ProfileViewCell.m */; };
 		439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA39C12140BA0004AC2E4 /* ProfileViewController.m */; };
 		439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* iAUMCache.m */; };
 		439AA5A91214E92E004AC2E4 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 439AA5A81214E92E004AC2E4 /* Makefile */; };
@@ -64,6 +66,10 @@
 		435E83381219A6EA001F6FE9 /* iAUMLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMLabel.m; sourceTree = "<group>"; };
 		435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMImageViewer.h; sourceTree = "<group>"; };
 		435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMImageViewer.m; sourceTree = "<group>"; };
+		435E83F01219CDFC001F6FE9 /* _ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ProfileViewController.h; sourceTree = "<group>"; };
+		435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ProfileViewController.m; sourceTree = "<group>"; };
+		435E845A1219E592001F6FE9 /* ProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewCell.h; sourceTree = "<group>"; };
+		435E845B1219E592001F6FE9 /* ProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewCell.m; sourceTree = "<group>"; };
 		439AA39B12140BA0004AC2E4 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		439AA39C12140BA0004AC2E4 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		439AA3A2121413A7004AC2E4 /* iAUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMCache.h; sourceTree = "<group>"; };
@@ -224,6 +230,8 @@
 				7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */,
 				435E83371219A6EA001F6FE9 /* iAUMLabel.h */,
 				435E83381219A6EA001F6FE9 /* iAUMLabel.m */,
+				435E845A1219E592001F6FE9 /* ProfileViewCell.h */,
+				435E845B1219E592001F6FE9 /* ProfileViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -285,6 +293,8 @@
 				439AA6B212161DDD004AC2E4 /* BasketViewController.m */,
 				435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */,
 				435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */,
+				435E83F01219CDFC001F6FE9 /* _ProfileViewController.h */,
+				435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -428,6 +438,8 @@
 				7FC62DC71218BE750047B588 /* MiniProfileCellActionViewCharms.m in Sources */,
 				435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */,
 				435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */,
+				435E83F21219CDFC001F6FE9 /* _ProfileViewController.m in Sources */,
+				435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
