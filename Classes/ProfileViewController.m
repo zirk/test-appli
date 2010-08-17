@@ -56,7 +56,7 @@
 - (void) refreshView
 {
 	NSLog(@"refreshing view Name : %@", [self.profile objectForKey:@"name"]);
-	self.nameLabel.text = [self.profile objectForKey:@"name"];
+	self.nameLabel.text = [self.profile objectForKey:@"style"];
 }
 
 - (void) asynchronouslyLoadProfile

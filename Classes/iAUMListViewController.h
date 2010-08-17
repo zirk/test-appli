@@ -27,6 +27,7 @@
 -(void) refreshTableView;
 -(void) loadList;
 -(void) asynchronouslyLoadList;
+-(void) initButtons;
 
 @property (nonatomic, retain) NSMutableArray* list;
 @property (nonatomic, assign) NSString* listApiUrl;

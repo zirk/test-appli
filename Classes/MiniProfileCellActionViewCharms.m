@@ -100,6 +100,7 @@
     [super dealloc];
 	[self.acceptButton release];
 	[self.refuseButton release];
+	[self.viewProfileButton release];
 }
 
 

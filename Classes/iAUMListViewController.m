@@ -37,6 +37,8 @@
 	[self initButtons];
 }
 
+- (void) initButtons{}
+
 - (void) asynchronouslyLoadList
 {
 	if (self.isLoading == YES)
