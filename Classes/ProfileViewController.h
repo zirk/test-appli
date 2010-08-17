@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "HttpRequest.h"
+#import "iAUMLabel.h"
 
 @interface ProfileViewController : UIViewController {
-	IBOutlet UILabel* nameLabel;
-	IBOutlet UILabel* aboutLabel;
-	IBOutlet UILabel* ageLabel;
-	IBOutlet UILabel* popularityLabel;
+	IBOutlet iAUMLabel* nameLabel;
+	IBOutlet iAUMLabel* aboutLabel;
+	IBOutlet iAUMLabel* ageLabel;
+	IBOutlet iAUMLabel* popularityLabel;
 	IBOutlet UIImageView* pictureView;
-
 
 	IBOutlet UIButton* buttonAccept;
 	IBOutlet UIButton* buttonRefuse;
@@ -23,16 +23,14 @@
 	NSDictionary* profile;
 	BOOL kicked;
 }
--(void) asynchronouslyAccept;
--(void) asynchronouslyRefuse;
+
 -(void) asynchronouslyLoadProfile;
--(void) accept;
--(void) refuse;
 -(void) loadProfile;
 
 -(id) initWithUserId:(NSString*) someUserId;
 -(void) initButtons;
 -(void) initLabels;
+-(void) initPictures;
 
 @property (retain) IBOutlet UILabel* nameLabel;
 @property (retain) IBOutlet UILabel* aboutLabel;

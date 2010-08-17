@@ -7,6 +7,7 @@
 //
 
 #import "MiniProfileCellActionViewCharms.h"
+#import "MiniProfileCell.h"
 #import "iAUMListViewController.h"
 
 @implementation iAUMListViewController
@@ -24,20 +25,24 @@
 		self.loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
 		self.loadingIndicator.hidesWhenStopped = YES;
 		self.swappedViewCell = -1;
+		self.actionView = nil;
+		[self initActionView];
     }
     return self;
 }
 
-- (void) initActionViewWithFrame:(CGRect)r
+- (void) initActionView
 {
-	// WTF ? without this shit, uses the default cell height
-	r.size.height = kAppListCellHeight;
-	self.actionView = [[[MiniProfileCellActionViewCharms alloc] initWithFrame:r] autorelease];
+	// if the subclass did not create its actionView we make the default one
+	if (self.actionView == nil) {
+		self.actionView = [[MiniProfileCellActionView alloc] init];
+		[self.actionView build];
+		[self.actionView placeButtons];
+		[self.actionView release];
+	}
 	self.actionView.tag = MiniProfileViewTypeAction;
 	[self initButtons];
 }
-
-- (void) initButtons{}
 
 - (void) asynchronouslyLoadList
 {
@@ -53,12 +58,9 @@
 	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:self.listApiUrl];
 
 	if ([httpRequest send] == YES)
-	{
 		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:@"data"] objectForKey:@"people"] waitUntilDone:NO];
-	}
-	else {
+	else
 		[self performSelectorOnMainThread:@selector(refreshList:) withObject:nil waitUntilDone:NO];;
-	}
 	[httpRequest release];
 }
 
@@ -68,6 +70,13 @@
 	self.list = [NSMutableArray arrayWithArray:someList];
 	self.isLoading = NO;
 	[self refreshTableView];
+}
+
+
+// implemented by subclass
+-(void) initButtons
+{
+	[[self.actionView buttonForName:@"ViewProfile"] addTarget:self action:@selector(displayProfile) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark -
@@ -144,19 +153,15 @@
     MiniProfileCell *cell = (MiniProfileCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[MiniProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		[self initActionViewWithFrame:cell.contentView.frame];
 		cell.actionView = self.actionView;
     }
-	[cell loadFromDictionary:(NSDictionary*)[self.list objectAtIndex:self.list.count - indexPath.row - 1]];
-	
+	[cell loadFromDictionary:(NSDictionary*)[self.list objectAtIndex:indexPath.row]];
+
 	// hide the potentially visible actionView of a reused cell
-	if(indexPath.row != self.swappedViewCell){
+	if(indexPath.row != self.swappedViewCell)
 		[cell displayProfileViewWithTransition:NO];
-	}
-	else{
+	else
 		[cell displayActionViewWithTransition:NO];
-	}
-	
     return cell;
 }
 
@@ -235,10 +240,7 @@
 {
 	NSLog(@"keyPath : %@\nobject : %@\nchange : %@", keyPath, object, change);
 	if ([keyPath compare:@"kicked"] == NSOrderedSame)
-	{
 		[self kickFromListWithId:((ProfileViewController*)object).userId];
-	}
-	//[self asynchronouslyLoadList];
 }
 
 
@@ -248,7 +250,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MiniProfileCell *cell = (MiniProfileCell*)[tableView cellForRowAtIndexPath:indexPath];
 	NSLog(@"cell %@", cell.name);
-	
+	NSLog(@"userId: %@", [[self.list objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
 	
 	// used to refresh the old swapped cell without scrolling;
 	if(self.swappedViewCell != -1){
@@ -263,10 +265,8 @@
 		self.swappedViewCell = indexPath.row;
 		[cell displayActionViewWithTransition:YES];
 	}
-	else 
-	{
+	else
 		self.swappedViewCell = -1;
-	}
 
 	
     // Navigation logic may go here. Create and push another view controller.
@@ -280,6 +280,16 @@
 	 */
 }
 
+
+-(void) displayProfile
+{
+	if(self.swappedViewCell != -1)
+	{
+		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"]];
+		[self.navigationController pushViewController:pvc animated:YES];
+		[pvc release];
+	}
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -299,6 +309,7 @@
 
 - (void)dealloc {
 	[self.list release];
+	[self.actionView release];
     [super dealloc];
 }
 

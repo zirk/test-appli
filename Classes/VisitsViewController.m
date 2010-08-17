@@ -7,6 +7,8 @@
 //
 
 #import "VisitsViewController.h"
+#import "MiniProfileCellActionView.h"
+#import "MiniProfileCellActionViewVisits.h"
 
 @implementation VisitsViewController
 
@@ -24,8 +26,16 @@
     return self;
 }
 
+- (void) initActionView
+{
+	self.actionView = [[MiniProfileCellActionViewVisits alloc] init];
+	[self.actionView release];
+	[super initActionView];
+}
+
 - (void) initButtons
 {
-	
+	//[[self.actionView buttonForName:@"CharmRefuse"] addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
+	[super initButtons];
 }
 @end

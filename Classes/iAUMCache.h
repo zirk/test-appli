@@ -11,14 +11,12 @@
 
 @interface iAUMCache : NSObject {
 	id object;
-	NSMutableDictionary* memCache;
 }
 
 @property (nonatomic, retain) id object;
-@property (nonatomic, retain) NSMutableDictionary* memCache;
 
 - (id) init;
 - (void) loadImage:(NSString*)urlString forObject:(id)someObject;
-- (void) imageDownloaded:(NSString*)urlString;
+- (void) downloadImage:(NSString*)urlString;
 
 @end

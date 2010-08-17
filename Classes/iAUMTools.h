@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+enum iAUMUserSex {
+	iAUMUserSexFemale,
+	iAUMUserSexMale,
+	iAUMUserSexUnknown
+};
 
 @interface iAUMTools : NSObject {
 	
@@ -18,5 +23,6 @@
 +(NSString*) hashMD5:(NSString *)data;
 +(NSString*) hashSHA1:(NSString *)data;
 +(void)queueOperation:(SEL)selector withTarget:(id)target withObject:(id)object;
++(NSUInteger) getUsersSex:(NSString*)aumId;
 
 @end

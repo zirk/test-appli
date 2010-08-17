@@ -7,6 +7,7 @@
 //
 
 #import "BasketViewController.h"
+#import "MiniProfileCellActionViewBaskets.h"
 
 @implementation BasketViewController
 
@@ -24,9 +25,17 @@
     return self;
 }
 
+- (void) initActionView
+{
+	self.actionView = [[MiniProfileCellActionViewBaskets alloc] init];
+	[self.actionView release];
+	[super initActionView];
+}
+
 - (void) initButtons
 {
-	
+	//[[self.actionView buttonForName:@"CharmRefuse"] addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
+	[super initButtons];
 }
 
 @end
