@@ -1,15 +1,15 @@
 //
-//  MiniProfileCellActionViewCharms.h
+//  MiniProfileCellActionViewVisits.h
 //  iAUM
 //
-//  Created by john doe on 16/08/2010.
+//  Created by John Doe on 17/08/2010.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "MiniProfileCellActionView.h"
 
-@interface MiniProfileCellActionViewCharms : MiniProfileCellActionView {
+@interface MiniProfileCellActionViewVisits : MiniProfileCellActionView {
 
 }
 

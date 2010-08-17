@@ -15,6 +15,7 @@
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         [self initStyle];
+		self.text = @"N/A";
     }
     return self;
 }
@@ -23,6 +24,7 @@
 {
     if ((self = [super init])) {
 		[self initStyle];
+		self.text = @"N/A";
     }
     return self;
 }

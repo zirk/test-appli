@@ -8,7 +8,7 @@
  */
 
 // some keys
-#define kApiHost @"http://localhost:8888/public"
+#define kApiHost @"http://aum.showire.eu/"
 #define kApiPrivateKey "h0ly_d1ck"
 #define kApiLogin @"email"
 #define kApiPassword @"password"

@@ -34,6 +34,7 @@
 	[self.imageViews addObject:imageView];
 	[self.view addSubview:imageView];
 	[imageView release];
+	[cache release];
 	
 }
 

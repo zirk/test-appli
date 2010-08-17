@@ -1,126 +1,38 @@
-    //
-//  ProfileViewController.m
+//
+//  _ProfileViewController.m
 //  iAUM
 //
-//  Created by dirk on 12/08/10.
+//  Created by dirk on 16/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import "ProfileViewController.h"
-#import "iAUMConstants.h"
-#import "iAUMSettings.h"
 #import "iAUMTools.h"
 #import "iAUMCache.h"
-#import "iAUMImageViewer.h"
+#import "HttpRequest.h"
+#import "ProfileViewCell.h"
 
 @implementation ProfileViewController
 
-@synthesize buttonAccept, buttonRefuse, userId, profile, nameLabel, ageLabel, aboutLabel, popularityLabel, pictureView, kicked;
+@synthesize userId, profile;
+
+#pragma mark -
+#pragma mark Initialization
 
 - (id) initWithUserId:(NSString*) someUserId
 {
-	if(self = [super init])
+	if(self = [super initWithStyle:UITableViewStyleGrouped])
 	{
-		self.kicked = NO;
 		self.userId = someUserId;
+		self.title = @"Some 1337 profile";
 		NSLog(@"userid: %@", self.userId);
 	}
 	return self;
 }
 
-- (void) initLabels
-{
-	self.nameLabel = [[[iAUMLabel alloc] init] autorelease];
-	self.nameLabel.frame = CGRectMake(0.0, 110, 100.0, 20.0);
-	self.nameLabel.shadowColor = [UIColor grayColor];
-	[self.view addSubview:self.nameLabel];
-
-	self.ageLabel = [[[iAUMLabel alloc] init] autorelease];
-	self.ageLabel.frame = CGRectMake(0.0, 135.0, 100.0, 20.0);
-	[self.view addSubview:self.ageLabel];
-	
-	self.aboutLabel = [[[iAUMLabel alloc] init] autorelease];
-	self.aboutLabel.frame = CGRectMake(0.0, 160.0, 100.0, 20.0);
-	[self.view addSubview:self.aboutLabel];
-	
-	self.popularityLabel = [[[iAUMLabel alloc] init] autorelease];
-	self.popularityLabel.frame = CGRectMake(0.0, 185.0, 100.0, 20.0);
-	[self.view addSubview:self.popularityLabel];
-	
-	self.pictureView = [[[UIImageView alloc] init] autorelease];
-	self.pictureView.frame = CGRectMake(0.0, 310.0, 100.0, 20.0);
-	[self.view addSubview:self.pictureView];
-	
-	
-}
-
-- (void) initButtons
-{	
-	
-	self.buttonAccept = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	self.buttonAccept.frame = CGRectMake(10.0, 200.0, 100.0, 50.0);
-	[self.buttonAccept setTitle:@"photos" forState:UIControlStateNormal];
-	[self.buttonAccept addTarget:self action:@selector(displayImages) forControlEvents:UIControlEventTouchUpInside];
-	/*
-	self.buttonRefuse = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	self.buttonRefuse.frame = CGRectMake(10.0, 100.0, 100.0, 50.0);
-	[self.buttonRefuse setTitle:@"gedaoude" forState:UIControlStateNormal];
-	[self.buttonRefuse addTarget:self action:@selector(asynchronouslyRefuse) forControlEvents:UIControlEventTouchUpInside];
-	*/
-	[self.view addSubview:self.buttonAccept];
-	[self.view addSubview:self.buttonRefuse];/*
-	[self.view setBackgroundColor:[UIColor greenColor]];
-	 */
-}
-
--(void)displayImages
-{
-	iAUMImageViewer* imageViewer = [[iAUMImageViewer alloc] init];
-	
-	
-	
-	
-	
-	for (NSString* imageUrl in [self.profile objectForKey:@"secondaryPhotoThumbs"]) 
-	{
-		NSLog(@"dling %@", imageUrl);
-		[imageViewer addImage:imageUrl];
-	}
-	//[self.view addSubview:imageViewer.view];
-	[self presentModalViewController:imageViewer animated:YES];
-	[imageViewer release];
-}
-
--(void) initPictures
-{
-	self.pictureView = [[[UIImageView alloc] init] autorelease];
-	self.pictureView.frame = CGRectMake(0.0, 0.0, 100.0, 100.0);
-	[self.view addSubview:self.pictureView];
-}
-
-- (void) refreshView
-{
-	NSLog(@"refreshing view Name : %@", [self.profile objectForKey:@"name"]);
-	iAUMCache* cache = [[iAUMCache alloc] init];
-	self.nameLabel.text = [self.profile objectForKey:@"name"];
-	self.ageLabel.text = [self.profile objectForKey:@"age"];
-	self.popularityLabel.text = [self.profile objectForKey:@"popularity"];
-	
-	[cache loadImage:[self.profile objectForKey:@"mainPhotoThumb"] forObject:self];
-	//self.aboutLabel.text = [self.profile objectForKey:@"about"];
-}
-
--(void)setImage:(UIImage*) image
-{
-	self.pictureView.image = image;
-}
-
 - (void) asynchronouslyLoadProfile
 {
 	NSLog(@"downloading profile");
-	//////////////////////////////////////////////////////////////
-	//self.userId = @"22793764";
-	//////////////////////////////////////////////////////////////
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[iAUMTools queueOperation:@selector(loadProfile) withTarget:self withObject:nil];
 }
@@ -136,7 +48,7 @@
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
 		self.profile = [httpRequest.response objectForKey:@"data"];
-		[self performSelectorOnMainThread:@selector(refreshView) withObject:nil waitUntilDone:NO];
+		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		NSLog(@"successfuly loaded %@", self.userId);
 	}
 	else {
@@ -146,40 +58,48 @@
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return 80.0;
-}
-
 /*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
+ - (id)initWithStyle:(UITableViewStyle)style {
+    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+    if ((self = [super initWithStyle:style])) {
     }
     return self;
 }
 */
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
 
-}
-*/
+#pragma mark -
+#pragma mark View lifecycle
 
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor whiteColor];
-	[self initButtons];
-	[self initLabels];
-	[self initPictures];
 	[self asynchronouslyLoadProfile];
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 
+/*
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+*/
+/*
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+*/
+/*
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+*/
+/*
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+}
+*/
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -188,32 +108,185 @@
 }
 */
 
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return NUM_SECTIONS;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    switch (section) {
+		case kSectionGeneralInfos:
+			return NUM_ROWS_GENERAL_INFO;
+		case kSectionDetails:
+			return NUM_ROW_DETAILS;
+		case kSectionAccessories:
+			return NUM_ROW_ACCESSORIES;
+		case kSectionFunctions:
+			return NUM_ROW_FUNCTIONS;
+		case kSectionRivales:
+			return NUM_ROW_RIVALES;
+		case kSectionPhoto:
+			return NUM_ROW_PHOTOS;
+		default:
+			return 0;
+	}
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	switch (section) {
+		case kSectionGeneralInfos:
+			return @"Infos générales";
+		case kSectionDetails:
+			return @"Détails";
+		case kSectionFunctions:
+			return @"Fonctions";
+		case kSectionAccessories:
+			return @"Accessoires";
+		case kSectionPhoto:
+			return @"Photos";
+		case kSectionRivales:
+			return @"Rivales";
+		default:
+			return @"N/A";
+	}
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	UITableViewCell *cell = nil;
+	
+	if(indexPath.section == kSectionGeneralInfos){
+		switch (indexPath.row) {
+			case kRowName:
+			{
+				cell = [tableView dequeueReusableCellWithIdentifier:@"CellName"];
+				if(cell == nil){
+					cell = [[ProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellName"];
+				}
+				[self fillMainProfileCell:(ProfileViewCell*)cell];
+				return cell;
+			}
+			default:
+				break;
+		}
+
+	}
+    
+    cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
+    }
+	cell.textLabel.text = @"N/A";
+	return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(indexPath.section == kSectionGeneralInfos){
+		switch (indexPath.row) {
+			case kRowName:
+				return 300.0;
+			default:
+				break;
+		}
+	}
+	return 80.0;
+}
+
+-(void)fillMainProfileCell:(ProfileViewCell*) cell
+{
+	cell.nameLabel.text = [self.profile objectForKey:@"name"];
+	cell.ageLabel.text = [self.profile objectForKey:@"age"];
+	cell.cityLabel.text = [self.profile objectForKey:@"location"];
+	
+	iAUMCache* cache = [[iAUMCache alloc] init];
+	[cache loadImage:[self.profile objectForKey:@"mainPhotoThumb"] forObject:cell];
+	[cache release];
+}
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+}
+*/
+
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Navigation logic may go here. Create and push another view controller.
+	/*
+	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+	 [self.navigationController pushViewController:detailViewController animated:YES];
+	 [detailViewController release];
+	 */
+}
+
+
+#pragma mark -
+#pragma mark Memory management
+
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
-    // Release any cached data, images, etc that aren't in use.
+    // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
-	
-	//[self.buttonAccept release];
-	//[self.buttonRefuse release];
-	[self.nameLabel release];
-	[self.ageLabel release];
-	[self.aboutLabel release];
-	[self.popularityLabel release];
-	[self.pictureView release];
-	
     [super dealloc];
 }
 
 
 @end
+

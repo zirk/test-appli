@@ -71,9 +71,7 @@
 	
 	//set headers
 	[request addValue:signature forHTTPHeaderField:kApiAutorization];
-	
-	// TEMPORARY, REMOVE WHEN NECESSARY
-	[self addParam:@"auth" value:signature];
+
 	//create the body	
 	NSMutableData *postBody = [NSMutableData data];
 	[postBody appendData:[[iAUMTools serializeDictionary:self.params withKeys:nil] dataUsingEncoding:NSUTF8StringEncoding]];

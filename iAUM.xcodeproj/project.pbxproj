@@ -12,12 +12,11 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewProfile.png */; };
+		435E82341219872D001F6FE9 /* actionViewViewProfileNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewViewProfileNormal.png */; };
 		435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83381219A6EA001F6FE9 /* iAUMLabel.m */; };
 		435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */; };
-		435E83F21219CDFC001F6FE9 /* _ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */; };
+		435E83F21219CDFC001F6FE9 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83F11219CDFC001F6FE9 /* ProfileViewController.m */; };
 		435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E845B1219E592001F6FE9 /* ProfileViewCell.m */; };
-		439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA39C12140BA0004AC2E4 /* ProfileViewController.m */; };
 		439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* iAUMCache.m */; };
 		439AA5A91214E92E004AC2E4 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 439AA5A81214E92E004AC2E4 /* Makefile */; };
 		439AA60112160B58004AC2E4 /* iAUMListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA60012160B58004AC2E4 /* iAUMListViewController.m */; };
@@ -38,6 +37,12 @@
 		43CA49C11212D24F0008B320 /* CharmsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43CA49C01212D24F0008B320 /* CharmsViewController.m */; };
 		43CA4A381212DA040008B320 /* iAUMSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 43CA4A371212DA040008B320 /* iAUMSettings.m */; };
 		43CA4A941212E5BA0008B320 /* MiniProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43CA4A931212E5BA0008B320 /* MiniProfileCell.m */; };
+		7F06D7F6121A35FB0077472F /* MiniProfileCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F06D7F5121A35FB0077472F /* MiniProfileCellActionView.m */; };
+		7F06D851121AB2D00077472F /* actionViewCharmRefuseNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06D850121AB2D00077472F /* actionViewCharmRefuseNormal.png */; };
+		7F06D96A121AD6DB0077472F /* MiniProfileCellActionViewVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F06D969121AD6DB0077472F /* MiniProfileCellActionViewVisits.m */; };
+		7F06D972121AD9F30077472F /* actionViewVisitBgPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06D971121AD9F30077472F /* actionViewVisitBgPattern.png */; };
+		7F06D982121ADAFB0077472F /* actionViewBasketBgPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06D981121ADAFB0077472F /* actionViewBasketBgPattern.png */; };
+		7F06D985121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F06D984121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m */; };
 		7FC62DC71218BE750047B588 /* MiniProfileCellActionViewCharms.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */; };
 		7FE4B5AA12195D5900B2FFA1 /* tabBarSettings.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE4B59E12195D5900B2FFA1 /* tabBarSettings.png */; };
 		7FE4B5AB12195D5900B2FFA1 /* tabBarVisits.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE4B59F12195D5900B2FFA1 /* tabBarVisits.png */; };
@@ -61,17 +66,15 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* iAUM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUM_Prefix.pch; sourceTree = "<group>"; };
-		435E82331219872D001F6FE9 /* actionViewProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = actionViewProfile.png; path = charm/actionViewProfile.png; sourceTree = "<group>"; };
+		435E82331219872D001F6FE9 /* actionViewViewProfileNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = actionViewViewProfileNormal.png; path = charm/actionViewViewProfileNormal.png; sourceTree = "<group>"; };
 		435E83371219A6EA001F6FE9 /* iAUMLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMLabel.h; sourceTree = "<group>"; };
 		435E83381219A6EA001F6FE9 /* iAUMLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMLabel.m; sourceTree = "<group>"; };
 		435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMImageViewer.h; sourceTree = "<group>"; };
 		435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMImageViewer.m; sourceTree = "<group>"; };
-		435E83F01219CDFC001F6FE9 /* _ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ProfileViewController.h; sourceTree = "<group>"; };
-		435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ProfileViewController.m; sourceTree = "<group>"; };
+		435E83F01219CDFC001F6FE9 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		435E83F11219CDFC001F6FE9 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		435E845A1219E592001F6FE9 /* ProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewCell.h; sourceTree = "<group>"; };
 		435E845B1219E592001F6FE9 /* ProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewCell.m; sourceTree = "<group>"; };
-		439AA39B12140BA0004AC2E4 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
-		439AA39C12140BA0004AC2E4 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		439AA3A2121413A7004AC2E4 /* iAUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMCache.h; sourceTree = "<group>"; };
 		439AA3A3121413A7004AC2E4 /* iAUMCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMCache.m; sourceTree = "<group>"; };
 		439AA5A81214E92E004AC2E4 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -111,6 +114,15 @@
 		43CA4A371212DA040008B320 /* iAUMSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMSettings.m; sourceTree = "<group>"; };
 		43CA4A921212E5BA0008B320 /* MiniProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCell.h; sourceTree = "<group>"; };
 		43CA4A931212E5BA0008B320 /* MiniProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCell.m; sourceTree = "<group>"; };
+		7F06D7F4121A35FB0077472F /* MiniProfileCellActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCellActionView.h; sourceTree = "<group>"; };
+		7F06D7F5121A35FB0077472F /* MiniProfileCellActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCellActionView.m; sourceTree = "<group>"; };
+		7F06D850121AB2D00077472F /* actionViewCharmRefuseNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actionViewCharmRefuseNormal.png; sourceTree = "<group>"; };
+		7F06D968121AD6DB0077472F /* MiniProfileCellActionViewVisits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCellActionViewVisits.h; sourceTree = "<group>"; };
+		7F06D969121AD6DB0077472F /* MiniProfileCellActionViewVisits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCellActionViewVisits.m; sourceTree = "<group>"; };
+		7F06D971121AD9F30077472F /* actionViewVisitBgPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actionViewVisitBgPattern.png; sourceTree = "<group>"; };
+		7F06D981121ADAFB0077472F /* actionViewBasketBgPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actionViewBasketBgPattern.png; sourceTree = "<group>"; };
+		7F06D983121ADB1D0077472F /* MiniProfileCellActionViewBaskets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCellActionViewBaskets.h; sourceTree = "<group>"; };
+		7F06D984121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCellActionViewBaskets.m; sourceTree = "<group>"; };
 		7FC62DC51218BE750047B588 /* MiniProfileCellActionViewCharms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCellActionViewCharms.h; sourceTree = "<group>"; };
 		7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCellActionViewCharms.m; sourceTree = "<group>"; };
 		7FE4B59E12195D5900B2FFA1 /* tabBarSettings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarSettings.png; sourceTree = "<group>"; };
@@ -212,7 +224,7 @@
 		435E823512198749001F6FE9 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				435E82331219872D001F6FE9 /* actionViewProfile.png */,
+				435E82331219872D001F6FE9 /* actionViewViewProfileNormal.png */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -232,6 +244,12 @@
 				435E83381219A6EA001F6FE9 /* iAUMLabel.m */,
 				435E845A1219E592001F6FE9 /* ProfileViewCell.h */,
 				435E845B1219E592001F6FE9 /* ProfileViewCell.m */,
+				7F06D7F4121A35FB0077472F /* MiniProfileCellActionView.h */,
+				7F06D7F5121A35FB0077472F /* MiniProfileCellActionView.m */,
+				7F06D968121AD6DB0077472F /* MiniProfileCellActionViewVisits.h */,
+				7F06D969121AD6DB0077472F /* MiniProfileCellActionViewVisits.m */,
+				7F06D983121ADB1D0077472F /* MiniProfileCellActionViewBaskets.h */,
+				7F06D984121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -283,8 +301,6 @@
 				43CA47601210B5910008B320 /* SettingsViewController.m */,
 				43CA49BF1212D24F0008B320 /* CharmsViewController.h */,
 				43CA49C01212D24F0008B320 /* CharmsViewController.m */,
-				439AA39B12140BA0004AC2E4 /* ProfileViewController.h */,
-				439AA39C12140BA0004AC2E4 /* ProfileViewController.m */,
 				439AA5FF12160B58004AC2E4 /* iAUMListViewController.h */,
 				439AA60012160B58004AC2E4 /* iAUMListViewController.m */,
 				439AA61B121611D5004AC2E4 /* VisitsViewController.h */,
@@ -293,8 +309,8 @@
 				439AA6B212161DDD004AC2E4 /* BasketViewController.m */,
 				435E835C1219A8E5001F6FE9 /* iAUMImageViewer.h */,
 				435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */,
-				435E83F01219CDFC001F6FE9 /* _ProfileViewController.h */,
-				435E83F11219CDFC001F6FE9 /* _ProfileViewController.m */,
+				435E83F01219CDFC001F6FE9 /* ProfileViewController.h */,
+				435E83F11219CDFC001F6FE9 /* ProfileViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -302,6 +318,8 @@
 		7FE4B59B12195D5900B2FFA1 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7F06D981121ADAFB0077472F /* actionViewBasketBgPattern.png */,
+				7F06D971121AD9F30077472F /* actionViewVisitBgPattern.png */,
 				7FE4B5EF12196B8E00B2FFA1 /* actionViewCharmBgPattern.png */,
 				7FE4B59C12195D5900B2FFA1 /* icons */,
 				7FE4B5A712195D5900B2FFA1 /* icon.png */,
@@ -343,6 +361,7 @@
 		7FE4B5A312195D5900B2FFA1 /* charm */ = {
 			isa = PBXGroup;
 			children = (
+				7F06D850121AB2D00077472F /* actionViewCharmRefuseNormal.png */,
 				7FE4B5A412195D5900B2FFA1 /* actionViewCharmAcceptSelected.png */,
 				7FE4B5A512195D5900B2FFA1 /* actionViewCharmAcceptNormal.png */,
 				7FE4B5A612195D5900B2FFA1 /* actionViewCharmAcceptHighlighted.png */,
@@ -403,7 +422,10 @@
 				7FE4B5B212195D5900B2FFA1 /* ItunesArtwork.png in Resources */,
 				7FE4B5B312195D5900B2FFA1 /* charmActionViewBG.png in Resources */,
 				7FE4B5F012196B8E00B2FFA1 /* actionViewCharmBgPattern.png in Resources */,
-				435E82341219872D001F6FE9 /* actionViewProfile.png in Resources */,
+				435E82341219872D001F6FE9 /* actionViewViewProfileNormal.png in Resources */,
+				7F06D851121AB2D00077472F /* actionViewCharmRefuseNormal.png in Resources */,
+				7F06D972121AD9F30077472F /* actionViewVisitBgPattern.png in Resources */,
+				7F06D982121ADAFB0077472F /* actionViewBasketBgPattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +450,6 @@
 				43CA49C11212D24F0008B320 /* CharmsViewController.m in Sources */,
 				43CA4A381212DA040008B320 /* iAUMSettings.m in Sources */,
 				43CA4A941212E5BA0008B320 /* MiniProfileCell.m in Sources */,
-				439AA39D12140BA0004AC2E4 /* ProfileViewController.m in Sources */,
 				439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */,
 				439AA5A91214E92E004AC2E4 /* Makefile in Sources */,
 				439AA60112160B58004AC2E4 /* iAUMListViewController.m in Sources */,
@@ -438,8 +459,11 @@
 				7FC62DC71218BE750047B588 /* MiniProfileCellActionViewCharms.m in Sources */,
 				435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */,
 				435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */,
-				435E83F21219CDFC001F6FE9 /* _ProfileViewController.m in Sources */,
+				435E83F21219CDFC001F6FE9 /* ProfileViewController.m in Sources */,
 				435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */,
+				7F06D7F6121A35FB0077472F /* MiniProfileCellActionView.m in Sources */,
+				7F06D96A121AD6DB0077472F /* MiniProfileCellActionViewVisits.m in Sources */,
+				7F06D985121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

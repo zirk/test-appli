@@ -1,46 +1,67 @@
 //
-//  ProfileViewController.h
+//  _ProfileViewController.h
 //  iAUM
 //
-//  Created by dirk on 12/08/10.
+//  Created by Dirk Amadori on 16/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "HttpRequest.h"
-#import "iAUMLabel.h"
 
-@interface ProfileViewController : UIViewController {
-	IBOutlet iAUMLabel* nameLabel;
-	IBOutlet iAUMLabel* aboutLabel;
-	IBOutlet iAUMLabel* ageLabel;
-	IBOutlet iAUMLabel* popularityLabel;
-	IBOutlet UIImageView* pictureView;
+enum Sections {
+	kSectionGeneralInfos = 0,
+	kSectionDetails,
+	kSectionFunctions,
+	kSectionAccessories,
+	kSectionRivales,
+	kSectionPhoto,
+	NUM_SECTIONS
+};
 
-	IBOutlet UIButton* buttonAccept;
-	IBOutlet UIButton* buttonRefuse;
+enum SectionGeneralInfoRows {
+	kRowName = 0,
+	kRowAge,
+	kRowCity,
+	kRowAbout,
+	NUM_ROWS_GENERAL_INFO
+};
+
+enum SectionDetailsRows {
+	prout =0 ,
+	NUM_ROW_DETAILS
+};
+
+enum SectionFunctionsRows {
+	NUM_ROW_FUNCTIONS
+};
+
+enum SectionAccessoriesRows {
+	NUM_ROW_ACCESSORIES
+};
+
+enum SectionRivalesRows {
+	NUM_ROW_RIVALES
+};
+
+enum SectionPhotosRows {
+	NUM_ROW_PHOTOS
+};
+
+
+
+
+
+@interface ProfileViewController : UITableViewController {
 	NSString* userId;
 	NSDictionary* profile;
-	BOOL kicked;
 }
 
+-(id) initWithUserId:(NSString*) someUserId;
 -(void) asynchronouslyLoadProfile;
 -(void) loadProfile;
 
--(id) initWithUserId:(NSString*) someUserId;
--(void) initButtons;
--(void) initLabels;
--(void) initPictures;
-
-@property (retain) IBOutlet UILabel* nameLabel;
-@property (retain) IBOutlet UILabel* aboutLabel;
-@property (retain) IBOutlet UILabel* ageLabel;
-@property (retain) IBOutlet UILabel* popularityLabel;
-@property (retain) IBOutlet UIImageView* pictureView;
-@property (retain) IBOutlet UIButton* buttonAccept;
-@property (retain) IBOutlet UIButton* buttonRefuse;
 @property (retain) NSString* userId;
 @property (retain) NSDictionary* profile;
-@property (assign) BOOL kicked;
+
 
 @end

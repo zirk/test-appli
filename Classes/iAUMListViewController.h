@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "iAUMConstants.h"
-#import "MiniProfileCell.h"
+#import "MiniProfileCellActionView.h"
 #import "ProfileViewController.h"
 #import "HttpRequest.h"
 #import "iAUMSettings.h"
@@ -20,7 +20,7 @@
 	UIActivityIndicatorView* loadingIndicator;
 	BOOL isLoading;
 	NSInteger swappedViewCell;
-	UIView* actionView;
+	MiniProfileCellActionView* actionView;
 }
 
 -(void) refreshList:(NSArray*) list;
@@ -28,12 +28,14 @@
 -(void) loadList;
 -(void) asynchronouslyLoadList;
 -(void) initButtons;
+-(void) initActionView;
+-(void) displayProfile;
 
 @property (nonatomic, retain) NSMutableArray* list;
 @property (nonatomic, assign) NSString* listApiUrl;
 @property (nonatomic, retain) UIActivityIndicatorView* loadingIndicator;
 @property (nonatomic, assign) NSInteger swappedViewCell;
 @property (nonatomic, assign) BOOL isLoading;
-@property (nonatomic, retain) UIView* actionView;
+@property (nonatomic, retain) MiniProfileCellActionView* actionView;
 
 @end
