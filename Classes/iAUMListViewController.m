@@ -92,8 +92,7 @@
     [super viewDidLoad];
 	[self.view addSubview:self.loadingIndicator];
 	self.tableView.rowHeight = kAppListCellHeight;
-	[self asynchronouslyLoadList];
-	
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -107,11 +106,13 @@
 }
 
 
-/*
+
  - (void)viewWillAppear:(BOOL)animated {
- [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
+	if (self.list.count < 1)
+	[self asynchronouslyLoadList];
  }
- */
+
 /*
  - (void)viewDidAppear:(BOOL)animated {
  [super viewDidAppear:animated];

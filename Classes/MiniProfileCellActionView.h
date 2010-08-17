@@ -10,7 +10,6 @@
 
 
 @interface MiniProfileCellActionView : UIView {
-	NSUInteger numberOfButtons;
 	NSMutableDictionary* actionButtons;
 	NSMutableArray* actionButtonsOrder;
 	UILabel* buttonTitleLabel;
@@ -18,7 +17,6 @@
 
 @property (nonatomic, retain) NSMutableDictionary* actionButtons;
 @property (nonatomic, retain) NSMutableArray* actionButtonsOrder;
-@property (nonatomic, assign) NSUInteger numberOfButtons;
 @property (nonatomic, retain) UILabel* buttonTitleLabel;
 
 - (void)build;

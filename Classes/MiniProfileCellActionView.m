@@ -13,11 +13,10 @@
 
 @implementation MiniProfileCellActionView
 
-@synthesize buttonTitleLabel, actionButtons, actionButtonsOrder, numberOfButtons;
+@synthesize buttonTitleLabel, actionButtons, actionButtonsOrder;
 
 - (id)init {
     if ((self = [super initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, kAppListCellHeight)])) {
-		self.numberOfButtons = 0;
 		self.actionButtons = [[NSMutableDictionary alloc] init];
 		[self.actionButtons release];
 		self.actionButtonsOrder = [[NSMutableArray alloc] init];
@@ -78,7 +77,6 @@
 	[someButton addTarget:self action:@selector(clearLabelText) forControlEvents:UIControlEventTouchUpOutside];
 	[self.actionButtons setObject:someButton forKey:name];
 	[self.actionButtonsOrder addObject:name];
-	++self.numberOfButtons;
 }
 
 - (void)placeButtons
@@ -91,7 +89,7 @@
 		if (imageSize.width == 0.0) {
 			imageSize = actionButton.imageView.image.size;
 			y_offset = (kAppListCellHeight - imageSize.height) / 2.0;
-			x_offset = imageSize.width * self.numberOfButtons * 2.0 - imageSize.width;
+			x_offset = imageSize.width * self.actionButtonsOrder.count * 2.0 - imageSize.width;
 			x_offset = ([UIScreen mainScreen].bounds.size.width - x_offset) / 2.0;
 		}
 		actionButton.frame = CGRectMake(x_offset, y_offset, imageSize.width, imageSize.height);
@@ -102,16 +100,8 @@
 
 - (void)removeButton:(NSString *)name
 {
-	if (self.numberOfButtons < 1)
-		return ;
-	// in order to be sure that we decrement numberOfButtons ONLY when we remove an existing button
-	for (NSString* buttonName in self.actionButtonsOrder)
-		if ([name compare:buttonName] == NSOrderedSame) {
-			[self.actionButtons removeObjectForKey:name];
-			[self.actionButtonsOrder removeObject:name];
-			self.numberOfButtons--;
-			break ;
-		}
+	[self.actionButtons removeObjectForKey:name];
+	[self.actionButtonsOrder removeObject:name];
 }
 
 - (UIButton*)buttonForName:(NSString *)name
@@ -123,13 +113,12 @@
 {
 	[self.actionButtons removeAllObjects];
 	[self.actionButtonsOrder removeAllObjects];
-	self.numberOfButtons = 0;
 }
 
 - (void)setLabelText:(UIButton*)sender
 {
 	self.buttonTitleLabel.text = sender.titleLabel.text;
-	[UIView beginAnimations:@"brol" context:nil];
+	[UIView beginAnimations:@"tooltipOpacity" context:nil];
 	[UIView setAnimationDuration: 0.3];
 	self.buttonTitleLabel.alpha = 1.0;
 	[UIView commitAnimations];
@@ -137,11 +126,10 @@
 
 - (void)clearLabelText
 {
-	[UIView beginAnimations:@"brol" context:nil];
+	[UIView beginAnimations:@"tooltipOpacity" context:nil];
 	[UIView setAnimationDuration: 0.3];
 	self.buttonTitleLabel.alpha = 0.0;
 	[UIView commitAnimations];
-	//self.buttonTitleLabel.text = nil;
 }
 
 - (void) disableButtons

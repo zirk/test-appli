@@ -46,10 +46,10 @@
 	CGContextClosePath(context);
 	CGContextClip(context);
 	
-	CGContextDrawImage(context, CGRectMake(0, 0, w, h), source.CGImage);
+	CGContextDrawImage(context, rect, source.CGImage);
 	
 	CGImageRef imageMasked = CGBitmapContextCreateImage(context);
-	UIImage *newImage = [[UIImage imageWithCGImage:imageMasked] retain];
+	UIImage *newImage = [UIImage imageWithCGImage:imageMasked];
 	
 	CGContextRelease(context);
 	CGColorSpaceRelease(colorSpace);
