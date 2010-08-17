@@ -17,6 +17,7 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		self.listApiUrl = @"/baskets/list";
+		self.title = @"Panier";
 		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Panier" image:[UIImage imageNamed:@"tabBarBasket.png"] tag:0];
 		self.tabBarItem = barItem;
 		[barItem release];
