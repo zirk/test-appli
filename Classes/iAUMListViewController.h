@@ -13,13 +13,16 @@
 #import "HttpRequest.h"
 #import "iAUMSettings.h"
 #import "iAUMTools.h"
+#import "iAUMListLoadingView.h"
 
 @interface iAUMListViewController : UITableViewController {
 	NSString* listApiUrl;
 	NSMutableArray* list;
-	UIActivityIndicatorView* loadingIndicator;
+	NSMutableArray* kickingQueue;
+	iAUMListLoadingView* loadingView;
 	BOOL isLoading;
 	NSInteger swappedViewCell;
+	NSInteger cellToRemove;
 	MiniProfileCellActionView* actionView;
 }
 
@@ -33,9 +36,11 @@
 
 @property (nonatomic, retain) NSMutableArray* list;
 @property (nonatomic, assign) NSString* listApiUrl;
-@property (nonatomic, retain) UIActivityIndicatorView* loadingIndicator;
+@property (nonatomic, retain) iAUMListLoadingView* loadingView;
 @property (nonatomic, assign) NSInteger swappedViewCell;
+@property (nonatomic, assign) NSInteger cellToRemove;
 @property (nonatomic, assign) BOOL isLoading;
 @property (nonatomic, retain) MiniProfileCellActionView* actionView;
+@property (nonatomic, retain) NSMutableArray* kickingQueue;
 
 @end

@@ -49,7 +49,7 @@
 	{
 		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[iAUMTools queueOperation:@selector(accept) withTarget:self withObject:nil];
+		[iAUMTools queueOperation:@selector(accept:) withTarget:self withObject:[NSNumber numberWithInt:self.swappedViewCell]];
 		NSLog(@"queue gedin operation");
 	}
 }
@@ -62,13 +62,13 @@
 	{
 		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[iAUMTools queueOperation:@selector(refuse) withTarget:self withObject:nil];
+		[iAUMTools queueOperation:@selector(refuse:) withTarget:self withObject:[NSNumber numberWithInt:self.swappedViewCell]];
 		NSLog(@"queue gedaoude operation");
 	}
 }
 
 
--(void) accept
+-(void) accept:(NSNumber*)rowNumber
 {
 	if(self.swappedViewCell != -1)
 	{
@@ -78,6 +78,8 @@
 		
 		if ([httpRequest send] == YES)
 		{
+			[self.kickingQueue addObject:rowNumber];
+			self.cellToRemove = self.swappedViewCell;
 			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
 			NSLog(@"successfuly accepted %@", userId);
 		}
@@ -90,7 +92,7 @@
 	[self.actionView enableButtons];
 }
 
-- (IBAction) refuse
+- (IBAction) refuse:(NSNumber*)rowNumber
 {
 	if(self.swappedViewCell != -1)
 	{
@@ -100,6 +102,8 @@
 		
 		if ([httpRequest send] == YES)
 		{
+			[self.kickingQueue addObject:rowNumber];
+			self.cellToRemove = self.swappedViewCell;
 			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
 			NSLog(@"successfuly kicked %@", userId);
 		}

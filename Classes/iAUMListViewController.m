@@ -12,7 +12,7 @@
 
 @implementation iAUMListViewController
 
-@synthesize list, loadingIndicator, isLoading, listApiUrl, swappedViewCell, actionView;
+@synthesize list, loadingView, isLoading, listApiUrl, swappedViewCell, actionView, cellToRemove, kickingQueue;
 
 #pragma mark -
 #pragma mark Initialization
@@ -21,12 +21,13 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		self.isLoading = NO;
-		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(50, 50, 40.0, 40.0)];
-		self.loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-		self.loadingIndicator.hidesWhenStopped = YES;
+		self.kickingQueue = [[NSMutableArray alloc] init];
+		[self.kickingQueue release];
+		self.tableView.contentInset = UIEdgeInsetsMake(0, 0.0f, 0.0f, 0.0f);
 		self.tableView.separatorColor = [UIColor blackColor];
 		self.tableView.backgroundColor = [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
 		self.swappedViewCell = -1;
+		self.cellToRemove = -1;
 		self.actionView = nil;
 		[self initActionView];
 	}
@@ -52,7 +53,11 @@
 		return ;
 	self.isLoading = YES;
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[self.loadingIndicator startAnimating];	
+	[self.loadingView isLoading:self.isLoading];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.18];
+	self.tableView.contentInset = UIEdgeInsetsMake(kAppListCellHeight, 0.0f, 0.0f, 0.0f);
+	[UIView commitAnimations];
 	[iAUMTools queueOperation:@selector(loadList) withTarget:self withObject:nil];
 }
 
@@ -70,9 +75,13 @@
 -(void) refreshList:(NSArray*) someList
 {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	[self.loadingIndicator stopAnimating];
 	self.list = [NSMutableArray arrayWithArray:someList];
 	self.isLoading = NO;
+	[self.loadingView isLoading:self.isLoading];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.18];
+	self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+	[UIView commitAnimations];
 	[self refreshTabBarItem];
 	[self.tableView reloadData];
 }
@@ -90,7 +99,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.view addSubview:self.loadingIndicator];
+	self.loadingView = [[iAUMListLoadingView alloc] init];
+	[self.tableView addSubview:self.loadingView];
+	[self.loadingView release];
 	self.tableView.rowHeight = kAppListCellHeight;
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -99,15 +110,12 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-	NSLog(@"vertical offset: %f", scrollView.contentOffset.y);
 	if(scrollView.contentOffset.y < -kAppListCellHeight * 1.5){
 		[self asynchronouslyLoadList];
 	}
 }
 
-
-
- - (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (self.list.count < 1)
 	[self asynchronouslyLoadList];
@@ -221,14 +229,30 @@
 
 - (void) kickFromListWithId:(NSString*)aumId
 {
-	if(self.swappedViewCell > -1) {
-		[self.list removeObjectAtIndex:self.swappedViewCell];
-		NSUInteger indexes[] = {0, self.swappedViewCell};
+	if (self.kickingQueue.count < 1)
+		return ;
+	NSUInteger indexes[] = {0, 0};
+	for (NSNumber* rowNumber in self.kickingQueue) {
+		if ([rowNumber intValue] == self.swappedViewCell)
+			self.swappedViewCell = -1;
+		[self.list removeObjectAtIndex:[rowNumber intValue]];
+		indexes[1] = [rowNumber intValue];
+		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+	}
+	[self.kickingQueue removeAllObjects];
+	[self refreshTabBarItem];
+	return ;
+	if(self.cellToRemove > -1) {
+		[self.list removeObjectAtIndex:self.cellToRemove];
+		NSUInteger indexes[] = {0, self.cellToRemove};
 		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 		[self refreshTabBarItem];
 	}
-	self.swappedViewCell = -1;
+	if (self.cellToRemove == self.swappedViewCell)
+		self.swappedViewCell = -1;
+	self.cellToRemove = -1;
 	/*
 	for (NSDictionary* miniProfile in self.list) {
 		if ([aumId compare:[miniProfile objectForKey:@"aumId"]] == NSOrderedSame)
@@ -315,6 +339,8 @@
 - (void)dealloc {
 	[self.list release];
 	[self.actionView release];
+	[self.loadingView release];
+	[self.kickingQueue release];
     [super dealloc];
 }
 

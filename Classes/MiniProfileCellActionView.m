@@ -62,6 +62,7 @@
 	self.buttonTitleLabel.backgroundColor = [UIColor clearColor];
 	self.buttonTitleLabel.textAlignment = UITextAlignmentCenter;
 	self.buttonTitleLabel.alpha = 0.0;
+	self.buttonTitleLabel.layer.transform = CATransform3DMakeTranslation(0, -7, 0);
 	[self addSubview:self.buttonTitleLabel];
 }
 
@@ -93,7 +94,8 @@
 			x_offset = ([UIScreen mainScreen].bounds.size.width - x_offset) / 2.0;
 		}
 		actionButton.frame = CGRectMake(x_offset, y_offset, imageSize.width, imageSize.height);
-		x_offset += imageSize.width * 2.0;;
+		x_offset += imageSize.width * 2.0;
+		actionButton.layer.transform = CATransform3DMakeTranslation(0, 0, 0);
 		[self addSubview:actionButton];
 	}
 }
@@ -121,6 +123,7 @@
 	[UIView beginAnimations:@"tooltipOpacity" context:nil];
 	[UIView setAnimationDuration: 0.3];
 	self.buttonTitleLabel.alpha = 1.0;
+	self.buttonTitleLabel.layer.transform = CATransform3DMakeTranslation(0, 0, 0);
 	[UIView commitAnimations];
 }
 
@@ -129,6 +132,7 @@
 	[UIView beginAnimations:@"tooltipOpacity" context:nil];
 	[UIView setAnimationDuration: 0.3];
 	self.buttonTitleLabel.alpha = 0.0;
+	self.buttonTitleLabel.layer.transform = CATransform3DMakeTranslation(0, -7, 0);
 	[UIView commitAnimations];
 }
 

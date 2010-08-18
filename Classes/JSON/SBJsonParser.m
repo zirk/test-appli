@@ -36,6 +36,7 @@
 - (BOOL)scanRestOfArray:(NSMutableArray **)o;
 - (BOOL)scanRestOfDictionary:(NSMutableDictionary **)o;
 - (BOOL)scanRestOfNull:(NSNull **)o;
+- (BOOL)scanRestOfNullString:(NSString **)o;
 - (BOOL)scanRestOfFalse:(NSNumber **)o;
 - (BOOL)scanRestOfTrue:(NSNumber **)o;
 - (BOOL)scanRestOfString:(NSMutableString **)o;
@@ -135,7 +136,8 @@ static char ctrl[0x22];
             return [self scanRestOfTrue:(NSNumber **)o];
             break;
         case 'n':
-            return [self scanRestOfNull:(NSNull **)o];
+			return [self scanRestOfNullString:(NSString **)o];
+            //return [self scanRestOfNull:(NSNull **)o];
             break;
         case '-':
         case '0'...'9':
@@ -179,6 +181,16 @@ static char ctrl[0x22];
         return YES;
     }
     [self addErrorWithCode:EPARSE description: @"Expected 'false'"];
+    return NO;
+}
+
+- (BOOL)scanRestOfNullString:(NSString **)o {
+    if (!strncmp(c, "ull", 3)) {
+        c += 3;
+        *o = @"";
+        return YES;
+    }
+    [self addErrorWithCode:EPARSE description: @"Expected 'null'"];
     return NO;
 }
 

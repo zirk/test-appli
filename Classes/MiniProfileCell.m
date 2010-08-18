@@ -63,16 +63,9 @@
 
 - (void) loadFromDictionary:(NSDictionary*)dico
 {
-	NSString* tmp;
-	tmp = [dico objectForKey:@"name"];
-	if ([tmp isKindOfClass:[NSNull class]] == NO)
-		self.name = tmp;
-	tmp = [dico objectForKey:@"age"];
-	if ([tmp isKindOfClass:[NSNull class]] == NO)
-		self.age = tmp;
-	tmp = [dico objectForKey:@"city"];
-	if ([tmp isKindOfClass:[NSNull class]] == NO)
-		self.city = tmp;
+	self.name = [dico objectForKey:@"name"];
+	self.age = [dico objectForKey:@"age"];
+	self.city = [dico objectForKey:@"city"];
 	self.online = [[dico objectForKey:@"online"] boolValue];
 	iAUMCache* cache = [[iAUMCache alloc] init];
 	[cache loadImage:[dico objectForKey:@"pictureUrl"] forObject:self];

@@ -48,6 +48,7 @@
 		7F06DB83121B22850077472F /* MiniProfileCellPictureGlare.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06DB82121B22850077472F /* MiniProfileCellPictureGlare.png */; };
 		7F06DB93121B30B40077472F /* MiniProfileCellStatusOffline.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06DB91121B30B40077472F /* MiniProfileCellStatusOffline.png */; };
 		7F06DB94121B30B40077472F /* MiniProfileCellStatusOnline.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F06DB92121B30B40077472F /* MiniProfileCellStatusOnline.png */; };
+		7F06DD1E121B61520077472F /* iAUMListLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F06DD1D121B61520077472F /* iAUMListLoadingView.m */; };
 		7FC62DC71218BE750047B588 /* MiniProfileCellActionViewCharms.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */; };
 		7FE4B5AA12195D5900B2FFA1 /* tabBarSettings.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE4B59E12195D5900B2FFA1 /* tabBarSettings.png */; };
 		7FE4B5AB12195D5900B2FFA1 /* tabBarVisits.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE4B59F12195D5900B2FFA1 /* tabBarVisits.png */; };
@@ -132,6 +133,8 @@
 		7F06DB82121B22850077472F /* MiniProfileCellPictureGlare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MiniProfileCellPictureGlare.png; sourceTree = "<group>"; };
 		7F06DB91121B30B40077472F /* MiniProfileCellStatusOffline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MiniProfileCellStatusOffline.png; sourceTree = "<group>"; };
 		7F06DB92121B30B40077472F /* MiniProfileCellStatusOnline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MiniProfileCellStatusOnline.png; sourceTree = "<group>"; };
+		7F06DD1C121B61520077472F /* iAUMListLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMListLoadingView.h; sourceTree = "<group>"; };
+		7F06DD1D121B61520077472F /* iAUMListLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMListLoadingView.m; sourceTree = "<group>"; };
 		7FC62DC51218BE750047B588 /* MiniProfileCellActionViewCharms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniProfileCellActionViewCharms.h; sourceTree = "<group>"; };
 		7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniProfileCellActionViewCharms.m; sourceTree = "<group>"; };
 		7FE4B59E12195D5900B2FFA1 /* tabBarSettings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarSettings.png; sourceTree = "<group>"; };
@@ -257,6 +260,8 @@
 				7F06D969121AD6DB0077472F /* MiniProfileCellActionViewVisits.m */,
 				7F06D983121ADB1D0077472F /* MiniProfileCellActionViewBaskets.h */,
 				7F06D984121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m */,
+				7F06DD1C121B61520077472F /* iAUMListLoadingView.h */,
+				7F06DD1D121B61520077472F /* iAUMListLoadingView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				7F06D96A121AD6DB0077472F /* MiniProfileCellActionViewVisits.m in Sources */,
 				7F06D985121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m in Sources */,
 				7F06DAFD121B11F60077472F /* iAUMCGEffects.m in Sources */,
+				7F06DD1E121B61520077472F /* iAUMListLoadingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
