@@ -314,7 +314,7 @@
 {
 	if(self.swappedViewCell != -1)
 	{
-		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"]];
+		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"] andName:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"name"]];
 		[self.navigationController pushViewController:pvc animated:YES];
 		[pvc release];
 	}

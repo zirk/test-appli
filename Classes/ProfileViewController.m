@@ -10,7 +10,7 @@
 #import "iAUMTools.h"
 #import "iAUMCache.h"
 #import "HttpRequest.h"
-#import "ProfileViewCell.h"
+#import "iAUMConstants.h"
 
 @implementation ProfileViewController
 
@@ -19,12 +19,12 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (id) initWithUserId:(NSString*) someUserId
+- (id) initWithUserId:(NSString*) someUserId andName:(NSString*)name
 {
 	if(self = [super initWithStyle:UITableViewStyleGrouped])
 	{
 		self.userId = someUserId;
-		self.title = @"Some 1337 profile";
+		self.title = name;
 		NSLog(@"userid: %@", self.userId);
 	}
 	return self;
@@ -48,8 +48,9 @@
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
 		self.profile = [httpRequest.response objectForKey:@"data"];
+		
 		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-		NSLog(@"successfuly loaded %@", self.userId);
+		NSLog(@"successfuly loaded %@ whose name is %@", self.userId, [self.profile objectForKey:@"name"]);
 	}
 	else {
 		NSLog(@"Failed at loading %@ ", self.userId);
@@ -123,7 +124,7 @@
     switch (section) {
 		case kSectionGeneralInfos:
 			return NUM_ROWS_GENERAL_INFO;
-		case kSectionDetails:
+		case kSectionPhysical:
 			return NUM_ROW_DETAILS;
 		case kSectionAccessories:
 			return NUM_ROW_ACCESSORIES;
@@ -143,8 +144,8 @@
 	switch (section) {
 		case kSectionGeneralInfos:
 			return @"Infos générales";
-		case kSectionDetails:
-			return @"Détails";
+		case kSectionPhysical:
+			return @"Physique";
 		case kSectionFunctions:
 			return @"Fonctions";
 		case kSectionAccessories:
@@ -164,22 +165,29 @@
 	UITableViewCell *cell = nil;
 	
 	if(indexPath.section == kSectionGeneralInfos){
-		switch (indexPath.row) {
-			case kRowName:
-			{
-				cell = [tableView dequeueReusableCellWithIdentifier:@"CellName"];
-				if(cell == nil){
-					cell = [[ProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellName"];
-				}
-				[self fillMainProfileCell:(ProfileViewCell*)cell];
-				return cell;
-			}
-			default:
-				break;
+		cell = [tableView dequeueReusableCellWithIdentifier:@"CellDetails"];
+		if(cell == nil){
+			cell = [[ProfileDetailsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellDetails"];
 		}
-
+		[self fillMainProfileCell:(ProfileDetailsViewCell*)cell];
+		return cell;
 	}
-    
+	else if (indexPath.section == kSectionPhysical) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"CellList"];
+		if(cell == nil){
+			cell = [[ProfileListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellList"];
+		}
+		[self fillPhysicalViewCell:(ProfileListViewCell*)cell];
+		return cell;
+	}
+    else if (indexPath.section == kSectionAccessories) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"CellList"];
+		if(cell == nil){
+			cell = [[ProfileListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellList"];
+		}
+		[self fillAccessoriesViewCell:(ProfileListViewCell*)cell];
+		return cell;
+	}
     cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
@@ -191,25 +199,92 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(indexPath.section == kSectionGeneralInfos){
-		switch (indexPath.row) {
-			case kRowName:
-				return 300.0;
-			default:
-				break;
-		}
+		return [self computeDetailsCellHeight];
+	}
+	else if(indexPath.section == kSectionPhysical )
+	{
+		// only one cell
+		return [self computePhysicalCellHeight];
+	}
+	else if (indexPath.section == kSectionFunctions) 
+	{
+		return [self computeFunctionsCellHeight];
+	}
+	else if (indexPath.section == kSectionAccessories)
+	{
+		
+		return [self computeAccessoriesCellHeight];
 	}
 	return 80.0;
 }
 
--(void)fillMainProfileCell:(ProfileViewCell*) cell
+-(CGFloat)computeDetailsCellHeight
+{
+	return 120.0;
+}
+
+-(CGFloat)computePhysicalCellHeight
+{
+	NSArray* fields = [[NSArray alloc] initWithObjects:@"eyes", @"hair", @"size", @"fur", @"origins", @"style", nil];
+	return [self heightForFields:fields];
+	[fields release];
+}
+
+-(CGFloat)computeFunctionsCellHeight
+{
+	NSArray* fields = [[NSArray alloc] initWithObjects:@"alcohol", @"bathroom", @"bed", @"extra", @"food", @"hifi", nil];
+	return [self heightForFields:fields];
+	[fields release];
+}
+
+-(CGFloat)computeAccessoriesCellHeight
+{
+	NSArray* fields = [[NSArray alloc] initWithObjects:@"hobbies", @"housing", @"job", @"locomotion", @"pets", @"smoke", nil];
+	return [self heightForFields:fields];
+	[fields release];
+}
+
+-(CGFloat)heightForFields:(NSArray*) fields
+{
+	CGFloat height = 20.0; // minimum size for the cell
+	for (NSString* fieldName in fields) {
+		if ([self.profile objectForKey:fieldName] != nil) {
+			height += kPhysicalCellFieldHeight;
+		}
+	}
+	return height;
+}
+				
+-(void)fillMainProfileCell:(ProfileDetailsViewCell*) cell
 {
 	cell.nameLabel.text = [self.profile objectForKey:@"name"];
 	cell.ageLabel.text = [self.profile objectForKey:@"age"];
 	cell.cityLabel.text = [self.profile objectForKey:@"location"];
+	cell.popularityLabel.text = [self.profile objectForKey:@"popularity"];
 	
 	iAUMCache* cache = [[iAUMCache alloc] init];
 	[cache loadImage:[self.profile objectForKey:@"mainPhotoThumb"] forObject:cell];
 	[cache release];
+}
+
+-(void)fillPhysicalViewCell:(ProfileListViewCell*) cell
+{
+	[cell setField:@"Yeux" withValue:[self.profile objectForKey:@"eyes"]];
+	[cell setField:@"Cheveux" withValue:[self.profile objectForKey:@"hair"]];
+	[cell setField:@"Mensurations" withValue:[self.profile objectForKey:@"size"]];
+	[cell setField:@"Pilosité" withValue:[self.profile objectForKey:@"fur"]];
+	[cell setField:@"Origines" withValue:[self.profile objectForKey:@"origins"]];
+	[cell setField:@"Style" withValue:[self.profile objectForKey:@"style"]];
+}
+
+-(void)fillAccessoriesViewCell:(ProfileListViewCell*) cell
+{
+	[cell setField:@"1" withValue:[self.profile objectForKey:@"hobbies"]];
+	[cell setField:@"2" withValue:[self.profile objectForKey:@"housing"]];
+	[cell setField:@"3" withValue:[self.profile objectForKey:@"job"]];
+	[cell setField:@"4" withValue:[self.profile objectForKey:@"locomotion"]];
+	[cell setField:@"5" withValue:[self.profile objectForKey:@"pets"]];
+	[cell setField:@"6" withValue:[self.profile objectForKey:@"smoke"]];
 }
 
 /*

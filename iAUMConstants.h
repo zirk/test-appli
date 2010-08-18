@@ -23,3 +23,4 @@
 
 
 #define kAppListCellHeight 75.0
+#define kPhysicalCellFieldHeight 20.0
