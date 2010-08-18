@@ -219,16 +219,16 @@
 	else if(indexPath.section == kSectionPhysical )
 	{
 		// only one cell
-		return [self computePhysicalCellHeight];
+		return [self computeProfileListCellHeight:self.physicalFieldsDisplayName];
 	}
 	else if (indexPath.section == kSectionFunctions) 
 	{
-		return [self computeFunctionsCellHeight];
+		//return [self computeProfileListCellHeight];
 	}
 	else if (indexPath.section == kSectionAccessories)
 	{
 		
-		return [self computeAccessoriesCellHeight];
+		return [self computeProfileListCellHeight:self.accessoriesFieldsDisplayName];
 	}
 	return 80.0;
 }
@@ -238,21 +238,9 @@
 	return 120.0;
 }
 
--(CGFloat)computePhysicalCellHeight
+-(CGFloat)computeProfileListCellHeight:(NSDictionary*) dico
 {
-	return [self heightForFields:self.physicalFieldsDisplayName];
-}
-
--(CGFloat)computeFunctionsCellHeight
-{
-	NSArray* fields = [[NSArray alloc] initWithObjects:@"alcohol", @"bathroom", @"bed", @"extra", @"food", @"hifi", nil];
-	return 20.0;//[self heightForFields:fields];
-	[fields release];
-}
-
--(CGFloat)computeAccessoriesCellHeight
-{
-	return [self heightForFields:self.accessoriesFieldsDisplayName];
+	return [self heightForFields:dico];
 }
 
 -(CGFloat)heightForFields:(NSDictionary*) fields

@@ -64,9 +64,7 @@ enum SectionPhotosRows {
 -(void) fillProfileListViewCell:(ProfileListViewCell*)cell with:(NSDictionary*)dico;
 
 -(CGFloat)computeDetailsCellHeight;
--(CGFloat)computePhysicalCellHeight;
--(CGFloat)computeAccessoriesCellHeight;
--(CGFloat)computeFunctionsCellHeight;
+-(CGFloat)computeProfileListCellHeight:(NSDictionary*) dico;
 -(CGFloat)heightForFields:(NSDictionary*)fields;
 
 @property (retain) NSString* userId;
