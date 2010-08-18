@@ -2,7 +2,7 @@
 //  PhysicalView.m
 //  iAUM
 //
-//  Created by Dirk Amadori on 18/08/10.
+//  Created by dirk on 18/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -26,7 +26,7 @@
 
 -(void) setField:(NSString*)fieldName withValue:(NSString*)fieldValue
 {
-	if(fieldValue != nil){
+	if(fieldValue != nil && [fieldValue length] > 0){
 		[self.fields setObject:fieldValue forKey:fieldName];
 		[self setNeedsDisplay];
 	}
@@ -84,7 +84,7 @@
 		[key drawInRect:fieldRect withFont:[UIFont systemFontOfSize:15]];
 		fieldRect.origin.x += 100.0;
 		[((NSString*)[self.fields objectForKey:key]) drawInRect:fieldRect withFont:[UIFont systemFontOfSize:15]];
-		fieldRect.origin.y += kPhysicalCellFieldHeight;
+		fieldRect.origin.y += kProfileCellFieldHeight;
 		fieldRect.origin.x = 15.0;
 	}
 	//[super drawRect:rect];

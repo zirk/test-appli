@@ -2,7 +2,7 @@
 //  _ProfileViewController.h
 //  iAUM
 //
-//  Created by Dirk Amadori on 16/08/10.
+//  Created by dirk on 16/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
@@ -51,24 +51,28 @@ enum SectionPhotosRows {
 @interface ProfileViewController : UITableViewController {
 	NSString* userId;
 	NSDictionary* profile;
+	
+	NSDictionary* physicalFieldsDisplayName;
+	NSDictionary* accessoriesFieldsDisplayName;
+	
 }
 
 -(id) initWithUserId:(NSString*) someUserId andName:(NSString*)name;
 -(void) asynchronouslyLoadProfile;
 -(void) loadProfile;
 -(void) fillMainProfileCell:(ProfileDetailsViewCell*)cell;
--(void) fillPhysicalViewCell:(ProfileListViewCell*)cell;
--(void) fillAccessoriesViewCell:(ProfileListViewCell*)cell;
+-(void) fillProfileListViewCell:(ProfileListViewCell*)cell with:(NSDictionary*)dico;
 
 -(CGFloat)computeDetailsCellHeight;
 -(CGFloat)computePhysicalCellHeight;
 -(CGFloat)computeAccessoriesCellHeight;
 -(CGFloat)computeFunctionsCellHeight;
--(CGFloat)heightForFields:(NSArray*)fields;
+-(CGFloat)heightForFields:(NSDictionary*)fields;
 
 @property (retain) NSString* userId;
 @property (retain) NSDictionary* profile;
-
+@property (retain) NSDictionary* physicalFieldsDisplayName;
+@property (retain) NSDictionary* accessoriesFieldsDisplayName;
 
 
 @end

@@ -14,7 +14,7 @@
 
 @implementation ProfileViewController
 
-@synthesize userId, profile;
+@synthesize userId, profile, physicalFieldsDisplayName, accessoriesFieldsDisplayName;
 
 #pragma mark -
 #pragma mark Initialization
@@ -26,6 +26,19 @@
 		self.userId = someUserId;
 		self.title = name;
 		NSLog(@"userid: %@", self.userId);
+		self.physicalFieldsDisplayName = [[NSDictionary alloc] initWithObjectsAndKeys:@"Yeux", @"eyes", 
+										                                              @"Cheveux", @"hair", 
+																					  @"Mensurations", @"size", 
+																					  @"Pilosité", @"fur",
+																					  @"Origines", @"origins", 
+																					  @"Style", @"style", nil ]; 
+
+		self.accessoriesFieldsDisplayName = [[NSDictionary alloc] initWithObjectsAndKeys:@"Hobbies", @"hobbies",
+																						 @"Logement", @"housing",
+																						 @"Travail", @"job",
+																						 @"Locomotion", @"locomotion",
+																						 @"Animaux", @"pets",
+																						 @"Tabac", @"smoke", nil];
 	}
 	return self;
 }
@@ -177,7 +190,7 @@
 		if(cell == nil){
 			cell = [[ProfileListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellList"];
 		}
-		[self fillPhysicalViewCell:(ProfileListViewCell*)cell];
+		[self fillProfileListViewCell:(ProfileListViewCell*)cell with:self.physicalFieldsDisplayName];
 		return cell;
 	}
     else if (indexPath.section == kSectionAccessories) {
@@ -185,9 +198,11 @@
 		if(cell == nil){
 			cell = [[ProfileListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellList"];
 		}
-		[self fillAccessoriesViewCell:(ProfileListViewCell*)cell];
+		[self fillProfileListViewCell:(ProfileListViewCell*)cell with:self.accessoriesFieldsDisplayName];
 		return cell;
 	}
+	
+	// fallback
     cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
@@ -225,31 +240,28 @@
 
 -(CGFloat)computePhysicalCellHeight
 {
-	NSArray* fields = [[NSArray alloc] initWithObjects:@"eyes", @"hair", @"size", @"fur", @"origins", @"style", nil];
-	return [self heightForFields:fields];
-	[fields release];
+	return [self heightForFields:self.physicalFieldsDisplayName];
 }
 
 -(CGFloat)computeFunctionsCellHeight
 {
 	NSArray* fields = [[NSArray alloc] initWithObjects:@"alcohol", @"bathroom", @"bed", @"extra", @"food", @"hifi", nil];
-	return [self heightForFields:fields];
+	return 20.0;//[self heightForFields:fields];
 	[fields release];
 }
 
 -(CGFloat)computeAccessoriesCellHeight
 {
-	NSArray* fields = [[NSArray alloc] initWithObjects:@"hobbies", @"housing", @"job", @"locomotion", @"pets", @"smoke", nil];
-	return [self heightForFields:fields];
-	[fields release];
+	return [self heightForFields:self.accessoriesFieldsDisplayName];
 }
 
--(CGFloat)heightForFields:(NSArray*) fields
+-(CGFloat)heightForFields:(NSDictionary*) fields
 {
 	CGFloat height = 20.0; // minimum size for the cell
-	for (NSString* fieldName in fields) {
-		if ([self.profile objectForKey:fieldName] != nil) {
-			height += kPhysicalCellFieldHeight;
+	for (NSString* fieldName in [fields allKeys]) {
+		NSLog(@"key %@", fieldName);
+		if ([self.profile objectForKey:fieldName] != nil && [[self.profile objectForKey:fieldName] length] > 0) {
+			height += kProfileCellFieldHeight;
 		}
 	}
 	return height;
@@ -267,25 +279,13 @@
 	[cache release];
 }
 
--(void)fillPhysicalViewCell:(ProfileListViewCell*) cell
+-(void)fillProfileListViewCell:(ProfileListViewCell*) cell with:(NSDictionary*) dico
 {
-	[cell setField:@"Yeux" withValue:[self.profile objectForKey:@"eyes"]];
-	[cell setField:@"Cheveux" withValue:[self.profile objectForKey:@"hair"]];
-	[cell setField:@"Mensurations" withValue:[self.profile objectForKey:@"size"]];
-	[cell setField:@"Pilosité" withValue:[self.profile objectForKey:@"fur"]];
-	[cell setField:@"Origines" withValue:[self.profile objectForKey:@"origins"]];
-	[cell setField:@"Style" withValue:[self.profile objectForKey:@"style"]];
+	for (NSString* key in [dico allKeys]) {
+		[cell setField:[dico objectForKey:key] withValue:[self.profile objectForKey:key]];
+	}
 }
 
--(void)fillAccessoriesViewCell:(ProfileListViewCell*) cell
-{
-	[cell setField:@"1" withValue:[self.profile objectForKey:@"hobbies"]];
-	[cell setField:@"2" withValue:[self.profile objectForKey:@"housing"]];
-	[cell setField:@"3" withValue:[self.profile objectForKey:@"job"]];
-	[cell setField:@"4" withValue:[self.profile objectForKey:@"locomotion"]];
-	[cell setField:@"5" withValue:[self.profile objectForKey:@"pets"]];
-	[cell setField:@"6" withValue:[self.profile objectForKey:@"smoke"]];
-}
 
 /*
 // Override to support conditional editing of the table view.
@@ -359,6 +359,11 @@
 
 
 - (void)dealloc {
+	[self.physicalFieldsDisplayName release];
+	[self.accessoriesFieldsDisplayName release];
+	[self.userId release];
+	[self.profile release];
+	
     [super dealloc];
 }
 

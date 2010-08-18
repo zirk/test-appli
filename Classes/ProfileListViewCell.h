@@ -2,7 +2,7 @@
 //  PhysicalView.h
 //  iAUM
 //
-//  Created by Dirk Amadori on 18/08/10.
+//  Created by dirk on 18/08/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
