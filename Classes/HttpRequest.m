@@ -58,9 +58,9 @@
 {
 	if (![iAUMSettings get:kAppSettingsLogin])
 		return NO;
-	[self addParam:@"email" value:[iAUMSettings get:kAppSettingsLogin]];
-	[self addParam:@"password" value:[iAUMSettings get:kAppSettingsPassword]];
-	[self addParam:@"format" value:@"json"];
+	[self addParam:kApiLogin value:[iAUMSettings get:kAppSettingsLogin]];
+	[self addParam:kApiPassword value:[iAUMSettings get:kAppSettingsPassword]];
+	[self addParam:kApiFormat value:kApiFormatType];
 
 	NSString* signature = [self sign];
 	
@@ -95,7 +95,7 @@
 			NSLog(@"rsponse was not a dictionary");
 		}
 		else {
-			self.response = [self.response objectForKey:@"response"];
+			self.response = [self.response objectForKey:kApiResponse];
 			NSLog(@"SOME RESPONSE FROM JSON %@", self.response);
 		}
 		[request release];

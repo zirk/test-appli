@@ -11,6 +11,7 @@
 #import "SettingsViewController.h"
 #import "VisitsViewController.h"
 #import "BasketViewController.h"
+#import "SigninViewController.h"
 
 @implementation iAUMAppDelegate
 
@@ -24,7 +25,9 @@
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     // Override point for customization after application launch.
 	self.tabBar = [[UITabBarController alloc] init];
+	[self.tabBar release];
 	SettingsViewController* settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	SigninViewController* signinVC = [[SigninViewController alloc] init];
 
 	CharmsViewController* charmsVC = [[CharmsViewController alloc] init];
 	UINavigationController* charmsNC = [[UINavigationController alloc] initWithRootViewController:charmsVC];
@@ -38,14 +41,16 @@
 	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
 	basketsNC.navigationBar.tintColor = [UIColor darkGrayColor];
 
-	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
+	NSArray* viewControllers = [[NSArray alloc] initWithObjects:signinVC, charmsNC, visitsNC, basketsNC, settingsVC, nil];
 
 	[self.tabBar setViewControllers:viewControllers animated:YES];
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	[window addSubview:[self.tabBar view]];
-    [window makeKeyAndVisible];	
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	[self.window addSubview:self.tabBar.view];
+    [self.window makeKeyAndVisible];	
 	[viewControllers release];
+	//[self.tabBar presentModalViewController:settingsVC animated:YES];
 	[settingsVC release];
+	[signinVC release];
 	[charmsVC release];
 	[charmsNC release];
 	[visitsVC release];

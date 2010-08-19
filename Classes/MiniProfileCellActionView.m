@@ -73,6 +73,12 @@
 	//[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Highlighted.png", name]] forState:UIControlStateHighlighted];
 	//[someButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"actionView%@Selected.png", name]] forState:UIControlStateSelected];
 	[someButton setTitle:title forState:UIControlStateNormal];
+	/*
+	someButton.layer.shadowColor = [UIColor redColor].CGColor;
+	someButton.layer.shadowOffset = CGSizeZero;
+	someButton.layer.shadowRadius = 2.0;
+	someButton.layer.shadowOpacity = 1.0;
+	 */
 	[someButton addTarget:self action:@selector(setLabelText:) forControlEvents:UIControlEventTouchDown];
 	[someButton addTarget:self action:@selector(clearLabelText) forControlEvents:UIControlEventTouchUpInside];
 	[someButton addTarget:self action:@selector(clearLabelText) forControlEvents:UIControlEventTouchUpOutside];

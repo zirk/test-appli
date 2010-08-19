@@ -11,7 +11,8 @@
 
 @interface SettingsViewController : UITableViewController <UITextFieldDelegate>
 {
-	NSArray*		        cells;
+	NSArray* cells;
+	
 }
 @property (nonatomic, retain) NSArray* cells;
 

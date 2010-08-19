@@ -66,7 +66,7 @@
 	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:self.listApiUrl];
 
 	if ([httpRequest send] == YES)
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:@"data"] objectForKey:@"people"] waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:kApiResponseData] objectForKey:@"people"] waitUntilDone:NO];
 	else
 		[self performSelectorOnMainThread:@selector(refreshList:) withObject:nil waitUntilDone:NO];;
 	[httpRequest release];
@@ -103,7 +103,6 @@
 	[self.tableView addSubview:self.loadingView];
 	[self.loadingView release];
 	self.tableView.rowHeight = kAppListCellHeight;
-
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -227,10 +226,18 @@
 		self.tabBarItem.badgeValue = nil;
 }
 
-- (void) kickFromListWithId:(NSString*)aumId
+- (void) kickFromListWithId:(NSNumber*)aumId
 {
+	/* Method 1
+	NSArray* indexes = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[aumId intValue] inSection:0]];
+	[self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationBottom];
+	[self.list removeObjectAtIndex:[aumId intValue]];
+	if ([aumId intValue] == self.swappedViewCell)
+		self.swappedViewCell = -1;
+	return ;
 	if (self.kickingQueue.count < 1)
-		return ;
+		return ;*/
+	/* Method 2 */
 	NSUInteger indexes[] = {0, 0};
 	for (NSNumber* rowNumber in self.kickingQueue) {
 		if ([rowNumber intValue] == self.swappedViewCell)
@@ -243,6 +250,7 @@
 	[self.kickingQueue removeAllObjects];
 	[self refreshTabBarItem];
 	return ;
+	/* Method 3
 	if(self.cellToRemove > -1) {
 		[self.list removeObjectAtIndex:self.cellToRemove];
 		NSUInteger indexes[] = {0, self.cellToRemove};
@@ -252,8 +260,8 @@
 	}
 	if (self.cellToRemove == self.swappedViewCell)
 		self.swappedViewCell = -1;
-	self.cellToRemove = -1;
-	/*
+	self.cellToRemove = -1;*/
+	/* Method 4
 	for (NSDictionary* miniProfile in self.list) {
 		if ([aumId compare:[miniProfile objectForKey:@"aumId"]] == NSOrderedSame)
 		{
@@ -268,8 +276,8 @@
 - (void) observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context
 {
 	NSLog(@"keyPath : %@\nobject : %@\nchange : %@", keyPath, object, change);
-	if ([keyPath compare:@"kicked"] == NSOrderedSame)
-		[self kickFromListWithId:((ProfileViewController*)object).userId];
+	//if ([keyPath compare:@"kicked"] == NSOrderedSame)
+	//	[self kickFromListWithId:((ProfileViewController*)object).userId];
 }
 
 
@@ -277,7 +285,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MiniProfileCell *cell = (MiniProfileCell*)[tableView cellForRowAtIndexPath:indexPath];
+    MiniProfileCell *cell = (MiniProfileCell*)[self.tableView cellForRowAtIndexPath:indexPath];
 	NSLog(@"cell %@", cell.name);
 	NSLog(@"userId: %@", [[self.list objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
 	
@@ -309,12 +317,12 @@
 	 */
 }
 
-
 -(void) displayProfile
 {
 	if(self.swappedViewCell != -1)
 	{
 		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"]];
+		//[self presentModalViewController:pvc animated:YES];
 		[self.navigationController pushViewController:pvc animated:YES];
 		[pvc release];
 	}

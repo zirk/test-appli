@@ -45,7 +45,6 @@
 	
 	if ([httpRequest send] == YES)
 	{
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		//[self performSelectorOnMainThread:@selector(refuse) withObject:[[[httpRequest.response objectForKey:@"response"] objectForKey:@"data"] objectForKey:@"guys"] waitUntilDone:NO];
 		self.profile = [httpRequest.response objectForKey:@"data"];
 		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -284,6 +283,8 @@
 
 
 - (void)dealloc {
+	[self.userId release];
+	[self.profile release];
     [super dealloc];
 }
 

@@ -23,6 +23,7 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     //NSLog(@"style %@", @"prout");
 	if ((self = [super initWithStyle:style])) {
+		self.title = @"Préférences";
 		[self initCells];
 		[self initTabBar];
     }
@@ -125,7 +126,7 @@
 	cell.textLabel.text = @"sap";
     // Configure the cell...
     */
-    return [cells objectAtIndex:[indexPath row]];
+    return [self.cells objectAtIndex:indexPath.row];
 }
 
 
@@ -201,7 +202,6 @@
 //
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	
 	[iAUMSettings set:textField.placeholder withValue:textField.text];
 }
 
@@ -223,7 +223,23 @@
         [((SettingsDetailCell*)[self.cells objectAtIndex:index]).textField becomeFirstResponder];
     }
 	else {
-		[textField resignFirstResponder];
+		[iAUMSettings set:textField.placeholder withValue:textField.text];
+		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/"];		
+		if ([httpRequest send] == YES)
+		{
+			NSString* aumId = [[httpRequest.response objectForKey:kApiResponseExtra] objectForKey:@"aumId"];
+			[iAUMSettings set:kAppSettingsAumId withValue:aumId];
+			//[textField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
+			[textField resignFirstResponder];
+			if (aumId != nil)
+				NSLog(@"successfuly identified %@, it's a %d (0=Girl,1=Boy,2=Alien)", aumId, [iAUMTools getUsersSex:aumId]);
+			else
+				NSLog(@"could not identify, perhaps bad login/password ?");
+		}
+		else {
+			NSLog(@"Error while identifying");
+		}
+		[httpRequest release];
 	}
 
     return YES;
@@ -247,6 +263,7 @@
 
 
 - (void)dealloc {
+	[self.cells release];
     [super dealloc];
 }
 

@@ -42,7 +42,8 @@
 	CGContextBeginPath(context);
 	CGRect rect = CGRectMake(0, 0, w, h);
 	// Set the oval width and height to be quarter of the image width and height
-	[iAUMCGEffects addRoundedRectToPath:context rect:rect width:(w / radius) height:(h / radius)];
+	//[iAUMCGEffects addRoundedRectToPath:context rect:rect width:(w / radius) height:(h / radius)];
+	[iAUMCGEffects addRoundedRectToPath:context rect:rect width:radius height:radius];
 	CGContextClosePath(context);
 	CGContextClip(context);
 	

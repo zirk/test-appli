@@ -99,7 +99,7 @@
 - (void)drawCellContent
 {
 	CGRect imageFrame = CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight);
-	[[iAUMCGEffects roundCornersOfImage:self.picture withRadius:8.0] drawInRect:imageFrame];
+	[[iAUMCGEffects roundCornersOfImage:self.picture withRadius:18.18] drawInRect:imageFrame];
 	[[UIImage imageNamed:@"MiniProfileCellPictureGlare.png"] drawInRect:imageFrame];
 	imageFrame = CGRectMake(295.0, 5.0, 21.0, 21.0);
 	if (self.online == YES)

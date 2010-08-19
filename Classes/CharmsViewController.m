@@ -80,7 +80,7 @@
 		{
 			[self.kickingQueue addObject:rowNumber];
 			self.cellToRemove = self.swappedViewCell;
-			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:rowNumber waitUntilDone:NO];
 			NSLog(@"successfuly accepted %@", userId);
 		}
 		else {
@@ -104,7 +104,7 @@
 		{
 			[self.kickingQueue addObject:rowNumber];
 			self.cellToRemove = self.swappedViewCell;
-			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:userId waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:rowNumber waitUntilDone:NO];
 			NSLog(@"successfuly kicked %@", userId);
 		}
 		else {

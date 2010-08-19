@@ -52,10 +52,9 @@
 	{
 		self.cellView = [[ABTableViewCellView alloc] initWithFrame:self.contentView.frame];
 		self.cellView.opaque = YES;
-		//contentView.tag = 1337;
 		[self addSubview:self.cellView];
 		
-		[cellView release];
+		[self.cellView release];
     }
     return self;
 }
@@ -71,13 +70,13 @@
 	[super setFrame:f];
 	CGRect b = [self bounds];
 	b.size.height -= 1; // leave room for the seperator line
-	[cellView setFrame:b];
+	[self.cellView setFrame:b];
 }
 
 - (void)setNeedsDisplay
 {
 	[super setNeedsDisplay];
-	[cellView setNeedsDisplay];
+	[self.cellView setNeedsDisplay];
 }
 
 - (void)drawContentView:(CGRect)r
