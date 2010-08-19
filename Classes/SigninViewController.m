@@ -135,6 +135,10 @@
 	[self.activityIndicator stopAnimating];
 	if ([success boolValue] == YES) {
 		NSUInteger sex = [iAUMTools getUsersSex:[iAUMSettings get:kAppSettingsAumId]];
+		if (sex == iAUMUserSexUnknown) {
+			//TODO The sex is unknown, ask the user what's his profile's sex
+			NSLog(@"TODO The sex is unknown, ask the user what's his profile's sex");
+		}
 		if (sex == iAUMUserSexMale) {
 			//TODO reconfigure the app for some dude here
 			NSLog(@"TODO reconfigure the app for some dude here");
@@ -142,10 +146,6 @@
 		else if (sex == iAUMUserSexFemale) {
 			//TODO reconfigure the app for some chick here
 			NSLog(@"TODO reconfigure the app for some chick here");
-		}
-		else {
-			//TODO The sex is unknown, ask the user what's his profile's sex and reconfigure
-			NSLog(@"TODO The sex is unknown, ask the user what's his profile's sex and reconfigure");
 		}
 		[self dismissModalViewControllerAnimated:YES];
 	}
