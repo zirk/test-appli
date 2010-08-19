@@ -6,16 +6,16 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "ProfileViewCell.h"
+#import "ProfileDetailsViewCell.h"
 #import "iAUMLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define PICTURE_WIDTH 100.0
 
 
-@implementation ProfileViewCell
+@implementation ProfileDetailsViewCell
 
-@synthesize nameLabel, ageLabel, cityLabel, pictureView;
+@synthesize nameLabel, ageLabel, cityLabel, popularityLabel, pictureView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
@@ -39,6 +39,10 @@
 		self.cityLabel = [[[iAUMLabel alloc] init] autorelease];
 		self.cityLabel.frame = CGRectMake(110.0, 45.0, 180.0, 20.0);
 		[self.contentView addSubview:self.cityLabel];
+		
+		self.popularityLabel = [[[iAUMLabel alloc] init] autorelease];
+		self.popularityLabel.frame = CGRectMake(110.0, 65.0, 180.0, 20.0);
+		[self.contentView addSubview:self.popularityLabel];
 		
 		
 		

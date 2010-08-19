@@ -12,7 +12,7 @@
 
 @implementation iAUMListViewController
 
-@synthesize list, loadingView, isLoading, listApiUrl, swappedViewCell, actionView, cellToRemove, kickingQueue;
+@synthesize list, loadingView, isLoading, listApiUrl, swappedViewCell, actionView, searchBar, searchedList;
 
 #pragma mark -
 #pragma mark Initialization
@@ -21,13 +21,10 @@
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		self.isLoading = NO;
-		self.kickingQueue = [[NSMutableArray alloc] init];
-		[self.kickingQueue release];
-		self.tableView.contentInset = UIEdgeInsetsMake(0, 0.0f, 0.0f, 0.0f);
+		self.searchedList = [[NSMutableArray alloc] init];
 		self.tableView.separatorColor = [UIColor blackColor];
 		self.tableView.backgroundColor = [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
 		self.swappedViewCell = -1;
-		self.cellToRemove = -1;
 		self.actionView = nil;
 		[self initActionView];
 	}
@@ -47,77 +44,39 @@
 	[self initButtons];
 }
 
-- (void) asynchronouslyLoadList
-{
-	if (self.isLoading == YES)
-		return ;
-	self.isLoading = YES;
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[self.loadingView isLoading:self.isLoading];
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.18];
-	self.tableView.contentInset = UIEdgeInsetsMake(kAppListCellHeight, 0.0f, 0.0f, 0.0f);
-	[UIView commitAnimations];
-	[iAUMTools queueOperation:@selector(loadList) withTarget:self withObject:nil];
-}
-
-- (void) loadList
-{
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:self.listApiUrl];
-
-	if ([httpRequest send] == YES)
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:kApiResponseData] objectForKey:@"people"] waitUntilDone:NO];
-	else
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:nil waitUntilDone:NO];;
-	[httpRequest release];
-}
-
--(void) refreshList:(NSArray*) someList
-{
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	self.list = [NSMutableArray arrayWithArray:someList];
-	self.isLoading = NO;
-	[self.loadingView isLoading:self.isLoading];
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.18];
-	self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-	[UIView commitAnimations];
-	[self refreshTabBarItem];
-	[self.tableView reloadData];
-}
-
-
 // implemented by subclass
 -(void) initButtons
 {
 	[[self.actionView buttonForName:@"ViewProfile"] addTarget:self action:@selector(displayProfile) forControlEvents:UIControlEventTouchUpInside];
 }
-
 #pragma mark -
 #pragma mark View lifecycle
 
-
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
+
 	self.loadingView = [[iAUMListLoadingView alloc] init];
 	[self.tableView addSubview:self.loadingView];
 	[self.loadingView release];
+
+	self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, kAppListSearchBarHeight)];
+	self.searchBar.placeholder = @"Douchebag search";
+	self.searchBar.delegate = self;
+	self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	self.searchBar.tintColor = [UIColor darkGrayColor];
+	//[self.tableView addSubview:self.searchBar];
+	self.tableView.tableHeaderView = self.searchBar;
+
 	self.tableView.rowHeight = kAppListCellHeight;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-	if(scrollView.contentOffset.y < -kAppListCellHeight * 1.5){
-		[self asynchronouslyLoadList];
-	}
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (self.list.count < 1)
-	[self asynchronouslyLoadList];
+		[self asynchronouslyLoadList];
  }
 
 /*
@@ -147,15 +106,62 @@
 #pragma mark -
 #pragma mark Table view data source
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	if(scrollView.contentOffset.y < -(kAppListCellHeight)){
+		[self asynchronouslyLoadList];
+	}
+}
+
+- (void) asynchronouslyLoadList
+{
+	if (self.isLoading == YES)
+		return ;
+	self.isLoading = YES;
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	[self.loadingView isLoading:self.isLoading];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.18];
+	self.tableView.contentInset = UIEdgeInsetsMake(kAppListCellHeight + (self.tableView.contentOffset.y < -kAppListCellHeight ? 0.0 : kAppListSearchBarHeight), 0.0, 0.0, 0.0);
+	[UIView commitAnimations];
+	[iAUMTools queueOperation:@selector(loadList) withTarget:self withObject:nil];
+}
+
+- (void) loadList
+{
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:self.listApiUrl];
+	
+	if ([httpRequest send] == YES)
+		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:kApiResponseData] objectForKey:@"people"] waitUntilDone:NO];
+	else
+		[self performSelectorOnMainThread:@selector(refreshList:) withObject:nil waitUntilDone:NO];;
+	[httpRequest release];
+}
+
+-(void) refreshList:(NSArray*) someList
+{
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	self.list = [NSMutableArray arrayWithArray:someList];
+	[self.searchedList removeAllObjects];
+	[self.searchedList addObjectsFromArray:self.list];
+	self.isLoading = NO;
+	[self.loadingView isLoading:self.isLoading];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.18];
+	self.tableView.contentInset = UIEdgeInsetsZero;
+	[UIView commitAnimations];
+	[self refreshTabBarItem];
+	[self.tableView reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [self.list count];
+    return [self.searchedList count];
 }
 
 
@@ -168,7 +174,7 @@
         cell = [[[MiniProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.actionView = self.actionView;
     }
-	[cell loadFromDictionary:(NSDictionary*)[self.list objectAtIndex:indexPath.row]];
+	[cell loadFromDictionary:(NSDictionary*)[self.searchedList objectAtIndex:indexPath.row]];
 
 	// hide the potentially visible actionView of a reused cell
 	if(indexPath.row != self.swappedViewCell)
@@ -226,51 +232,17 @@
 		self.tabBarItem.badgeValue = nil;
 }
 
-- (void) kickFromListWithId:(NSNumber*)aumId
+- (void) kickFromList:(id)object
 {
-	/* Method 1
-	NSArray* indexes = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[aumId intValue] inSection:0]];
-	[self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationBottom];
-	[self.list removeObjectAtIndex:[aumId intValue]];
-	if ([aumId intValue] == self.swappedViewCell)
-		self.swappedViewCell = -1;
+	NSDictionary* miniProfile = (NSDictionary*)object;
+	NSUInteger indexInSearchedList = [self.searchedList indexOfObject:miniProfile];
+	if (indexInSearchedList == NSNotFound)
+		return ;
+	[self.list removeObject:miniProfile];
+	[self.searchedList removeObjectAtIndex:indexInSearchedList];
+	NSArray* indexPaths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexInSearchedList inSection:0]];
+	[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 	return ;
-	if (self.kickingQueue.count < 1)
-		return ;*/
-	/* Method 2 */
-	NSUInteger indexes[] = {0, 0};
-	for (NSNumber* rowNumber in self.kickingQueue) {
-		if ([rowNumber intValue] == self.swappedViewCell)
-			self.swappedViewCell = -1;
-		[self.list removeObjectAtIndex:[rowNumber intValue]];
-		indexes[1] = [rowNumber intValue];
-		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-	}
-	[self.kickingQueue removeAllObjects];
-	[self refreshTabBarItem];
-	return ;
-	/* Method 3
-	if(self.cellToRemove > -1) {
-		[self.list removeObjectAtIndex:self.cellToRemove];
-		NSUInteger indexes[] = {0, self.cellToRemove};
-		NSIndexPath* indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-		[self refreshTabBarItem];
-	}
-	if (self.cellToRemove == self.swappedViewCell)
-		self.swappedViewCell = -1;
-	self.cellToRemove = -1;*/
-	/* Method 4
-	for (NSDictionary* miniProfile in self.list) {
-		if ([aumId compare:[miniProfile objectForKey:@"aumId"]] == NSOrderedSame)
-		{
-			[self.list removeObject:miniProfile];
-			[self refreshTableView];
-			self.swappedViewCell = -1;
-			break ;
-		}
-	}	*/
 }
 
 - (void) observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context
@@ -287,7 +259,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MiniProfileCell *cell = (MiniProfileCell*)[self.tableView cellForRowAtIndexPath:indexPath];
 	NSLog(@"cell %@", cell.name);
-	NSLog(@"userId: %@", [[self.list objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
+	NSLog(@"userId: %@", [[self.searchedList objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
 	
 	// used to refresh the old swapped cell without scrolling;
 	if(self.swappedViewCell != -1){
@@ -321,11 +293,68 @@
 {
 	if(self.swappedViewCell != -1)
 	{
-		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"]];
-		//[self presentModalViewController:pvc animated:YES];
+		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.searchedList objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"] andName:[[self.searchedList objectAtIndex:self.swappedViewCell] objectForKey:@"name"]];
 		[self.navigationController pushViewController:pvc animated:YES];
 		[pvc release];
 	}
+}
+
+#pragma mark -
+#pragma mark Search bar delegate
+
+- (void)swapActionViewBeforeSearch:(BOOL)animated
+{
+	if (self.swappedViewCell != -1)
+		[(MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]] displayProfileViewWithTransition:animated];
+	self.swappedViewCell = -1;
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)someSearchBar
+{
+	[self swapActionViewBeforeSearch:YES];
+	someSearchBar.showsCancelButton = YES;
+	[self.searchedList removeAllObjects];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)someSearchBar
+{
+	[self swapActionViewBeforeSearch:YES];
+	someSearchBar.showsCancelButton = NO;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)someSearchBar
+{
+	someSearchBar.showsCancelButton = NO;
+	someSearchBar.text = nil;
+	[someSearchBar resignFirstResponder];
+	[self.searchedList removeAllObjects];
+	[self.searchedList addObjectsFromArray:self.list];
+	[self swapActionViewBeforeSearch:NO];
+	[self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)someSearchBar
+{
+	[someSearchBar resignFirstResponder];
+}
+
+- (void)searchBar:(UISearchBar *)someSearchBar textDidChange:(NSString *)searchText
+{
+	[self swapActionViewBeforeSearch:NO];
+	[self.searchedList removeAllObjects];
+	if ([searchText isEqualToString:@""]) {
+		[self.searchedList addObjectsFromArray:self.list];
+		[self.tableView reloadData];
+		return ;
+	}
+	NSUInteger searchOptions = (NSCaseInsensitiveSearch|NSLiteralSearch|NSDiacriticInsensitiveSearch);
+	for (NSDictionary* miniPrfile in self.list) {
+		NSRange range = [(NSString*)[miniPrfile objectForKey:@"name"] rangeOfString:searchText options:searchOptions];
+		if (range.location == NSNotFound)
+			continue ;
+		[self.searchedList addObject:miniPrfile];
+	}
+	[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -348,7 +377,8 @@
 	[self.list release];
 	[self.actionView release];
 	[self.loadingView release];
-	[self.kickingQueue release];
+	[self.searchBar release];
+	[self.searchedList release];
     [super dealloc];
 }
 

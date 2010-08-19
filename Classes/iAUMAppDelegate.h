@@ -17,5 +17,7 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UITabBarController *tabBar;
 
+- (void)showSignInScreen;
+
 @end
 

@@ -9,16 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "ABTableViewCell.h"
 
-@interface ProfileViewCell : UITableViewCell {
+@interface ProfileDetailsViewCell : UITableViewCell {
 	UILabel* nameLabel;
 	UILabel* ageLabel;
 	UILabel* cityLabel;
+	UILabel* popularityLabel;
 	UIImageView*  pictureView;
 }
 
 @property (retain) UILabel* nameLabel;
 @property (retain) UILabel* ageLabel;
 @property (retain) UILabel* cityLabel;
+@property (retain) UILabel* popularityLabel;
+
 @property (retain) UIImageView*  pictureView;
 
 @end

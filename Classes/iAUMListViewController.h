@@ -15,15 +15,17 @@
 #import "iAUMTools.h"
 #import "iAUMListLoadingView.h"
 
-@interface iAUMListViewController : UITableViewController {
+#define kAppListSearchBarHeight 40.0
+
+@interface iAUMListViewController : UITableViewController <UISearchBarDelegate> {
 	NSString* listApiUrl;
-	NSMutableArray* list;
-	NSMutableArray* kickingQueue;
 	iAUMListLoadingView* loadingView;
+	MiniProfileCellActionView* actionView;
+	UISearchBar* searchBar;
+	NSMutableArray* searchedList; //displayed list, contains full or filtered people list
+	NSMutableArray* list; //contains full people list
 	BOOL isLoading;
 	NSInteger swappedViewCell;
-	NSInteger cellToRemove;
-	MiniProfileCellActionView* actionView;
 }
 
 -(void) refreshList:(NSArray*) list;
@@ -33,14 +35,16 @@
 -(void) initButtons;
 -(void) initActionView;
 -(void) displayProfile;
+-(void) kickFromList:(id)object;
+-(void) swapActionViewBeforeSearch:(BOOL)animated;
 
 @property (nonatomic, retain) NSMutableArray* list;
 @property (nonatomic, assign) NSString* listApiUrl;
 @property (nonatomic, retain) iAUMListLoadingView* loadingView;
 @property (nonatomic, assign) NSInteger swappedViewCell;
-@property (nonatomic, assign) NSInteger cellToRemove;
 @property (nonatomic, assign) BOOL isLoading;
 @property (nonatomic, retain) MiniProfileCellActionView* actionView;
-@property (nonatomic, retain) NSMutableArray* kickingQueue;
+@property (nonatomic, assign) UISearchBar* searchBar;
+@property (nonatomic, assign) NSMutableArray* searchedList;
 
 @end

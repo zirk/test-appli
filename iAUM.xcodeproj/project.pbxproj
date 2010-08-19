@@ -12,11 +12,12 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		431C5868121C5B23006A3063 /* ProfileListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 431C5867121C5B23006A3063 /* ProfileListViewCell.m */; };
 		435E82341219872D001F6FE9 /* actionViewViewProfileNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 435E82331219872D001F6FE9 /* actionViewViewProfileNormal.png */; };
 		435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83381219A6EA001F6FE9 /* iAUMLabel.m */; };
 		435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */; };
 		435E83F21219CDFC001F6FE9 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E83F11219CDFC001F6FE9 /* ProfileViewController.m */; };
-		435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E845B1219E592001F6FE9 /* ProfileViewCell.m */; };
+		435E845C1219E592001F6FE9 /* ProfileDetailsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 435E845B1219E592001F6FE9 /* ProfileDetailsViewCell.m */; };
 		439AA3A4121413A7004AC2E4 /* iAUMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA3A3121413A7004AC2E4 /* iAUMCache.m */; };
 		439AA5A91214E92E004AC2E4 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 439AA5A81214E92E004AC2E4 /* Makefile */; };
 		439AA60112160B58004AC2E4 /* iAUMListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439AA60012160B58004AC2E4 /* iAUMListViewController.m */; };
@@ -71,6 +72,8 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* iAUM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUM_Prefix.pch; sourceTree = "<group>"; };
+		431C5866121C5B23006A3063 /* ProfileListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileListViewCell.h; sourceTree = "<group>"; };
+		431C5867121C5B23006A3063 /* ProfileListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileListViewCell.m; sourceTree = "<group>"; };
 		435E82331219872D001F6FE9 /* actionViewViewProfileNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = actionViewViewProfileNormal.png; path = charm/actionViewViewProfileNormal.png; sourceTree = "<group>"; };
 		435E83371219A6EA001F6FE9 /* iAUMLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMLabel.h; sourceTree = "<group>"; };
 		435E83381219A6EA001F6FE9 /* iAUMLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMLabel.m; sourceTree = "<group>"; };
@@ -78,8 +81,8 @@
 		435E835D1219A8E5001F6FE9 /* iAUMImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMImageViewer.m; sourceTree = "<group>"; };
 		435E83F01219CDFC001F6FE9 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		435E83F11219CDFC001F6FE9 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
-		435E845A1219E592001F6FE9 /* ProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewCell.h; sourceTree = "<group>"; };
-		435E845B1219E592001F6FE9 /* ProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewCell.m; sourceTree = "<group>"; };
+		435E845A1219E592001F6FE9 /* ProfileDetailsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailsViewCell.h; sourceTree = "<group>"; };
+		435E845B1219E592001F6FE9 /* ProfileDetailsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileDetailsViewCell.m; sourceTree = "<group>"; };
 		439AA3A2121413A7004AC2E4 /* iAUMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAUMCache.h; sourceTree = "<group>"; };
 		439AA3A3121413A7004AC2E4 /* iAUMCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iAUMCache.m; sourceTree = "<group>"; };
 		439AA5A81214E92E004AC2E4 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -234,6 +237,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		431C5865121C5AD2006A3063 /* ProfileViews */ = {
+			isa = PBXGroup;
+			children = (
+				435E845A1219E592001F6FE9 /* ProfileDetailsViewCell.h */,
+				435E845B1219E592001F6FE9 /* ProfileDetailsViewCell.m */,
+				431C5866121C5B23006A3063 /* ProfileListViewCell.h */,
+				431C5867121C5B23006A3063 /* ProfileListViewCell.m */,
+			);
+			name = ProfileViews;
+			sourceTree = "<group>";
+		};
 		435E823512198749001F6FE9 /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,6 +259,7 @@
 		439AA7A51216BC76004AC2E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				431C5865121C5AD2006A3063 /* ProfileViews */,
 				43AF7BE112180B8900AFE61E /* ABTableViewCell.h */,
 				43AF7BE212180B8900AFE61E /* ABTableViewCell.m */,
 				43CA47C81210BB580008B320 /* SettingsDetailCell.h */,
@@ -255,8 +270,6 @@
 				7FC62DC61218BE750047B588 /* MiniProfileCellActionViewCharms.m */,
 				435E83371219A6EA001F6FE9 /* iAUMLabel.h */,
 				435E83381219A6EA001F6FE9 /* iAUMLabel.m */,
-				435E845A1219E592001F6FE9 /* ProfileViewCell.h */,
-				435E845B1219E592001F6FE9 /* ProfileViewCell.m */,
 				7F06D7F4121A35FB0077472F /* MiniProfileCellActionView.h */,
 				7F06D7F5121A35FB0077472F /* MiniProfileCellActionView.m */,
 				7F06D968121AD6DB0077472F /* MiniProfileCellActionViewVisits.h */,
@@ -483,13 +496,14 @@
 				435E83391219A6EA001F6FE9 /* iAUMLabel.m in Sources */,
 				435E835E1219A8E5001F6FE9 /* iAUMImageViewer.m in Sources */,
 				435E83F21219CDFC001F6FE9 /* ProfileViewController.m in Sources */,
-				435E845C1219E592001F6FE9 /* ProfileViewCell.m in Sources */,
+				435E845C1219E592001F6FE9 /* ProfileDetailsViewCell.m in Sources */,
 				7F06D7F6121A35FB0077472F /* MiniProfileCellActionView.m in Sources */,
 				7F06D96A121AD6DB0077472F /* MiniProfileCellActionViewVisits.m in Sources */,
 				7F06D985121ADB1D0077472F /* MiniProfileCellActionViewBaskets.m in Sources */,
 				7F06DAFD121B11F60077472F /* iAUMCGEffects.m in Sources */,
 				7F06DD1E121B61520077472F /* iAUMListLoadingView.m in Sources */,
 				7F06DEE0121C270D0077472F /* SigninViewController.m in Sources */,
+				431C5868121C5B23006A3063 /* ProfileListViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

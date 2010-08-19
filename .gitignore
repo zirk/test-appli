@@ -2,6 +2,7 @@ iAUM.xcodeproj/*.mode*
 iAUM.xcodeproj/*.pbxuser
 build/*
 ._*
+*~
 */._*
 *.o
 */*.o

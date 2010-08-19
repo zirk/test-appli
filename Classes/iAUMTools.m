@@ -84,6 +84,8 @@
 
 +(NSUInteger) getUsersSex:(NSString*)aumId
 {
+	if (aumId == nil && aumId.length < 1)
+		return iAUMUserSexUnknown;
 	if ([aumId characterAtIndex:0] == '2' && [aumId length] > 1)
 		return iAUMUserSexMale;
 	if ([aumId characterAtIndex:0] == '1' && [aumId length] > 1)

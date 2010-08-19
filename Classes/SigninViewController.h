@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SigninViewController : UIViewController {
+@interface SigninViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate> {
 	UITextField* loginTextField;
 	UITextField* passwordTextField;
 	UIButton* signinButton;
 	UIActivityIndicatorView* activityIndicator;
 	UILabel* tmp;
+	UIAlertView* alertView;
 }
 
 @property (nonatomic, retain) UITextField* loginTextField;
@@ -22,8 +23,11 @@
 @property (nonatomic, retain) UIButton* signinButton;
 @property (nonatomic, retain) UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, assign) UILabel* tmp;
+@property (nonatomic, retain) UIAlertView* alertView;
 
 - (UITextField*)buildSigninTextField:(NSString*)placeholder withFrame:(CGRect)frame;
-- (IBAction) signIn;
+- (IBAction)signIn;
+- (BOOL)remoteSignIn;
+- (void)displayError:(NSString *)message;
 
 @end

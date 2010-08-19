@@ -27,7 +27,6 @@
 	self.tabBar = [[UITabBarController alloc] init];
 	[self.tabBar release];
 	SettingsViewController* settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	SigninViewController* signinVC = [[SigninViewController alloc] init];
 
 	CharmsViewController* charmsVC = [[CharmsViewController alloc] init];
 	UINavigationController* charmsNC = [[UINavigationController alloc] initWithRootViewController:charmsVC];
@@ -41,23 +40,30 @@
 	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
 	basketsNC.navigationBar.tintColor = [UIColor darkGrayColor];
 
-	NSArray* viewControllers = [[NSArray alloc] initWithObjects:signinVC, charmsNC, visitsNC, basketsNC, settingsVC, nil];
+	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
 
 	[self.tabBar setViewControllers:viewControllers animated:YES];
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[self.window addSubview:self.tabBar.view];
     [self.window makeKeyAndVisible];	
 	[viewControllers release];
-	//[self.tabBar presentModalViewController:settingsVC animated:YES];
 	[settingsVC release];
-	[signinVC release];
 	[charmsVC release];
 	[charmsNC release];
 	[visitsVC release];
 	[visitsNC release];
 	[basketsVC release];
 	[basketsNC release];
+	if ([iAUMSettings get:kAppSettingsAumId] == nil)
+		[self showSignInScreen];
 	return YES;
+}
+
+- (void)showSignInScreen
+{
+	SigninViewController* signinVC = [[SigninViewController alloc] init];
+	[self.tabBar presentModalViewController:signinVC animated:NO];
+	[signinVC release];
 }
 
 

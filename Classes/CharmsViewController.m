@@ -49,7 +49,7 @@
 	{
 		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[iAUMTools queueOperation:@selector(accept:) withTarget:self withObject:[NSNumber numberWithInt:self.swappedViewCell]];
+		[iAUMTools queueOperation:@selector(accept:) withTarget:self withObject:[self.searchedList objectAtIndex:self.swappedViewCell]];
 		NSLog(@"queue gedin operation");
 	}
 }
@@ -57,30 +57,29 @@
 
 - (IBAction) asynchronouslyRefuse
 {
-//	NSLog(@"gedaoue %@", self.userId);
 	if(self.swappedViewCell != -1)
 	{
 		[self.actionView disableButtons];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		[iAUMTools queueOperation:@selector(refuse:) withTarget:self withObject:[NSNumber numberWithInt:self.swappedViewCell]];
+		[iAUMTools queueOperation:@selector(refuse:) withTarget:self withObject:[self.searchedList objectAtIndex:self.swappedViewCell]];
 		NSLog(@"queue gedaoude operation");
 	}
 }
 
 
--(void) accept:(NSNumber*)rowNumber
+-(void) accept:(NSDictionary*)miniProfile
 {
-	if(self.swappedViewCell != -1)
+	NSString* userId;
+	if (miniProfile != nil && (userId = [miniProfile objectForKey:@"aumId"]) != nil)
 	{
-		NSString* userId = [[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"];
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
 		[httpRequest addParam:@"aumId" value:userId];
-		
-		if ([httpRequest send] == YES)
+
+		//if ([httpRequest send] == YES)
+		[NSThread sleepForTimeInterval:5];
+		if (YES) // FOR TESTING
 		{
-			[self.kickingQueue addObject:rowNumber];
-			self.cellToRemove = self.swappedViewCell;
-			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:rowNumber waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(kickFromList:) withObject:miniProfile waitUntilDone:NO];
 			NSLog(@"successfuly accepted %@", userId);
 		}
 		else {
@@ -89,22 +88,22 @@
 		[httpRequest release];
 	}
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	[self.actionView enableButtons];
+	[self.actionView performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
 }
 
-- (IBAction) refuse:(NSNumber*)rowNumber
+- (IBAction) refuse:(NSDictionary*)miniProfile
 {
-	if(self.swappedViewCell != -1)
+	NSString* userId;
+	if (miniProfile != nil && (userId = [miniProfile objectForKey:@"aumId"]) != nil)
 	{
-		NSString* userId = [[self.list objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"];
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
 		[httpRequest addParam:@"aumId" value:userId];
-		
-		if ([httpRequest send] == YES)
+
+		//if ([httpRequest send] == YES)
+		[NSThread sleepForTimeInterval:5];
+		if (YES) // FOR TESTING
 		{
-			[self.kickingQueue addObject:rowNumber];
-			self.cellToRemove = self.swappedViewCell;
-			[self performSelectorOnMainThread:@selector(kickFromListWithId:) withObject:rowNumber waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(kickFromList:) withObject:miniProfile waitUntilDone:NO];
 			NSLog(@"successfuly kicked %@", userId);
 		}
 		else {
@@ -113,7 +112,7 @@
 		[httpRequest release];
 	}
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	[self.actionView enableButtons];
+	[self.actionView performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
 }
 
 @end
