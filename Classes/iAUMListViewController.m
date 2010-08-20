@@ -238,6 +238,10 @@
 	NSUInteger indexInSearchedList = [self.searchedList indexOfObject:miniProfile];
 	if (indexInSearchedList == NSNotFound)
 		return ;
+	if (self.swappedViewCell == indexInSearchedList)
+		self.swappedViewCell = -1;
+	else if (self.swappedViewCell > indexInSearchedList)
+		self.swappedViewCell--;
 	[self.list removeObject:miniProfile];
 	[self.searchedList removeObjectAtIndex:indexInSearchedList];
 	NSArray* indexPaths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexInSearchedList inSection:0]];
