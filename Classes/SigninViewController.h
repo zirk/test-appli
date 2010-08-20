@@ -27,7 +27,8 @@
 
 - (UITextField*)buildSigninTextField:(NSString*)placeholder withFrame:(CGRect)frame;
 - (IBAction)signIn;
-- (BOOL)remoteSignIn;
+- (void)remoteSignIn;
 - (void)displayError:(NSString *)message;
+- (void)signInEnded:(NSNumber *)success;
 
 @end

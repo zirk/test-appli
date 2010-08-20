@@ -90,30 +90,55 @@
 {
 	if (self.currentView != MiniProfileViewTypeProfile)
 		return ;
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	[[UIColor colorWithPatternImage:[UIImage imageNamed:@"MiniProfileCellBgPattern.png"]] set];
+	static CGRect imageFrame;
+	static CGContextRef context = nil;
+	static UIImage* background = nil;
+	static UIImage* glassPictureCover = nil;
+	if (context == nil) {
+		imageFrame = CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight);
+		context = UIGraphicsGetCurrentContext();
+		background = [UIImage imageNamed:@"MiniProfileCellBgPattern.png"];
+		glassPictureCover = [UIImage imageNamed:@"MiniProfileCellPictureGlare.png"];
+	}
+	[[UIColor colorWithPatternImage:background] set];
 	CGContextFillRect(context, r);
 	[iAUMCGEffects drawWithShadow:@selector(drawCellContent) onTarget:self inContext:context];
+	[glassPictureCover drawInRect:imageFrame];
 }
 
 - (void)drawCellContent
 {
-	CGRect imageFrame = CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight);
-	[[iAUMCGEffects roundCornersOfImage:self.picture withRadius:18.18] drawInRect:imageFrame];
-	[[UIImage imageNamed:@"MiniProfileCellPictureGlare.png"] drawInRect:imageFrame];
-	imageFrame = CGRectMake(295.0, 5.0, 21.0, 21.0);
+	static UIImage* onlineIcon = nil;
+	static UIImage* offlineIcon = nil;
+	static CGRect pictureFrame;
+	static CGRect iconFrame;
+	static UIFont* nameFont = nil;
+	static UIFont* ageFont = nil;
+	static UIFont* cityFont = nil;
+	if (onlineIcon == nil) {
+		pictureFrame = CGRectMake(0.0, 0.0, kAppListCellHeight, kAppListCellHeight);
+		iconFrame = CGRectMake(295.0, 5.0, 21.0, 21.0);
+		onlineIcon = [UIImage imageNamed:@"MiniProfileCellStatusOnline.png"];
+		offlineIcon = [UIImage imageNamed:@"MiniProfileCellStatusOffline.png"];
+		nameFont = [UIFont boldSystemFontOfSize:20];
+		ageFont = [UIFont systemFontOfSize:15];
+		cityFont = ageFont;
+	}
+
+	[[iAUMCGEffects roundCornersOfImage:self.picture withRadius:18.18] drawInRect:pictureFrame];
+
 	if (self.online == YES)
-		[[UIImage imageNamed:@"MiniProfileCellStatusOnline.png"] drawInRect:imageFrame];
+		[onlineIcon drawInRect:iconFrame];
 	else
-		[[UIImage imageNamed:@"MiniProfileCellStatusOffline.png"] drawInRect:imageFrame];
-	CGPoint p = CGPointMake(kAppListCellHeight + 10.0, 4.0);
+		[offlineIcon drawInRect:iconFrame];
 	[[UIColor whiteColor] set];
-	[self.name drawAtPoint:p withFont:[UIFont boldSystemFontOfSize:20]];
+	CGPoint p = CGPointMake(kAppListCellHeight + 10.0, 4.0);
+	[self.name drawAtPoint:p withFont:nameFont];
 	p.y += 25;
 	[[UIColor lightGrayColor] set];
-	[self.age drawAtPoint:p withFont:[UIFont systemFontOfSize:15]];
+	[self.age drawAtPoint:p withFont:ageFont];
 	p.y += 20;
-	[self.city drawAtPoint:p withFont:[UIFont systemFontOfSize:15]];
+	[self.city drawAtPoint:p withFont:cityFont];
 }
 
 - (void)dealloc {

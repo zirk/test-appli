@@ -63,7 +63,7 @@ CPPFLAGS=$CFLAGS
 
 BUILDDIR=./build/$(SDKVER)
 SRCDIR=.
-RESOURCES= images/*.png images/icons/tabBar/*.png images/icons/actionView/*/*.png
+RESOURCES= images/[^.]*.png images/icons/tabBar/[^.]*.png images/icons/actionView/*/[^.]*.png
 RESDIR=./Resources
 OBJS=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/*.m))
 OBJS+=$(patsubst %.m,%.o,$(wildcard $(SRCDIR)/Classes/*.m))

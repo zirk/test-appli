@@ -24,5 +24,7 @@ enum iAUMUserSex {
 +(NSString*) hashSHA1:(NSString *)data;
 +(void)queueOperation:(SEL)selector withTarget:(id)target withObject:(id)object;
 +(NSUInteger) getUsersSex:(NSString*)aumId;
++(BOOL) isValidAumId:(NSString *)aumId;
++(BOOL) isValidEmail:(NSString *)email;
 
 @end

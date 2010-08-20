@@ -10,6 +10,7 @@
 // some keys
 #define kApiHost @"http://aum.showire.eu/"
 #define kApiPrivateKey "h0ly_d1ck"
+#define kApiRequestRetries 3
 #define kApiLogin @"email"
 #define kApiPassword @"password"
 #define kApiFormat @"format"

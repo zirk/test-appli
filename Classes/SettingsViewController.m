@@ -203,6 +203,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	[iAUMSettings set:textField.placeholder withValue:textField.text];
+	[iAUMSettings set:kAppSettingsAumId withValue:@""];
 }
 
 //  UITextField sends this message to its delegate when the return key
@@ -228,11 +229,12 @@
 		if ([httpRequest send] == YES)
 		{
 			NSString* aumId = [[httpRequest.response objectForKey:kApiResponseExtra] objectForKey:@"aumId"];
-			[iAUMSettings set:kAppSettingsAumId withValue:aumId];
 			//[textField performSelectorOnMainThread:@selector(resignFirstResponder) withObject:nil waitUntilDone:NO];
 			[textField resignFirstResponder];
-			if (aumId != nil)
+			if ([iAUMTools isValidAumId:aumId] == YES) {
+				[iAUMSettings set:kAppSettingsAumId withValue:aumId];
 				NSLog(@"successfuly identified %@, it's a %d (0=Girl,1=Boy,2=Alien)", aumId, [iAUMTools getUsersSex:aumId]);
+			}
 			else
 				NSLog(@"could not identify, perhaps bad login/password ?");
 		}

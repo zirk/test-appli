@@ -71,6 +71,7 @@
 	
 	//alert view
 	self.alertView = [[UIAlertView alloc] initWithTitle:@"Failor" message:@"some fail" delegate:self cancelButtonTitle:@"whatever" otherButtonTitles:nil];
+	[self.alertView release];
 
 	// some temp shit
 	self.tmp = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 140)];
@@ -103,8 +104,13 @@
 - (BOOL)checkTextFields
 {
 	BOOL result = YES;
+	self.loginTextField.text = [self.loginTextField.text lowercaseString];
 	if (self.loginTextField.text.length < 1) {
 		self.loginTextField.placeholder = @"fill this bitch";
+		result = NO;
+	}
+	else if ([iAUMTools isValidEmail:self.loginTextField.text] == NO) {
+		[self displayError:@"sucky email"];
 		result = NO;
 	}
 	if (self.passwordTextField.text.length < 1) {
@@ -151,15 +157,14 @@
 	}
 }
 
-- (BOOL)remoteSignIn
+- (void)remoteSignIn
 {
 	BOOL result = NO;
-	//return result;
 	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/"];		
 	if ([httpRequest send] == YES)
 	{
 		NSString* aumId = [[httpRequest.response objectForKey:kApiResponseExtra] objectForKey:@"aumId"];
-		if (aumId != nil) {
+		if ([iAUMTools isValidAumId:aumId] == YES) {
 			[iAUMSettings set:kAppSettingsAumId withValue:aumId];
 			NSLog(@"successfuly identified %@, it's a %d (0=Girl,1=Boy,2=Alien)", aumId, [iAUMTools getUsersSex:aumId]);
 			result = YES;
@@ -167,11 +172,18 @@
 		else
 			[self performSelectorOnMainThread:@selector(displayError:) withObject:@"could not identify, perhaps bad login/password ?" waitUntilDone:NO];
 	}
-	else
-		[self performSelectorOnMainThread:@selector(displayError:) withObject:@"Error while identifying" waitUntilDone:NO];
-	[httpRequest release];
+	else {
+		NSString* message = nil;
+		if (httpRequest.status == iAUMResponseCantLogin)
+			message = @"Wrong login or password";
+		else if (httpRequest.status == iAUMResponseApiError || httpRequest.status == iAUMResponseAumError)
+			message = @"Some kind of server error, please try later";
+		else
+			message = @"ball in API/App, sux :/";
+		[self performSelectorOnMainThread:@selector(displayError:) withObject:message waitUntilDone:NO];
+	}
 	[self performSelectorOnMainThread:@selector(signInEnded:) withObject:[NSNumber numberWithBool:result] waitUntilDone:NO];
-	return result;
+	[httpRequest release];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -226,6 +238,7 @@
 
 
 - (void)dealloc {
+	[self.activityIndicator release];
 	[self.loginTextField release];
 	[self.passwordTextField release];
 	[self.signinButton release];
