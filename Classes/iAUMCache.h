@@ -11,12 +11,19 @@
 
 @interface iAUMCache : NSObject {
 	id object;
+	NSString* imageCachePath;
 }
 
 @property (nonatomic, retain) id object;
+@property (nonatomic, retain) NSString* imageCachePath;
 
 - (id) init;
 - (void) loadImage:(NSString*)urlString forObject:(id)someObject;
 - (void) downloadImage:(NSString*)urlString;
+
++ (BOOL) initCache;
++ (NSString*) cachePath:(NSString *)subPath;
++ (unsigned long long int) cacheSize:(NSString *)subPath;
++ (BOOL) clearCache:(NSString *)subPath removeSubFolders:(BOOL)removeSubFolders;
 
 @end

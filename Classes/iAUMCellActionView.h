@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface MiniProfileCellActionView : UIView {
+@interface iAUMCellActionView : UIView {
 	NSMutableDictionary* actionButtons;
 	NSMutableArray* actionButtonsOrder;
 	UILabel* buttonTitleLabel;

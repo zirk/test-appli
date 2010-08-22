@@ -8,22 +8,25 @@
 
 #import <UIKit/UIKit.h>
 #import "iAUMConstants.h"
-#import "MiniProfileCellActionView.h"
-#import "ProfileViewController.h"
+#import "iAUMCell.h"
+#import "iAUMCellActionView.h"
 #import "HttpRequest.h"
-#import "iAUMSettings.h"
 #import "iAUMTools.h"
 #import "iAUMListLoadingView.h"
+#import "iAUMModelMiniProfile.h"
 
 #define kAppListSearchBarHeight 40.0
 
 @interface iAUMListViewController : UITableViewController <UISearchBarDelegate> {
+	NSString* cellIdentifier;
+
 	NSString* listApiUrl;
+	NSString* listKeyInResponse;
 	iAUMListLoadingView* loadingView;
-	MiniProfileCellActionView* actionView;
+	iAUMCellActionView* actionView;
 	UISearchBar* searchBar;
-	NSMutableArray* searchedList; //displayed list, contains full or filtered people list
-	NSMutableArray* list; //contains full people list
+	NSMutableArray* searchedList; //displayed list, contains full or filtered list
+	NSMutableArray* list; //contains full list
 	BOOL isLoading;
 	NSInteger swappedViewCell;
 }
@@ -34,16 +37,21 @@
 -(void) asynchronouslyLoadList;
 -(void) initButtons;
 -(void) initActionView;
--(void) displayProfile;
 -(void) kickFromList:(id)object;
 -(void) swapActionViewBeforeSearch:(BOOL)animated;
+-(void) displayProfile:(iAUMModelMiniProfile*)miniProfile;
+-(iAUMCell*) createNewCell;
+-(void) fillListWithObjects:(NSArray *)objects;
 
-@property (nonatomic, retain) NSMutableArray* list;
+@property (nonatomic, assign) NSString* cellIdentifier;
+
+@property (nonatomic, assign) NSMutableArray* list;
 @property (nonatomic, assign) NSString* listApiUrl;
+@property (nonatomic, assign) NSString* listKeyInResponse;
 @property (nonatomic, retain) iAUMListLoadingView* loadingView;
 @property (nonatomic, assign) NSInteger swappedViewCell;
 @property (nonatomic, assign) BOOL isLoading;
-@property (nonatomic, retain) MiniProfileCellActionView* actionView;
+@property (nonatomic, retain) iAUMCellActionView* actionView;
 @property (nonatomic, assign) UISearchBar* searchBar;
 @property (nonatomic, assign) NSMutableArray* searchedList;
 

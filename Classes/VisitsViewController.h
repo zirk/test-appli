@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "iAUMListViewController.h"
+#import "MiniProfileListViewController.h"
 
-@interface VisitsViewController : iAUMListViewController {
+@interface VisitsViewController : MiniProfileListViewController {
 
 }
 

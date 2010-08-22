@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MiniProfileCellActionView.h"
+#import "iAUMCellActionView.h"
 
-@interface MiniProfileCellActionViewVisits : MiniProfileCellActionView {
+@interface MiniProfileCellActionViewVisits : iAUMCellActionView {
 
 }
 

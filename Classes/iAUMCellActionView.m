@@ -6,17 +6,19 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "MiniProfileCellActionView.h"
+#import "iAUMCellActionView.h"
 #import "iAUMConstants.h"
+#import "iAUMCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@implementation MiniProfileCellActionView
+@implementation iAUMCellActionView
 
 @synthesize buttonTitleLabel, actionButtons, actionButtonsOrder;
 
 - (id)init {
     if ((self = [super initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, kAppListCellHeight)])) {
+		self.tag = iAUMCellViewTypeAction;
 		self.actionButtons = [[NSMutableDictionary alloc] init];
 		[self.actionButtons release];
 		self.actionButtonsOrder = [[NSMutableArray alloc] init];

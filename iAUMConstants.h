@@ -26,6 +26,9 @@
 #define kAppSettingsPassword @"password"
 #define kAppSettingsAumId @"aumId"
 
+#define kAppCacheMaxSize 100000 //bytes, testing
+#define kAppCachePath @"cache"
+#define kAppCachePathImages @"images"
 
 #define kAppListCellHeight 75.0
 #define kProfileCellFieldHeight 20.0

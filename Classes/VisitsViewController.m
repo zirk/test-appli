@@ -7,7 +7,7 @@
 //
 
 #import "VisitsViewController.h"
-#import "MiniProfileCellActionView.h"
+#import "iAUMCellActionView.h"
 #import "MiniProfileCellActionViewVisits.h"
 
 @implementation VisitsViewController

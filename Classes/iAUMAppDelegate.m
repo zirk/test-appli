@@ -7,11 +7,13 @@
 //
 
 #import "iAUMAppDelegate.h"
-#import "HttpRequest.h"
+#import "iAUMSettings.h"
 #import "SettingsViewController.h"
 #import "VisitsViewController.h"
 #import "BasketViewController.h"
 #import "SigninViewController.h"
+#import "ThreadListViewController.h"
+#import "iAUMCache.h"
 
 @implementation iAUMAppDelegate
 
@@ -23,6 +25,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+	
+	if ([iAUMCache initCache] == NO)
+		NSLog(@"cache init chied");
     // Override point for customization after application launch.
 	self.tabBar = [[UITabBarController alloc] init];
 	[self.tabBar release];
@@ -39,8 +44,12 @@
 	BasketViewController* basketsVC = [[BasketViewController alloc] init];
 	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
 	basketsNC.navigationBar.tintColor = [UIColor darkGrayColor];
+	
+	ThreadListViewController* mailListVC = [[ThreadListViewController alloc] init];
+	UINavigationController* mailsNC = [[UINavigationController alloc] initWithRootViewController:mailListVC];
+	mailsNC.navigationBar.tintColor = [UIColor darkGrayColor];
 
-	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, settingsVC, nil];
+	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, mailsNC, settingsVC, nil];
 
 	[self.tabBar setViewControllers:viewControllers animated:YES];
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -54,6 +63,8 @@
 	[visitsNC release];
 	[basketsVC release];
 	[basketsNC release];
+	[mailListVC release];
+	[mailsNC release];
 	if ([iAUMSettings get:kAppSettingsAumId] == nil)
 		[self showSignInScreen];
 	return YES;

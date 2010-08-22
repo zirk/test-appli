@@ -67,23 +67,22 @@
 }
 
 
--(void) accept:(NSDictionary*)miniProfile
+-(void) accept:(iAUMModelMiniProfile*)miniProfile
 {
-	NSString* userId;
-	if (miniProfile != nil && (userId = [miniProfile objectForKey:@"aumId"]) != nil)
+	if (miniProfile != nil && miniProfile.aumId != nil)
 	{
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
-		[httpRequest addParam:@"aumId" value:userId];
+		[httpRequest addParam:@"aumId" value:miniProfile.aumId];
 
 		//if ([httpRequest send] == YES)
 		[NSThread sleepForTimeInterval:5];
 		if (YES) // FOR TESTING
 		{
 			[self performSelectorOnMainThread:@selector(kickFromList:) withObject:miniProfile waitUntilDone:NO];
-			NSLog(@"successfuly accepted %@", userId);
+			NSLog(@"successfuly accepted %@", miniProfile.aumId);
 		}
 		else {
-			NSLog(@"Failed at accepting %@ ", userId);
+			NSLog(@"Failed at accepting %@ ", miniProfile.aumId);
 		}
 		[httpRequest release];
 	}
@@ -91,23 +90,22 @@
 	[self.actionView performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
 }
 
-- (IBAction) refuse:(NSDictionary*)miniProfile
+- (IBAction) refuse:(iAUMModelMiniProfile*)miniProfile
 {
-	NSString* userId;
-	if (miniProfile != nil && (userId = [miniProfile objectForKey:@"aumId"]) != nil)
+	if (miniProfile != nil && miniProfile.aumId != nil)
 	{
 		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
-		[httpRequest addParam:@"aumId" value:userId];
+		[httpRequest addParam:@"aumId" value:miniProfile.aumId];
 
 		//if ([httpRequest send] == YES)
 		[NSThread sleepForTimeInterval:5];
 		if (YES) // FOR TESTING
 		{
 			[self performSelectorOnMainThread:@selector(kickFromList:) withObject:miniProfile waitUntilDone:NO];
-			NSLog(@"successfuly kicked %@", userId);
+			NSLog(@"successfuly kicked %@", miniProfile.aumId);
 		}
 		else {
-			NSLog(@"Failed at kicking %@ ", userId);
+			NSLog(@"Failed at kicking %@ ", miniProfile.aumId);
 		}
 		[httpRequest release];
 	}

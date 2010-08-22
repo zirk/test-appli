@@ -6,13 +6,13 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "MiniProfileCellActionViewCharms.h"
-#import "MiniProfileCell.h"
+#import "iAUMCell.h"
 #import "iAUMListViewController.h"
+#import "ProfileViewController.h"
 
 @implementation iAUMListViewController
 
-@synthesize list, loadingView, isLoading, listApiUrl, swappedViewCell, actionView, searchBar, searchedList;
+@synthesize list, loadingView, isLoading, listApiUrl, listKeyInResponse, cellIdentifier, swappedViewCell, actionView, searchBar, searchedList;
 
 #pragma mark -
 #pragma mark Initialization
@@ -20,7 +20,11 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
+		self.cellIdentifier = @"iAUMCell";
+		self.listKeyInResponse = nil;
+		self.listApiUrl = nil;
 		self.isLoading = NO;
+		self.list = [[NSMutableArray alloc] init];
 		self.searchedList = [[NSMutableArray alloc] init];
 		self.tableView.separatorColor = [UIColor blackColor];
 		self.tableView.backgroundColor = [UIColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0];
@@ -35,12 +39,11 @@
 {
 	// if the subclass did not create its actionView we make the default one
 	if (self.actionView == nil) {
-		self.actionView = [[MiniProfileCellActionView alloc] init];
+		self.actionView = [[iAUMCellActionView alloc] init];
 		[self.actionView build];
 		[self.actionView placeButtons];
 		[self.actionView release];
 	}
-	self.actionView.tag = MiniProfileViewTypeAction;
 	[self initButtons];
 }
 
@@ -132,16 +135,21 @@
 	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:self.listApiUrl];
 	
 	if ([httpRequest send] == YES)
-		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:kApiResponseData] objectForKey:@"people"] waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(refreshList:) withObject:[[httpRequest.response objectForKey:kApiResponseData] objectForKey:self.listKeyInResponse] waitUntilDone:NO];
 	else
 		[self performSelectorOnMainThread:@selector(refreshList:) withObject:nil waitUntilDone:NO];;
 	[httpRequest release];
 }
 
+-(void) fillListWithObjects:(NSArray*)objects
+{
+	NSLog(@"iAUMListViewController::fillListWithObjects sayz \"but override me madde\"");
+}
+
 -(void) refreshList:(NSArray*) someList
 {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	self.list = [NSMutableArray arrayWithArray:someList];
+	[self fillListWithObjects:someList];
 	[self.searchedList removeAllObjects];
 	[self.searchedList addObjectsFromArray:self.list];
 	self.isLoading = NO;
@@ -164,23 +172,30 @@
     return [self.searchedList count];
 }
 
+- (iAUMCell*) createNewCell
+{
+	return [[[iAUMCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellIdentifier] autorelease];
+}
+
+- (void) initCellWithObject:(id)object
+{
+	NSLog(@"iAUMListController::initCellWithObject sayz \"override me bitch\"\n btw the object is %@", object);
+}
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    
-    MiniProfileCell *cell = (MiniProfileCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {   
+    iAUMCell *cell = (iAUMCell*)[tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     if (cell == nil) {
-        cell = [[[MiniProfileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [self createNewCell];
 		cell.actionView = self.actionView;
     }
-	[cell loadFromDictionary:(NSDictionary*)[self.searchedList objectAtIndex:indexPath.row]];
+	[cell loadObject:[self.searchedList objectAtIndex:indexPath.row]];
 
 	// hide the potentially visible actionView of a reused cell
 	if(indexPath.row != self.swappedViewCell)
-		[cell displayProfileViewWithTransition:NO];
+		[cell displayContentView:NO];
 	else
-		[cell displayActionViewWithTransition:NO];
+		[cell displayActionView:NO];
     return cell;
 }
 
@@ -234,41 +249,32 @@
 
 - (void) kickFromList:(id)object
 {
-	NSDictionary* miniProfile = (NSDictionary*)object;
-	NSUInteger indexInSearchedList = [self.searchedList indexOfObject:miniProfile];
+	NSUInteger indexInSearchedList = [self.searchedList indexOfObject:object];
 	if (indexInSearchedList == NSNotFound)
 		return ;
 	if (self.swappedViewCell == indexInSearchedList)
 		self.swappedViewCell = -1;
 	else if (self.swappedViewCell > indexInSearchedList)
 		self.swappedViewCell--;
-	[self.list removeObject:miniProfile];
+	[self.list removeObject:object];
 	[self.searchedList removeObjectAtIndex:indexInSearchedList];
 	NSArray* indexPaths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexInSearchedList inSection:0]];
 	[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 	return ;
 }
 
-- (void) observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context
-{
-	NSLog(@"keyPath : %@\nobject : %@\nchange : %@", keyPath, object, change);
-	//if ([keyPath compare:@"kicked"] == NSOrderedSame)
-	//	[self kickFromListWithId:((ProfileViewController*)object).userId];
-}
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MiniProfileCell *cell = (MiniProfileCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-	NSLog(@"cell %@", cell.name);
-	NSLog(@"userId: %@", [[self.searchedList objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
+    iAUMCell *cell = (iAUMCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+	//NSLog(@"cell %@", cell.name);
+	//NSLog(@"userId: %@", [[self.searchedList objectAtIndex:indexPath.row] objectForKey:@"aumId"]);
 	
 	// used to refresh the old swapped cell without scrolling;
 	if(self.swappedViewCell != -1){
-		[((MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) displayProfileViewWithTransition:YES];
-		NSLog(@"refreshed old cell %@", [((MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) name]);
+		[((iAUMCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) displayContentView:YES];
+		//NSLog(@"refreshed old cell %@", [((iAUMCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]]) name]);
 		//self.swappedViewCell = -1;
 	}
 	
@@ -276,7 +282,7 @@
 	if(self.swappedViewCell != indexPath.row)
 	{
 		self.swappedViewCell = indexPath.row;
-		[cell displayActionViewWithTransition:YES];
+		[cell displayActionView:YES];
 	}
 	else
 		self.swappedViewCell = -1;
@@ -293,14 +299,11 @@
 	 */
 }
 
--(void) displayProfile
+-(void) displayProfile:(iAUMModelMiniProfile*)miniProfile
 {
-	if(self.swappedViewCell != -1)
-	{
-		ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:[[self.searchedList objectAtIndex:self.swappedViewCell] objectForKey:@"aumId"] andName:[[self.searchedList objectAtIndex:self.swappedViewCell] objectForKey:@"name"]];
-		[self.navigationController pushViewController:pvc animated:YES];
-		[pvc release];
-	}
+	ProfileViewController* pvc = [[ProfileViewController alloc] initWithUserId:miniProfile.aumId andName:miniProfile.name];
+	[self.navigationController pushViewController:pvc animated:YES];
+	[pvc release];
 }
 
 #pragma mark -
@@ -309,7 +312,7 @@
 - (void)swapActionViewBeforeSearch:(BOOL)animated
 {
 	if (self.swappedViewCell != -1)
-		[(MiniProfileCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]] displayProfileViewWithTransition:animated];
+		[(iAUMCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.swappedViewCell inSection:0]] displayContentView:animated];
 	self.swappedViewCell = -1;
 }
 
@@ -340,25 +343,6 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)someSearchBar
 {
 	[someSearchBar resignFirstResponder];
-}
-
-- (void)searchBar:(UISearchBar *)someSearchBar textDidChange:(NSString *)searchText
-{
-	[self swapActionViewBeforeSearch:NO];
-	[self.searchedList removeAllObjects];
-	if ([searchText isEqualToString:@""]) {
-		[self.searchedList addObjectsFromArray:self.list];
-		[self.tableView reloadData];
-		return ;
-	}
-	NSUInteger searchOptions = (NSCaseInsensitiveSearch|NSLiteralSearch|NSDiacriticInsensitiveSearch);
-	for (NSDictionary* miniPrfile in self.list) {
-		NSRange range = [(NSString*)[miniPrfile objectForKey:@"name"] rangeOfString:searchText options:searchOptions];
-		if (range.location == NSNotFound)
-			continue ;
-		[self.searchedList addObject:miniPrfile];
-	}
-	[self.tableView reloadData];
 }
 
 #pragma mark -

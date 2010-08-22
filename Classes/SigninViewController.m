@@ -11,6 +11,7 @@
 #import "iAUMConstants.h"
 #import "HttpRequest.h"
 #import "iAUMTools.h"
+#import "iAUMAlertView.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -70,7 +71,7 @@
 	[self.view addSubview:self.activityIndicator];
 	
 	//alert view
-	self.alertView = [[UIAlertView alloc] initWithTitle:@"Failor" message:@"some fail" delegate:self cancelButtonTitle:@"whatever" otherButtonTitles:nil];
+	self.alertView = [[iAUMAlertView alloc] initWithTitle:@"Failor" message:@"some fail" delegate:self cancelButtonTitle:@"whatever" otherButtonTitles:nil];
 	[self.alertView release];
 
 	// some temp shit
@@ -199,19 +200,27 @@
 {
 	self.alertView.message = message;
 	[self.alertView show];
-	/*UIView* brol = [[UIView alloc] initWithFrame:CGRectMake(20.0, -100.0, 240.0, 80.0)];
+	/*/
+	UIView* brol = [[UIView alloc] initWithFrame:CGRectMake(20.0, -100.0, 240.0, 80.0)];
+	brol.alpha = 0;
 	UILabel* proute = [[UILabel alloc] initWithFrame:brol.frame];
 	proute.text = message;
 	[brol addSubview:proute];
 	[self.view addSubview:brol];
 	[UIView beginAnimations:@"rofl" context:nil];
-	[UIView setAnimationDuration:0.2];
-	[UIView setAnimationRepeatCount:3];
-	[UIView setAnimationRepeatAutoreverses:YES];
+	[UIView setAnimationDuration:1];
 	brol.layer.transform = CATransform3DMakeTranslation(0, 300.0, 0);
+	brol.alpha = 1;
+	[UIView commitAnimations];
+	[UIView beginAnimations:@"rofl2" context:nil];
+	[UIView setAnimationDuration:1];
+	[UIView setAnimationDelay:3];
+	brol.layer.transform = CATransform3DMakeTranslation(0, -300.0, 0);
+	brol.alpha = 0;
 	[UIView commitAnimations];
 	[proute release];
-	[brol release];*/
+	[brol release];
+	//*/
 	NSLog(@"%@", message);
 }
 
