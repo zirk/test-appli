@@ -22,7 +22,7 @@
 		self.params = someDico;
 		[someDico release];
 		self.method = @"POST";
-		self.url = @"/";
+		self.url = [iAUMSettings apiConfig:kAppSettingsApiConfigActionUpdate];
 		self.response = nil;
 	}
 	return self;
@@ -59,11 +59,12 @@
 		return nil;
 	[self addParam:kApiLogin value:[iAUMSettings get:kAppSettingsLogin]];
 	[self addParam:kApiPassword value:[iAUMSettings get:kAppSettingsPassword]];
+	[self addParam:kApiConfigVersion value:[iAUMSettings apiConfig:kAppSettingsApiConfigVersion]];
 	[self addParam:kApiFormat value:kApiFormatType];
 	
 	//prepar request
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kApiHost, self.url]]];
+	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [iAUMSettings apiConfig:kAppSettingsApiConfigHost], self.url]]];
 	[request setHTTPMethod:self.method];
 	
 	//set headers
@@ -143,6 +144,11 @@
 		else {
 			self.response = [self.response objectForKey:kApiResponse];
 			NSLog(@"JSON CONVERTED RESPONSE\n%@", self.response);
+			// update api config from response (if any and if sup version number)
+			NSDictionary* apiConfig = [self.response objectForKey:kApiResponseConfig];
+			if (apiConfig != nil && [apiConfig isKindOfClass:[NSDictionary class]] == YES && apiConfig.count > 0)
+				if ([[iAUMSettings apiConfig:kAppSettingsApiConfigVersion] intValue] < [(NSString*)[apiConfig objectForKey:kAppSettingsApiConfigVersion] intValue])
+					[iAUMSettings set:kAppSettingsApiConfig withValue:apiConfig];
 		}
 	}
 	else

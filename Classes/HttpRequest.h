@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 /*
+ Aum_Response
  const STATUS_CODE_SUCCUSS = 200;
  const STATUS_CODE_BAD_REQUEST = 400;
- const STATUS_CODE_BAD_SIGNATURE = 401;
+ const STATUS_CODE_BAD_SIGNATURE = 417;
  const STATUS_CODE_CANT_LOGIN = 403;
  const STATUS_CODE_NOT_ALLOWED = 405;
  const STATUS_CODE_ERROR_INTERNAL = 500;

@@ -13,7 +13,8 @@
 
 }
 
-+ (void) set:(NSString*)key withValue:(NSString*)value;
++ (void) set:(NSString*)key withValue:(id)value;
 + (NSString*) get:(NSString*)key;
++ (id) apiConfig:(NSString*)key;
 
 @end

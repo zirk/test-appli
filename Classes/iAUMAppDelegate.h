@@ -18,6 +18,7 @@
 @property (nonatomic, retain) UITabBarController *tabBar;
 
 - (void)showSignInScreen;
+- (void)initControllers;
 
 @end
 

@@ -6,6 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#import "iAUMSettings.h"
 #import "MiniProfileCell.h"
 #import "MiniProfileCellActionViewCharms.h"
 #import "CharmsViewController.h"
@@ -20,7 +21,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
-		self.listApiUrl = @"/charms/list-new";
+		self.listApiUrl = [iAUMSettings apiConfig:kAppSettingsApiConfigActionCharmNew];
 		self.title = @"Charmes";
 		UITabBarItem *barItem = [[UITabBarItem alloc] initWithTitle:@"Charmes" image:[UIImage imageNamed:@"tabBarCharms.png"] tag:0];
 		self.tabBarItem = barItem;
@@ -71,7 +72,7 @@
 {
 	if (miniProfile != nil && miniProfile.aumId != nil)
 	{
-		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/accept"];
+		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:[iAUMSettings apiConfig:kAppSettingsApiConfigActionCharmAccept]];
 		[httpRequest addParam:@"aumId" value:miniProfile.aumId];
 
 		//if ([httpRequest send] == YES)
@@ -94,7 +95,7 @@
 {
 	if (miniProfile != nil && miniProfile.aumId != nil)
 	{
-		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/charms/refuse"];
+		HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:[iAUMSettings apiConfig:kAppSettingsApiConfigActionCharmRefuse]];
 		[httpRequest addParam:@"aumId" value:miniProfile.aumId];
 
 		//if ([httpRequest send] == YES)

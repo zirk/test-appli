@@ -23,24 +23,20 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-	
-	if ([iAUMCache initCache] == NO)
-		NSLog(@"cache init chied");
-    // Override point for customization after application launch.
+- (void) initControllers
+{
 	self.tabBar = [[UITabBarController alloc] init];
 	[self.tabBar release];
 	SettingsViewController* settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
+	
 	CharmsViewController* charmsVC = [[CharmsViewController alloc] init];
 	UINavigationController* charmsNC = [[UINavigationController alloc] initWithRootViewController:charmsVC];
 	charmsNC.navigationBar.tintColor = [UIColor darkGrayColor];
-
+	
 	VisitsViewController* visitsVC = [[VisitsViewController alloc] init];
 	UINavigationController* visitsNC = [[UINavigationController alloc] initWithRootViewController:visitsVC];
 	visitsNC.navigationBar.tintColor = [UIColor darkGrayColor];
-
+	
 	BasketViewController* basketsVC = [[BasketViewController alloc] init];
 	UINavigationController* basketsNC = [[UINavigationController alloc] initWithRootViewController:basketsVC];
 	basketsNC.navigationBar.tintColor = [UIColor darkGrayColor];
@@ -48,13 +44,11 @@
 	ThreadListViewController* mailListVC = [[ThreadListViewController alloc] init];
 	UINavigationController* mailsNC = [[UINavigationController alloc] initWithRootViewController:mailListVC];
 	mailsNC.navigationBar.tintColor = [UIColor darkGrayColor];
-
+	
 	NSArray* viewControllers = [[NSArray alloc] initWithObjects:charmsNC, visitsNC, basketsNC, mailsNC, settingsVC, nil];
-
+	
 	[self.tabBar setViewControllers:viewControllers animated:YES];
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	[self.window addSubview:self.tabBar.view];
-    [self.window makeKeyAndVisible];	
+
 	[viewControllers release];
 	[settingsVC release];
 	[charmsVC release];
@@ -65,9 +59,6 @@
 	[basketsNC release];
 	[mailListVC release];
 	[mailsNC release];
-	if ([iAUMSettings get:kAppSettingsAumId] == nil)
-		[self showSignInScreen];
-	return YES;
 }
 
 - (void)showSignInScreen
@@ -77,6 +68,21 @@
 	[signinVC release];
 }
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+
+	if ([iAUMCache initCache] == NO)
+		NSLog(@"cache init chied");
+    // Override point for customization after application launch.
+	
+	[self initControllers];
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	[self.window addSubview:self.tabBar.view];
+    [self.window makeKeyAndVisible];
+	if ([iAUMSettings get:kAppSettingsAumId] == nil)
+		[self showSignInScreen];
+	return YES;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     /*

@@ -161,7 +161,7 @@
 - (void)remoteSignIn
 {
 	BOOL result = NO;
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/"];		
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:[iAUMSettings apiConfig:kAppSettingsApiConfigActionUpdate]];		
 	if ([httpRequest send] == YES)
 	{
 		NSString* aumId = [[httpRequest.response objectForKey:kApiResponseExtra] objectForKey:@"aumId"];

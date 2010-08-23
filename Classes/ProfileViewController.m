@@ -7,6 +7,7 @@
 //
 
 #import "ProfileViewController.h"
+#import "iAUMSettings.h"
 #import "iAUMTools.h"
 #import "iAUMCache.h"
 #import "HttpRequest.h"
@@ -53,7 +54,7 @@
 - (void) loadProfile
 {
 	NSLog(@"in loadProfile for %@", self.userId);
-	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:@"/profiles/visit"];
+	HttpRequest* httpRequest = [[HttpRequest alloc] initWithUrl:[iAUMSettings apiConfig:kAppSettingsApiConfigActionProfileVisit]];
 	[httpRequest addParam:@"aumId" value:self.userId];
 	
 	if ([httpRequest send] == YES)

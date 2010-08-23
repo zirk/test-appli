@@ -15,7 +15,7 @@
 
 - (id) init {
 	if ((self = [super init])) {
-		self.status = nil;
+		self.status = iAUMThreadStatusUnknown;
 		self.threadId = nil;
 		self.preview = nil;
 		self.date = nil;
@@ -27,7 +27,7 @@
 - (id) initWithDictionary:(NSDictionary*)dico
 {
 	if ((self = [self init])) {
-		self.status = [dico objectForKey:@"status"];
+		self.status = [[dico objectForKey:@"status"] intValue];
 		self.preview = [dico objectForKey:@"preview"];
 		self.threadId = [dico objectForKey:@"id"];
 		self.date = [dico objectForKey:@"time"];
@@ -38,7 +38,6 @@
 }
 
 - (void) dealloc {
-	[self.status release];
 	[self.threadId release];
 	[self.preview release];
 	[self.date release];
